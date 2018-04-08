@@ -5,8 +5,24 @@
 const htmlPrettier = require('./prettiers/html');
 
 var prettyme = (function() {
+  var parser = htmlPrettier;
+
+  function init(options) {
+    parser = options.parser;
+  }
+
+  function parse(code) {
+    return parser.parse(code);
+  }
+
+  function format(code) {
+    return parser.format(code);
+  }
+
   return {
-    parse: htmlPrettier.parse
+    init: init,
+    parse: parse,
+    format: format
   };
 })();
 

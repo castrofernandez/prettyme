@@ -71,3 +71,15 @@ describe('prettyme: parsing', function () {
     ]);
   });
 });
+
+describe('prettyme: formatting', function () {
+  it('Nested', async function () {
+    const result = prettyme.format('<div></div>');
+    expect(result).to.equal('&lt;<span class="tag">div</span>&gt;\n&lt;/<span class="tag">div</span>&gt;\n');
+  });
+
+  it('Compound', async function () {
+    const result = prettyme.format('<div><input type="text" />This is a text.</div>');
+    expect(result).to.equal('&lt;<span class="tag">div</span>&gt;\n<span class="tab 1x"></tab>&lt;<span class="tag">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> /&gt;\n<span class="tab 1x"></tab><span class="text">This is a text.</span>\n&lt;/<span class="tag">div</span>&gt;\n');
+  });
+});

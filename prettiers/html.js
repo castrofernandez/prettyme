@@ -5,7 +5,8 @@ const htmlGrammar = require('../grammars/html');
 var prettier = (function() {
   var tab = 0;
 
-  function format(elements) {
+  function format(code) {
+    var elements = htmlGrammar.parse(code);
     var output = [], i;
     var length = elements.length;
 
@@ -34,16 +35,16 @@ var prettier = (function() {
 
   function formatOpenTag(output, element) {
     getTab(output);
-    getOpenTag(output, element, '>');
+    getOpenTag(output, element, '&gt;');
     tab++;
   }
 
   function formatCloseTag(output, element) {
     tab--;
     getTab(output);
-    output.push('</');
+    output.push('&lt;/');
     addClasses(output, element.tag, 'tag');
-    output.push('>');
+    output.push('&gt;');
   }
 
   function formatEmptyTag(output, element) {
