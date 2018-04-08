@@ -19,14 +19,23 @@
 
       .prettyme {
         padding: 5px 20px;
+        margin-bottom: 40px;
         background-color: #444;
         color: #aaa;
         font-size: 20px;
         position: relative;
       }
 
-      .prettyme::after {
+      .prettyme.html::after {
         content: 'html';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
+      }
+
+      .prettyme.css::after {
+        content: 'css';
         position: absolute;
         top: 20px;
         right: 20px;
@@ -37,7 +46,8 @@
         margin-left: 20px;
       }
 
-      .prettyme .tag {
+      .prettyme .tag,
+      .prettyme .property {
         color: #5882FA;
       }
 
@@ -45,7 +55,8 @@
         color: #fff;
       }
 
-      .prettyme .attribute {
+      .prettyme .attribute,
+      .prettyme .selector {
         color: #2ECCFA;
       }
 
@@ -57,11 +68,19 @@
 
   <body>
     <h1>prettyme</h1>
-    <div class="prettyme">
+    <div class="prettyme html">
       <div class="example">
         <input type="text" />
         Text
       </div>
+    </div>
+    <div class="prettyme css">
+      .example {
+        color: #fff;
+        margin: 10px 10px 0 0;
+        position: relative;
+        content: 'text';
+      }
     </div>
     <script>
       var module = {};
@@ -72,7 +91,19 @@
     <script>
       prettyme.init({
         parser: peg$parse,
-        prettier: htmlPrettier
+        prettier: htmlPrettier,
+        selector: '.prettyme.html'
+      });
+
+      prettyme.load();
+    </script>
+    <script src="../grammars/css.js"></script>
+    <script src="../prettiers/css.js"></script>
+    <script>
+      prettyme.init({
+        parser: peg$parse,
+        prettier: cssPrettier,
+        selector: '.prettyme.css'
       });
 
       prettyme.load();

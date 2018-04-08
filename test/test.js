@@ -5,6 +5,7 @@ const prettyme = require('../index');
 const htmlParse = require('../grammars/html');
 const cssParse = require('../grammars/css');
 const htmlPrettier = require('../prettiers/html');
+const cssPrettier = require('../prettiers/css');
 
 describe('prettyme: parsing HTML', function () {
   before(async function () {
@@ -159,5 +160,19 @@ describe('prettyme: parsing CSS', function () {
             { property: 'margin', value: '10px 0 0 0' }
         ] }
     ]);
+  });
+});
+
+describe('prettyme: formatting CSS', function () {
+  before(async function () {
+    prettyme.init({
+      parser: cssParse.parse,
+      prettier: cssPrettier
+    });
+  });
+  
+  it('Two rules', async function () {
+    const result = prettyme.format(' .test1  {   color:   red; } p {margin: 10px   0  0   0 ; }');
+    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>: {<p class="line"><span class="property">color</span>: <span class="value">red</span>;<p class="line">}</p><p class="line"><span class="selector">p</span>: {<p class="line"><span class="property">margin</span>: <span class="value">10px 0 0 0</span>;<p class="line">}</p>');
   });
 });
