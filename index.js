@@ -2,11 +2,11 @@
 
 // https://pegjs.org/documentation
 
-const htmlGrammar = require('./grammars/html');
+const htmlPrettier = require('./prettiers/html');
 
 var prettyme = (function() {
   return {
-    parse: htmlGrammar.parse
+    parse: htmlPrettier.parse
   };
 })();
 

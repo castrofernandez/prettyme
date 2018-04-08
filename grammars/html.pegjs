@@ -2,11 +2,11 @@ Content =
   (Tag / text)*
 
 Tag =
-  singleTag:SingleTag {
+  emptyTag:EmptyTag {
     return {
-      tag: singleTag.tag,
-      type: 'single',
-      attributes: singleTag.attributes
+      tag: emptyTag.tag,
+      type: 'empty',
+      attributes: emptyTag.attributes
     }  
   }
   / startTag:StartTag {
@@ -23,7 +23,7 @@ Tag =
     };
   }
 
-SingleTag = "<" whitespace* name:emptyTagName attributes:Attribute* whitespace* ">" {
+EmptyTag = "<" whitespace* name:emptyTagName attributes:Attribute* whitespace* ">" {
     return {
       tag: name,
       attributes: attributes

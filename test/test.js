@@ -3,7 +3,7 @@
 const {expect} = require('chai');
 const prettyme = require('../index');
 
-describe('prettyme', function () {
+describe('prettyme: parsing', function () {
   it('Nested', async function () {
     const result = prettyme.parse('<div></div>');
     expect(result).to.deep.equal([
@@ -12,40 +12,40 @@ describe('prettyme', function () {
     ]);
   });
 
-  it('Single', async function () {
+  it('Empty', async function () {
     const result = prettyme.parse('<input />');
-    expect(result).to.deep.equal([{ tag: 'input', type: 'single', attributes: [] }]);
+    expect(result).to.deep.equal([{ tag: 'input', type: 'empty', attributes: [] }]);
   });
 
-  it('Single without /', async function () {
+  it('Empty without /', async function () {
     const result = prettyme.parse('<input>');
-    expect(result).to.deep.equal([{ tag: 'input', type: 'single', attributes: [] }]);
+    expect(result).to.deep.equal([{ tag: 'input', type: 'empty', attributes: [] }]);
   });
 
-  it('Single with quoted attributes', async function () {
+  it('Empty with quoted attributes', async function () {
     const result = prettyme.parse('<input type="text" value="foo" />');
     expect(result).to.deep.equal([
-        { tag: 'input', type: 'single', attributes: [
+        { tag: 'input', type: 'empty', attributes: [
             { name: 'type', value: 'text' },
             { name: 'value', value: 'foo' }
         ] }
     ]);
   });
 
-  it('Single with unquoted attributes', async function () {
+  it('Empty with unquoted attributes', async function () {
     const result = prettyme.parse('<input type=checkbox checked>');
     expect(result).to.deep.equal([
-        { tag: 'input', type: 'single', attributes: [
+        { tag: 'input', type: 'empty', attributes: [
             { name: 'type', value: 'checkbox' },
             { name: 'checked', value: null }
         ] }
     ]);
   });
 
-  it('Single with unquoted attributes and trailing spaces', async function () {
+  it('Empty with unquoted attributes and trailing spaces', async function () {
     const result = prettyme.parse('<input type=checkbox checked  >');
     expect(result).to.deep.equal([
-        { tag: 'input', type: 'single', attributes: [
+        { tag: 'input', type: 'empty', attributes: [
             { name: 'type', value: 'checkbox' },
             { name: 'checked', value: null }
         ] }
@@ -63,7 +63,7 @@ describe('prettyme', function () {
     const result = prettyme.parse('<div><input type="text" />This is a text.</div>');
     expect(result).to.deep.equal([
         { tag: 'div', type: 'open', attributes: [] },
-        { tag: 'input', type: 'single', attributes: [
+        { tag: 'input', type: 'empty', attributes: [
             { name: 'type', value: 'text' }
         ] },
         { type: 'text', value: 'This is a text.' },

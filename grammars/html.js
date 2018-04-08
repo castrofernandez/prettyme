@@ -141,11 +141,11 @@ function peg$parse(input, options) {
       peg$startRuleFunctions = { Content: peg$parseContent },
       peg$startRuleFunction  = peg$parseContent,
 
-      peg$c0 = function(singleTag) {
+      peg$c0 = function(emptyTag) {
           return {
-            tag: singleTag.tag,
-            type: 'single',
-            attributes: singleTag.attributes
+            tag: emptyTag.tag,
+            type: 'empty',
+            attributes: emptyTag.attributes
           }  
         },
       peg$c1 = function(startTag) {
@@ -404,7 +404,7 @@ function peg$parse(input, options) {
     var s0, s1;
 
     s0 = peg$currPos;
-    s1 = peg$parseSingleTag();
+    s1 = peg$parseEmptyTag();
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
       s1 = peg$c0(s1);
@@ -432,7 +432,7 @@ function peg$parse(input, options) {
     return s0;
   }
 
-  function peg$parseSingleTag() {
+  function peg$parseEmptyTag() {
     var s0, s1, s2, s3, s4, s5, s6, s7;
 
     s0 = peg$currPos;
