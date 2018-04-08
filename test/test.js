@@ -81,6 +81,18 @@ describe('prettyme: parsing HTML', function () {
         { tag: 'div', type: 'close' }
     ]);
   });
+
+//   it('With comment', async function () {
+//     const result = prettyme.parse('<div><input type="text" /><!-- Comment --></div>');
+//     expect(result).to.deep.equal([
+//         { tag: 'div', type: 'open', attributes: [] },
+//         { tag: 'input', type: 'empty', attributes: [
+//             { name: 'type', value: 'text' }
+//         ] },
+//         { type: 'comment', value: 'Comment' },
+//         { tag: 'div', type: 'close' }
+//     ]);
+//   });
 });
 
 describe('prettyme: formatting HTML', function () {
@@ -173,6 +185,6 @@ describe('prettyme: formatting CSS', function () {
   
   it('Two rules', async function () {
     const result = prettyme.format(' .test1  {   color:   red; } p {margin: 10px   0  0   0 ; }');
-    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>: {<p class="line"><span class="property">color</span>: <span class="value">red</span>;<p class="line">}</p><p class="line"><span class="selector">p</span>: {<p class="line"><span class="property">margin</span>: <span class="value">10px 0 0 0</span>;<p class="line">}</p>');
+    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>: {<p class="line tab"><span class="property">color</span>: <span class="value">red</span>;<p class="line">}</p><p class="line"><span class="selector">p</span>: {<p class="line tab"><span class="property">margin</span>: <span class="value">10px 0 0 0</span>;<p class="line">}</p>');
   });
 });
