@@ -5,7 +5,7 @@ const prettyme = require('../index');
 const {parse} = require('../grammars/html');
 const htmlPrettier = require('../prettiers/html');
 
-describe('prettyme: parsing', function () {
+describe('prettyme: parsing HTML', function () {
   before(async function () {
     prettyme.init({
       parser: parse,
@@ -81,7 +81,7 @@ describe('prettyme: parsing', function () {
   });
 });
 
-describe('prettyme: formatting', function () {
+describe('prettyme: formatting HTML', function () {
   before(async function () {
     prettyme.init({
       parser: parse,
