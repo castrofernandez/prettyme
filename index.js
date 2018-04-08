@@ -2,25 +2,18 @@
 
 // https://pegjs.org/documentation
 
-const htmlPrettier = require('./prettiers/html');
-
 var prettyme = (function() {
-  var parser = htmlPrettier;
+  var parser = null;
+  var prettier = null;
   var selector = '.prettyme';
 
   function init(options) {
-    options = options || {};
-
-    if (options.parser) {
-      parser = options.parser;
-    }
-    
-    if (options.selector) {
-      selector = options.selector;
-    }
+    setOptions(options);
   }
 
-  function load() {
+  function load(options) {
+    setOptions(options);
+
     var previews = document.querySelectorAll(selector);
     var length = previews.length;
     var preview, i;
@@ -31,12 +24,45 @@ var prettyme = (function() {
     }
   }
 
-  function parse(code) {
+  function parse(code, options) {
+    setOptions(options);
+    checkParser(false);
+
     return parser.parse(code);
   }
 
-  function format(code) {
-    return parser.format(code);
+  function format(code, options) {
+    setOptions(options);
+    checkParser(true);
+    return prettier.format(parser, code);
+  }
+
+  function setOptions(options) {
+    if (! options) {
+      return;
+    }
+
+    if (options.parser) {
+      parser = options.parser;
+    }
+
+    if (options.prettier) {
+      prettier = options.prettier;
+    }
+    
+    if (options.selector) {
+      selector = options.selector;
+    }
+  }
+
+  function checkParser(checkPrettier) {
+    if (!parser) {
+      throw new Error('Parser has not been set.\nUse prettyme.init({ parser: <parserObj> });');
+    }
+
+    if (checkPrettier && !prettier) {
+      throw new Error('Prettier has not been set.\nUse prettyme.init({ prettier: <prettierObj> });');
+    }
   }
 
   return {

@@ -1,12 +1,10 @@
 'use strict';
 
-const htmlGrammar = require('../grammars/html');
-
 var prettier = (function() {
   var tab = 0;
 
-  function format(code) {
-    var elements = htmlGrammar.parse(code);
+  function format(parser, code) {
+    var elements = parser.parse(code);
     var output = [], i;
     var length = elements.length;
 
@@ -107,7 +105,6 @@ var prettier = (function() {
   }
 
   return {
-    parse: htmlGrammar.parse,
     format: format
   };
 })();

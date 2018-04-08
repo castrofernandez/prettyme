@@ -2,8 +2,17 @@
 
 const {expect} = require('chai');
 const prettyme = require('../index');
+const htmlGrammar = require('../grammars/html');
+const htmlPrettier = require('../prettiers/html');
 
 describe('prettyme: parsing', function () {
+  before(async function () {
+    prettyme.init({
+      parser: htmlGrammar,
+      prettier: htmlPrettier
+    });
+  });
+
   it('Nested', async function () {
     const result = prettyme.parse('<div></div>');
     expect(result).to.deep.equal([
@@ -73,6 +82,12 @@ describe('prettyme: parsing', function () {
 });
 
 describe('prettyme: formatting', function () {
+  before(async function () {
+    prettyme.init({
+      prettier: htmlPrettier
+    });
+  });
+
   it('Nested', async function () {
     const result = prettyme.format('<div></div>');
     expect(result).to.equal('&lt;<span class="tag">div</span>&gt;\n&lt;/<span class="tag">div</span>&gt;\n');
