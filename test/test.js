@@ -82,17 +82,17 @@ describe('prettyme: parsing HTML', function () {
     ]);
   });
 
-//   it('With comment', async function () {
-//     const result = prettyme.parse('<div><input type="text" /><!-- Comment --></div>');
-//     expect(result).to.deep.equal([
-//         { tag: 'div', type: 'open', attributes: [] },
-//         { tag: 'input', type: 'empty', attributes: [
-//             { name: 'type', value: 'text' }
-//         ] },
-//         { type: 'comment', value: 'Comment' },
-//         { tag: 'div', type: 'close' }
-//     ]);
-//   });
+  it('With comment', async function () {
+    const result = prettyme.parse('<div><input type="text" /><!-- Comment --></div>');
+    expect(result).to.deep.equal([
+        { tag: 'div', type: 'open', attributes: [] },
+        { tag: 'input', type: 'empty', attributes: [
+            { name: 'type', value: 'text' }
+        ] },
+        { type: 'comment', value: 'Comment' },
+        { tag: 'div', type: 'close' }
+    ]);
+  });
 });
 
 describe('prettyme: formatting HTML', function () {

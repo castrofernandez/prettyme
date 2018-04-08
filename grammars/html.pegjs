@@ -1,5 +1,5 @@
 Content =
-  (Tag / text)*
+  (Tag / Text / Comment)*
 
 Tag =
   emptyTag:EmptyTag {
@@ -56,6 +56,26 @@ AttributeValue = whitespace* "=" whitespace* '"' value:quotedText '"' { return v
 CloseTag =
   "</" whitespace* name:tagName whitespace* ">" { return name; }
 
+Text = chars:[^<]+ {
+  var value = chars.join('');
+
+  if (value.trim() === '') {
+    return null;
+  }
+
+  return {
+    type: 'text',
+    value: value
+  };
+}
+
+Comment = "<!--" comment:[^(?!-->)]* "-->" {
+  return {
+    type: 'comment',
+    value: comment.join('').trim()
+  };
+}
+
 emptyTagName = "area"
   / "base"
   / "br"
@@ -76,17 +96,4 @@ whitespace = [ \t\r\n]
 
 tagName = chars:[a-zA-Z\-]+ { return chars.join(''); }
 
-text = chars:[^<]+  {
-  var value = chars.join('');
-
-  if (value.trim() === '') {
-    return null;
-  }
-
-  return {
-    type: 'text',
-    value: value
-  };
-}
-
-quotedText = chars:[^\"]*  { return chars.join(''); }
+quotedText = chars:[^\"]* { return chars.join(''); }

@@ -32,6 +32,8 @@ var htmlPrettier = (function() {
         return formatEmptyTag(output, element);
       case 'text':
         return formatText(output, element);
+      case 'comment':
+        return formatComment(output, element);
     }
 
     return null;
@@ -61,6 +63,11 @@ var htmlPrettier = (function() {
     addClasses(output, element.value, 'text');
   }
 
+  function formatComment(output, element) {
+    getTab(output);
+    addClasses(output, ['&lt;!-- ', element.value, ' --&gt;'], 'comment');
+  }
+
   function getOpenTag(output, element, closing) {
     output.push('&lt;');
     addClasses(output, element.tag, 'tag');
@@ -87,7 +94,7 @@ var htmlPrettier = (function() {
 
       if (value) {
         output.push('=');
-        addClasses(output, '"' + value + '"', 'value');
+        addClasses(output, ['"', value, '"'], 'value');
       }
     }
   }
@@ -107,10 +114,20 @@ var htmlPrettier = (function() {
   }
 
   function addClasses(output, text, classes) {
+    if (!text instanceof Array) {
+      text = [text];
+    }
+
+    var length = text.length, i;
+
     output.push('<span class="');
     output.push(classes);
     output.push('">');
-    output.push(text);
+
+    for (i = 0; i < length; i++) {
+      output.push(text[i]);
+    }
+
     output.push('</span>');
   }
 
