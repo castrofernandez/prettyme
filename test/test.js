@@ -129,4 +129,35 @@ describe('prettyme: parsing CSS', function () {
         { selector: '.test1 > p', declarations: [] }
     ]);
   });
+
+  it('Rule with one declaration', async function () {
+    const result = prettyme.parse('.test1  {   color:   red; }');
+    expect(result).to.deep.equal([
+        { selector: '.test1', declarations: [
+            { property: 'color', value: 'red' }
+        ] }
+    ]);
+  });
+
+  it('Rule with two declarations', async function () {
+    const result = prettyme.parse(' .test1  {   color:   red; margin: 10px   0  0   0 ; }');
+    expect(result).to.deep.equal([
+        { selector: '.test1', declarations: [
+            { property: 'color', value: 'red' },
+            { property: 'margin', value: '10px 0 0 0' }
+        ] }
+    ]);
+  });
+
+  it('Two rules', async function () {
+    const result = prettyme.parse(' .test1  {   color:   red; } p {margin: 10px   0  0   0 ; }');
+    expect(result).to.deep.equal([
+        { selector: '.test1', declarations: [
+            { property: 'color', value: 'red' }
+        ]},
+        { selector: 'p', declarations: [
+            { property: 'margin', value: '10px 0 0 0' }
+        ] }
+    ]);
+  });
 });
