@@ -2,11 +2,11 @@
 
 // https://pegjs.org/documentation
 
-const markupGrammar = require('./grammars/markup');
+const htmlGrammar = require('./grammars/html');
 
 var prettyme = (function() {
   return {
-    parse: markupGrammar.parse
+    parse: htmlGrammar.parse
   };
 })();
 
