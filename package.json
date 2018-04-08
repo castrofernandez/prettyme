@@ -1,0 +1,30 @@
+{
+  "name": "prettyme",
+  "version": "1.0.0",
+  "description": "A tiny prettifier",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/castrofernandez/prettyme.git"
+  },
+  "author": "Juan Castro Fernández (https://juancastro.es)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/castrofernandez/prettyme/issues"
+  },
+  "homepage": "https://github.com/castrofernandez/prettyme#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^5.0.5",
+    "pegjs": "^0.10.0"
+  }
+}
