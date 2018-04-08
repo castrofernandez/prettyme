@@ -2,13 +2,14 @@
 
 const {expect} = require('chai');
 const prettyme = require('../index');
-const {parse} = require('../grammars/html');
+const htmlParse = require('../grammars/html');
+const cssParse = require('../grammars/css');
 const htmlPrettier = require('../prettiers/html');
 
 describe('prettyme: parsing HTML', function () {
   before(async function () {
     prettyme.init({
-      parser: parse,
+      parser: htmlParse.parse,
       prettier: htmlPrettier
     });
   });
@@ -84,7 +85,7 @@ describe('prettyme: parsing HTML', function () {
 describe('prettyme: formatting HTML', function () {
   before(async function () {
     prettyme.init({
-      parser: parse,
+      parser: htmlParse.parse,
       prettier: htmlPrettier
     });
   });
@@ -97,5 +98,35 @@ describe('prettyme: formatting HTML', function () {
   it('Compound', async function () {
     const result = prettyme.format('<div><input type="text" />This is a text.</div>');
     expect(result).to.equal('<p class="line">&lt;<span class="tag">div</span>&gt;</p><p class="line tab 1x">&lt;<span class="tag">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> /&gt;</p><p class="line tab 1x"><span class="text">This is a text.</span></p><p class="line">&lt;/<span class="tag">div</span>&gt;</p>');
+  });
+});
+
+describe('prettyme: parsing CSS', function () {
+  before(async function () {
+    prettyme.init({
+      parser: cssParse.parse,
+      prettier: htmlPrettier
+    });
+  });
+
+  it('Empty rule with class', async function () {
+    const result = prettyme.parse('.test1 {}');
+    expect(result).to.deep.equal([
+        { selector: '.test1', declarations: [] }
+    ]);
+  });
+
+  it('Empty rule with id', async function () {
+    const result = prettyme.parse('#test1 {}');
+    expect(result).to.deep.equal([
+        { selector: '#test1', declarations: [] }
+    ]);
+  });
+
+  it('Empty rule with hierarchy', async function () {
+    const result = prettyme.parse('.test1  >  p  {}');
+    expect(result).to.deep.equal([
+        { selector: '.test1 > p', declarations: [] }
+    ]);
   });
 });
