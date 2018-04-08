@@ -173,6 +173,18 @@ describe('prettyme: parsing CSS', function () {
         ] }
     ]);
   });
+
+  it('With comments', async function () {
+    const result = prettyme.parse('/* c1 */ .test1  { /*c2*/  color: /* c3 */ /* c4 */ red; } p {margin: 10px   0  0   0 ; /* c5 */ }');
+    expect(result).to.deep.equal([
+        { selector: '.test1', declarations: [
+            { property: 'color', value: 'red', comments: [ null, null,['c3', 'c4'], null, null ] }
+        ], comments: [ ['c1'], null, ['c2'], null ]},
+        { selector: 'p', declarations: [
+            { property: 'margin', value: '10px 0 0 0', comments: [null, null, null, null, ['c5']] }
+        ] }
+    ]);
+  });
 });
 
 describe('prettyme: formatting CSS', function () {
