@@ -76,10 +76,16 @@ whitespace = [ \t\r\n]
 
 tagName = chars:[a-zA-Z\-]+ { return chars.join(''); }
 
-text = chars:[^<]+  { 
+text = chars:[^<]+  {
+  var value = chars.join('');
+
+  if (value.trim() === '') {
+    return null;
+  }
+
   return {
     type: 'text',
-    value: chars.join('')
+    value: value
   };
 }
 

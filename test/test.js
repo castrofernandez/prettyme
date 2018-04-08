@@ -2,13 +2,13 @@
 
 const {expect} = require('chai');
 const prettyme = require('../index');
-const htmlGrammar = require('../grammars/html');
+const {parse} = require('../grammars/html');
 const htmlPrettier = require('../prettiers/html');
 
 describe('prettyme: parsing', function () {
   before(async function () {
     prettyme.init({
-      parser: htmlGrammar,
+      parser: parse,
       prettier: htmlPrettier
     });
   });
@@ -84,6 +84,7 @@ describe('prettyme: parsing', function () {
 describe('prettyme: formatting', function () {
   before(async function () {
     prettyme.init({
+      parser: parse,
       prettier: htmlPrettier
     });
   });
@@ -95,6 +96,6 @@ describe('prettyme: formatting', function () {
 
   it('Compound', async function () {
     const result = prettyme.format('<div><input type="text" />This is a text.</div>');
-    expect(result).to.equal('&lt;<span class="tag">div</span>&gt;\n<span class="tab 1x"></tab>&lt;<span class="tag">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> /&gt;\n<span class="tab 1x"></tab><span class="text">This is a text.</span>\n&lt;/<span class="tag">div</span>&gt;\n');
+    expect(result).to.equal('&lt;<span class="tag">div</span>&gt;\n<span class="tab 1x"></span>&lt;<span class="tag">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> /&gt;\n<span class="tab 1x"></span><span class="text">This is a text.</span>\n&lt;/<span class="tag">div</span>&gt;\n');
   });
 });

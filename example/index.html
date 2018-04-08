@@ -3,23 +3,75 @@
   <head>
     <meta charset="UTF-8">
     <title>prettyme</title>
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <style>
-    
+      body {
+        font-family: 'Inconsolata', monospace;
+        width: 800px;
+        margin: 0 auto;
+        padding: 30px 0;
+        color: #444;
+      }
+
+      h1 {
+        margin-bottom: 40px;
+      }
+
+      .prettyme {
+        padding: 5px 20px;
+        background-color: #444;
+        color: #aaa;
+        font-size: 20px;
+        position: relative;
+      }
+
+      .prettyme::after {
+        content: 'html';
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
+      } 
+
+      .prettyme .tab {
+        margin-left: 20px;
+      }
+
+      .prettyme .tag {
+        color: #5882FA;
+      }
+
+      .prettyme .text {
+        color: #fff;
+      }
+
+      .prettyme .attribute {
+        color: #2ECCFA;
+      }
+
+      .prettyme .value {
+        color: #FFBF00;
+      }
     </style>
   </head>
 
   <body>
     <h1>prettyme</h1>
-    <pre class="prettyme">
+    <div class="prettyme">
       <div class="example">
         <input type="text" />
         Text
       </div>
-    </pre>
-    <script src="../index.js"></script>
+    </div>
+    <script>
+      var module = {};
+    </script>
+    <script src="../grammars/html.js"></script>
+    <script src="../prettiers/html.js"></script>
     <script src="../index.js"></script>
     <script>
       prettyme.init({
+        parser: peg$parse,
         prettier: htmlPrettier
       });
 

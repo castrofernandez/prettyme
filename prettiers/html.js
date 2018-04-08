@@ -1,16 +1,22 @@
 'use strict';
 
-var prettier = (function() {
+var htmlPrettier = (function() {
   var tab = 0;
 
   function format(parser, code) {
-    var elements = parser.parse(code);
-    var output = [], i;
+    var elements = parser(code.trim());
+    var output = [], i, element;
     var length = elements.length;
 
     for (i = 0; i < length; i++) {
-      formatElement(output, elements[i]);
-      output.push('\n');
+      element = elements[i];
+
+      if (!element) {
+        continue;
+      }
+
+      formatElement(output, element);
+      output.push('</p>');
     }
 
     return output.join('');
@@ -87,11 +93,15 @@ var prettier = (function() {
   }
 
   function getTab(output) {
+    output.push('<p class="line');
+
     if (tab > 0) {
-      output.push('<span class="tab ');
+      output.push(' tab ');
       output.push(tab);
-      output.push('x"></tab>');
+      output.push('x');
     }
+
+    output.push('">');
 
     return output;
   }
@@ -110,5 +120,5 @@ var prettier = (function() {
 })();
 
 if (typeof module !== 'undefined') {
-  module.exports = prettier;
+  module.exports = htmlPrettier;
 }

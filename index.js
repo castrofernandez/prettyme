@@ -28,7 +28,7 @@ var prettyme = (function() {
     setOptions(options);
     checkParser(false);
 
-    return parser.parse(code);
+    return parser(code);
   }
 
   function format(code, options) {

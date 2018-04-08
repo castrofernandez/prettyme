@@ -236,10 +236,16 @@ function peg$parse(input, options) {
       peg$c55 = function(chars) { return chars.join(''); },
       peg$c56 = /^[^<]/,
       peg$c57 = peg$classExpectation(["<"], true, false),
-      peg$c58 = function(chars) { 
+      peg$c58 = function(chars) {
+        var value = chars.join('');
+
+        if (value.trim() === '') {
+          return null;
+        }
+
         return {
           type: 'text',
-          value: chars.join('')
+          value: value
         };
       },
       peg$c59 = /^[^"]/,
