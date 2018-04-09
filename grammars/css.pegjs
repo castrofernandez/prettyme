@@ -1,21 +1,19 @@
 {
   function compactComments(comments) {
-    var result = [];
+    var result = {};
     var length = comments.length;
-    var i, comment;
+    var i, comment, count = 0;
 
     for (i = 0; i < length; i++) {
       comment = comments[i];
 
       if (comment) {
-        result.push({
-          pos: i + 1,
-          text: comment
-        });
+        result[(i + 1)] = comment;
+        count++;
       }
     }
 
-    return result.length > 0 ? result : null;
+    return count > 0 ? result : null;
   }
 }
 
