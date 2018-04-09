@@ -2,11 +2,14 @@
 
 var htmlPrettier = (function() {
   var tab = 0;
+  var output;
 
   function format(parser, code) {
     var elements = parser(code.trim());
-    var output = [], i, element;
+    var i, element;
     var length = elements.length;
+
+    output = [];
 
     for (i = 0; i < length; i++) {
       element = elements[i];
@@ -15,67 +18,67 @@ var htmlPrettier = (function() {
         continue;
       }
 
-      formatElement(output, element);
+      formatElement(element);
       output.push('</p>');
     }
 
     return output.join('');
   }
 
-  function formatElement(output, element) {
+  function formatElement(element) {
     switch(element.type) {
       case 'open':
-        return formatOpenTag(output, element);
+        return formatOpenTag(element);
       case 'close':
-        return formatCloseTag(output, element);
+        return formatCloseTag(element);
       case 'empty':
-        return formatEmptyTag(output, element);
+        return formatEmptyTag(element);
       case 'text':
-        return formatText(output, element);
+        return formatText(element);
       case 'comment':
-        return formatComment(output, element);
+        return formatComment(element);
     }
 
     return null;
   }
 
-  function formatOpenTag(output, element) {
-    getTab(output);
-    getOpenTag(output, element, '&gt;');
+  function formatOpenTag(element) {
+    getTab();
+    getOpenTag(element, '&gt;');
     tab++;
   }
 
-  function formatCloseTag(output, element) {
+  function formatCloseTag(element) {
     tab--;
-    getTab(output);
+    getTab();
     output.push('&lt;/');
-    addClasses(output, element.tag, 'tag');
+    addClasses(element.tag, 'tag');
     output.push('&gt;');
   }
 
-  function formatEmptyTag(output, element) {
-    getTab(output);
-    getOpenTag(output, element, ' /&gt;');
+  function formatEmptyTag(element) {
+    getTab();
+    getOpenTag(element, ' /&gt;');
   }
 
-  function formatText(output, element) {
-    getTab(output);
-    addClasses(output, element.value, 'text');
+  function formatText(element) {
+    getTab();
+    addClasses(element.value, 'text');
   }
 
-  function formatComment(output, element) {
-    getTab(output);
-    addClasses(output, ['&lt;!-- ', element.value, ' --&gt;'], 'comment');
+  function formatComment(element) {
+    getTab();
+    addClasses(['&lt;!-- ', element.value, ' --&gt;'], 'comment');
   }
 
-  function getOpenTag(output, element, closing) {
+  function getOpenTag(element, closing) {
     output.push('&lt;');
-    addClasses(output, element.tag, 'tag');
-    getAttributes(output, element);
+    addClasses(element.tag, 'tag');
+    getAttributes(element);
     output.push(closing);
   }
 
-  function getAttributes(output, element) {
+  function getAttributes(element) {
     var attributes = element.attributes;
     var length = attributes.length;
     var attribute, name, value, i;
@@ -90,16 +93,16 @@ var htmlPrettier = (function() {
       value = attribute.value;
 
       output.push(' ');
-      addClasses(output, name, 'attribute');
+      addClasses(name, 'attribute');
 
       if (value) {
         output.push('=');
-        addClasses(output, ['"', value, '"'], 'value');
+        addClasses(['"', value, '"'], 'value');
       }
     }
   }
 
-  function getTab(output) {
+  function getTab() {
     output.push('<p class="line');
 
     if (tab > 0) {
@@ -113,7 +116,7 @@ var htmlPrettier = (function() {
     return output;
   }
 
-  function addClasses(output, text, classes) {
+  function addClasses(text, classes) {
     if (!text instanceof Array) {
       text = [text];
     }

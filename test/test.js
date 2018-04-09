@@ -267,6 +267,6 @@ describe('prettyme: formatting CSS', function () {
   
   it('Two rules', async function () {
     const result = prettyme.format(' .test1  {   color:   red; } p {margin: 10px   0  0   0 ; }');
-    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>{</p><p class="line tab"><span class="property">color</span>: <span class="value word">red</span>;</p><p class="line">}</p><p class="line"><span class="selector">p</span>{</p><p class="line tab"><span class="property">margin</span>: <span class="value unit">10px</span><span class="value number">0</span><span class="value number">0</span><span class="value number">0</span>;</p><p class="line">}</p>');
+    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>{</p><p class="line tab"><span class="property">color</span>:<span class="value word p0 first last">red</span>;</p><p class="line">}</p><p class="line"><span class="selector">p</span>{</p><p class="line tab"><span class="property">margin</span>:<span class="value unit p0 first">10px</span><span class="value number p1">0</span><span class="value number p2">0</span><span class="value number p3 last">0</span>;</p><p class="line">}</p>');
   });
 });
