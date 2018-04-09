@@ -15,6 +15,19 @@
 
     return count > 0 ? result : null;
   }
+
+  function cleanValues(values) {
+    var result = [];
+    var length = values.length, i;
+
+    for (i = 0; i < length; i++) {
+      if (values[i]) {
+        result.push(values[i]);
+      }
+    }
+
+    return result;
+  }
 }
 
 Content =
@@ -52,7 +65,7 @@ Declaration = w1:WhitespaceOrComment property:Property w2:WhitespaceOrComment ":
 
 Property = chars:[a-zA-Z\-]+ { return chars.join(''); }
 
-Value = chars:[^;(?!\*/)]* { return chars.join('').replace(/\s\s+/g, ' ').trim(); }
+Value = values:(number / colour / function / word / string / whitespace)* { return cleanValues(values); }
 
 WhitespaceOrComment = comments:(whitespace / Comment)* {
   var result = [];
@@ -72,3 +85,61 @@ Comment = "/*" comment:[^(?!\*/)]* "*/" {
 }
 
 whitespace = [ \t\r\n] { return null; }
+
+number = digits:digits unit:unit { 
+  return {
+    type: 'unit',
+    value: digits.join('') + unit
+  }
+}
+/ digits:digits { 
+  return {
+    type: 'number',
+    value: digits.join('')
+  }
+}
+
+digits = [0-9\.]+
+
+unit = 'em' / 'ex' / '%' / 'px' / 'cm' / 'mm' / 'in' / 'pt' / 'pc' / 'ch' / 'rem' / 'vh' / 'vw' / 'vmin' / 'vmax'
+
+colour = '#' hex:([0-9a-fA-F]*) { 
+  return {
+    type: 'color',
+    value: '#' + hex.join('')
+  };
+}
+
+function = name:[a-zA-Z_]+ whitespace* '(' params:params? ')' {
+  return {
+    type: 'function',
+    name: name.join(''),
+    params: params
+  };
+}
+
+params = value:Value moreParams:moreParams* {
+  return [value].concat(moreParams);
+}
+
+moreParams = ',' value:Value { return value; }
+
+word = chars:[a-zA-Z]+ { 
+  return {
+    type: 'word',
+    value: chars.join('')
+  };
+}
+
+string = '\'' chars:[^\']* '\'' { 
+  return {
+    type: 'string',
+    value: chars.join('')
+  };
+}
+/ '"' chars:[^\"]* '"' { 
+  return {
+    type: 'string',
+    value: chars.join('')
+  };
+}
