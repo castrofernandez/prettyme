@@ -158,8 +158,8 @@ function peg$parse(input, options) {
 
         return result;
       },
-      peg$c5 = /^[^{]/,
-      peg$c6 = peg$classExpectation(["{"], true, false),
+      peg$c5 = /^[^{(?!*\/)]/,
+      peg$c6 = peg$classExpectation(["{", "(", "?", "!", "*", "/", ")"], true, false),
       peg$c7 = function(chars) { return chars.join('').replace(/\s\s+/g, ' ').trim(); },
       peg$c8 = ":",
       peg$c9 = peg$literalExpectation(":", false),
@@ -181,8 +181,8 @@ function peg$parse(input, options) {
       peg$c13 = /^[a-zA-Z\-]/,
       peg$c14 = peg$classExpectation([["a", "z"], ["A", "Z"], "-"], false, false),
       peg$c15 = function(chars) { return chars.join(''); },
-      peg$c16 = /^[^;]/,
-      peg$c17 = peg$classExpectation([";"], true, false),
+      peg$c16 = /^[^;(?!*\/)]/,
+      peg$c17 = peg$classExpectation([";", "(", "?", "!", "*", "/", ")"], true, false),
       peg$c18 = function(comments) {
         var result = [];
         var length = comments.length, i;

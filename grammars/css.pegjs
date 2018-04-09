@@ -36,7 +36,7 @@ Rule = w1:WhitespaceOrComment selector:Selector w2:WhitespaceOrComment "{" w3:Wh
   return result;
 }
 
-Selector = chars:[^\{]*  { return chars.join('').replace(/\s\s+/g, ' ').trim(); }
+Selector = chars:[^\{(?!\*/)]*  { return chars.join('').replace(/\s\s+/g, ' ').trim(); }
 
 Declaration = w1:WhitespaceOrComment property:Property w2:WhitespaceOrComment ":" w3:WhitespaceOrComment value:Value w4:WhitespaceOrComment ";" w5:WhitespaceOrComment {
   var comments = compactComments([w1, w2, w3, w4, w5]);
@@ -54,7 +54,7 @@ Declaration = w1:WhitespaceOrComment property:Property w2:WhitespaceOrComment ":
 
 Property = chars:[a-zA-Z\-]+ { return chars.join(''); }
 
-Value = chars:[^;]* { return chars.join('').replace(/\s\s+/g, ' ').trim(); }
+Value = chars:[^;(?!\*/)]* { return chars.join('').replace(/\s\s+/g, ' ').trim(); }
 
 WhitespaceOrComment = comments:(whitespace / Comment)* {
   var result = [];
