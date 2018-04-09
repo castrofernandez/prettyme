@@ -68,14 +68,22 @@
         color: #FFBF00;
       }
 
-      .prettyme .value:not(:last-of-type) {
-        margin-right: 10px;
+      .prettyme .value:not(.param) {
+        margin-left: 10px;
+      }
+
+      .prettyme .param:not(.first) {
+        margin-left: 10px;
       }
 
       .prettyme.css .comment {
-        margin: 0 10px;
+        margin-left: 10px;
         color: #01DFA5;
       }
+
+      .prettyme .selector + .comment {
+        margin: 0 10px 0 0;
+      } 
     </style>
   </head>
 

@@ -61,10 +61,10 @@ var cssPrettier = (function() {
       formatComments(output, comments.p1);
       addClasses(output, property, 'property');
       formatComments(output, comments.p2);
-      output.push(': ');
+      output.push(':');
       formatComments(output, comments.p3);
       
-      formatValue(output, value);
+      formatValue(output, value, [], true);
 
       formatComments(output, comments.p4);
       output.push(';');
@@ -73,28 +73,34 @@ var cssPrettier = (function() {
     }
   }
 
-  function formatValue(output, values) {
+  function formatValue(output, values, classes, addPositionClasses) {
     var length = values.length, value, i;
 
     for (i = 0; i < length; i++) {
-      value = getValue(output, values[i]);
+      value = getValue(output, values[i], addPositionClasses ? getParamClass(classes, i, length) : classes);
     }
   }
 
-  function getValue(output, value) {
+  function getValue(output, value, classes) {
+    classes = classes || '';
+
     switch(value.type) {
       case 'function':
-        addClasses(output, value.name, 'value function');
+        addClasses(output, value.name, mergeClasses(['value function'], classes));
         output.push('(');
         getFunctionParams(output, value.params);
         output.push(')');
         break;
       case 'comment':
-        addClasses(output, ['/* ', value.value, ' */'], 'value comment');
+        addClasses(output, ['/* ', value.value, ' */'], mergeClasses(['value comment'], classes));
         break
       default:
-        addClasses(output, value.value, 'value ' + value.type);
+        addClasses(output, value.value, mergeClasses(['value',  value.type], classes));
     }
+  }
+
+  function mergeClasses(a, b) {
+    return a.concat(b).join(' ').trim();
   }
 
   function getFunctionParams(output, params) {
@@ -102,12 +108,28 @@ var cssPrettier = (function() {
 
     for (i = 0; i < length; i++) {
       param = params[i];
-      formatValue(output, param);
+      formatValue(output, param, getParamClass(['param'], i, length), false);
 
       if (i < length - 1) {
         output.push(',');
       }
     }
+  }
+
+  function getParamClass(classes, pos, length) {
+    classes = classes || [];
+
+    if (pos === 0) {
+      classes.push('first');
+    }
+
+    if (pos === length - 1) {
+      classes.push('last');
+    }
+
+    classes.push('p' + pos);
+
+    return classes;
   }
 
   function formatClosing(output) {
