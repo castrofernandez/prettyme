@@ -23,6 +23,7 @@
         background-color: #444;
         color: #aaa;
         font-size: 20px;
+        line-height: 20px;
         position: relative;
       }
 
@@ -81,9 +82,43 @@
         color: #01DFA5;
       }
 
+      .prettyme .string {
+        color: #FFBF00;
+      }
+
+      .prettyme .word {
+        color: #F781F3;
+      }
+
+      .prettyme .color {
+        color: #9F81F7;
+      }
+
+      .prettyme .function {
+        color: #F3F781;
+      }
+
+      .prettyme .number {
+        color: #BFFF00;
+      }
+
+      .prettyme .unit {
+        color: #58D3F7;
+      }
+
       .prettyme .selector + .comment {
         margin: 0 10px 0 0;
-      } 
+      }
+
+      .prettyme .color-preview {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-left: 10px;
+        position: relative;
+        top: 3px;
+      }
     </style>
   </head>
 
@@ -112,6 +147,8 @@
         margin: 10px 10px /* cv */ 0 0;
         position: relative;
         content: 'text';
+        background-image: url('../image.png');
+        background-color: hsl(120, 100%, 75%);
       /* c9 */ } /* c10 */
     </div>
     <script>

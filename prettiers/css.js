@@ -94,9 +94,54 @@ var cssPrettier = (function() {
       case 'comment':
         addClasses(output, ['/* ', value.value, ' */'], mergeClasses(['value comment'], classes));
         break
+      case 'string':
+        addClasses(output, ['\'', value.value, '\''], mergeClasses(['value string'], classes));
+        break
       default:
         addClasses(output, value.value, mergeClasses(['value',  value.type], classes));
     }
+
+    addColourPreview(output, value);
+  }
+
+  function addColourPreview(output, value) {
+    var colour = getColour(value);
+
+    if (colour) {
+      output.push(['<span class="color-preview" style="background-color:', colour, ';"></span>'].join(''));
+    }
+  }
+
+  function getColour(value) {
+    var type = value.type;
+
+    if (type === 'color') {
+      return value.value;
+    }
+
+    if (type !== 'function' || ['rgb', 'rgba', 'hsl', 'hsla'].indexOf(value.name) === -1) {
+      return null;
+    }
+
+    var result = [value.name, '('], processedParams = [];
+    var params = value.params, param;
+    var length = params.length, i, j;
+
+    for (i = 0; i < length; i++) {
+      param = params[i];
+
+      for (j = 0; j < param.length; j++) {
+        if (param[j].type === 'comment') {
+          continue;
+        }
+
+        processedParams.push(param[j].value);
+      }
+    }
+
+    result.push(processedParams.join(','), ')');
+
+    return result.join('');
   }
 
   function mergeClasses(a, b) {
