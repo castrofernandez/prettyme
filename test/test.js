@@ -224,12 +224,13 @@ describe('prettyme: parsing CSS', function () {
   });
 
   it('With comments 2', async function () {
-    const result = prettyme.parse('/* Comment */ .example { color: #fff; margin: 10px 10px 0 0; position: relative; content: \'text\'; } /* c1 */ .commented /* c2 */ { /* c3 */ /* c4 */ color /* c5 */ : /* c6 */ #fff /* c7 */ ; /* c8 */ margin: 10px 10px 0 0; position: relative; content: \'text\'; /* c9 */ } /* c10 */');
+    const result = prettyme.parse('/* Comment */ .example { color: #fff; margin: 10px /* c */ 10px 0 0; position: relative; content: \'text\'; } /* c1 */ .commented /* c2 */ { /* c3 */ /* c4 */ color /* c5 */ : /* c6 */ #fff /* c7 */ ; /* c8 */ margin: 10px 10px 0 0; position: relative; content: \'text\'; /* c9 */ } /* c10 */');
     expect(result).to.deep.equal([
         { "comments":{"p1":["Comment"],"p5":["c1"]}, "declarations": [
             { property: 'color', value: [{ type: 'color', value: '#fff' }] },
             { property: 'margin', value: [
                 { type: 'unit', value: '10px' },
+                { type: 'comment', value: 'c' },
                 { type: 'unit', value: '10px' },
                 { type: 'number', value: '0' },
                 { type: 'number', value: '0' }
@@ -238,8 +239,11 @@ describe('prettyme: parsing CSS', function () {
             { property: 'content', value: [{ type: 'string', value: 'text' }] }
             ], "selector":".example"},
         { "comments":{"p2":["c2"],"p3":["c3","c4"],"p5":["c10"]}, "declarations": [
-            {"comments":{"p2":["c5"],"p3":["c6"],"p4":["c7"],"p5":["c8"]},
-            property: 'color', value: [{ type: 'color', value: '#fff' }]},
+            {"comments":{"p2":["c5"],"p3":["c6"],"p5":["c8"]},
+            property: 'color', value: [
+                { type: 'color', value: '#fff' },
+                { type: 'comment', value: 'c7' }
+            ]},
             { property: 'margin', value: [
                 { type: 'unit', value: '10px' },
                 { type: 'unit', value: '10px' },
@@ -253,16 +257,16 @@ describe('prettyme: parsing CSS', function () {
   });
 });
 
-// describe('prettyme: formatting CSS', function () {
-//   before(async function () {
-//     prettyme.init({
-//       parser: cssParse.parse,
-//       prettier: cssPrettier
-//     });
-//   });
+describe('prettyme: formatting CSS', function () {
+  before(async function () {
+    prettyme.init({
+      parser: cssParse.parse,
+      prettier: cssPrettier
+    });
+  });
   
-//   it('Two rules', async function () {
-//     const result = prettyme.format(' .test1  {   color:   red; } p {margin: 10px   0  0   0 ; }');
-//     expect(result).to.equal('<p class="line"><span class="selector">.test1</span>{</p><p class="line tab"><span class="property">color</span>: <span class="value">red</span>;</p><p class="line">}</p><p class="line"><span class="selector">p</span>{</p><p class="line tab"><span class="property">margin</span>: <span class="value">10px 0 0 0</span>;</p><p class="line">}</p>');
-//   });
-// });
+  it('Two rules', async function () {
+    const result = prettyme.format(' .test1  {   color:   red; } p {margin: 10px   0  0   0 ; }');
+    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>{</p><p class="line tab"><span class="property">color</span>: <span class="value word">red</span>;</p><p class="line">}</p><p class="line"><span class="selector">p</span>{</p><p class="line tab"><span class="property">margin</span>: <span class="value unit">10px</span><span class="value number">0</span><span class="value number">0</span><span class="value number">0</span>;</p><p class="line">}</p>');
+  });
+});

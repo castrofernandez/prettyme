@@ -63,11 +63,50 @@ var cssPrettier = (function() {
       formatComments(output, comments.p2);
       output.push(': ');
       formatComments(output, comments.p3);
-      addClasses(output, value, 'value');
+      
+      formatValue(output, value);
+
       formatComments(output, comments.p4);
       output.push(';');
       formatComments(output, comments.p5);
       output.push('</p>');
+    }
+  }
+
+  function formatValue(output, values) {
+    var length = values.length, value, i;
+
+    for (i = 0; i < length; i++) {
+      value = getValue(output, values[i]);
+    }
+  }
+
+  function getValue(output, value) {
+    switch(value.type) {
+      case 'function':
+        addClasses(output, value.name, 'value function');
+        output.push('(');
+        getFunctionParams(output, value.params);
+        output.push(')');
+        break;
+      case 'comment':
+        addClasses(output, ['/* ', value.value, ' */'], 'value comment');
+        break
+      default:
+        addClasses(output, value.value, 'value ' + value.type);
+    }
+  }
+
+  function getFunctionParams(output, params) {
+    var length = params.length, i, param;
+
+    for (i = 0; i < length; i++) {
+      param = params[i];
+      formatValue(output, param);
+
+      if (i < length - 1) {
+        output.push(',');
+      }
     }
   }
 
@@ -103,7 +142,7 @@ var cssPrettier = (function() {
   }
 
   function addClasses(output, text, classes) {
-    if (!text instanceof Array) {
+    if (!(text instanceof Array)) {
       text = [text];
     }
 

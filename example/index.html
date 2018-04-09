@@ -68,6 +68,10 @@
         color: #FFBF00;
       }
 
+      .prettyme .value:not(:last-of-type) {
+        margin-right: 10px;
+      }
+
       .prettyme.css .comment {
         margin: 0 10px;
         color: #01DFA5;
@@ -89,6 +93,7 @@
       /* Comment */
       .example {
         background-color: #fff;
+        color: rgba(200, 200, 200, 0.5);
         margin: 10px 10px 0 0;
         position: relative;
         content: 'text';
@@ -96,7 +101,7 @@
 
       /* c1 */ .commented /* c2 */ { /* c3 */
       /* c4 */  color /* c5 */ : /* c6 */ #fff /* c7 */ ; /* c8 */
-        margin: 10px 10px 0 0;
+        margin: 10px 10px /* cv */ 0 0;
         position: relative;
         content: 'text';
       /* c9 */ } /* c10 */

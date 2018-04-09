@@ -201,7 +201,10 @@ function peg$parse(input, options) {
       peg$c22 = "*/",
       peg$c23 = peg$literalExpectation("*/", false),
       peg$c24 = function(comment) {
-        return comment.join('').trim();
+        return {
+          type: 'comment',
+          value: comment.join('').trim()
+        };
       },
       peg$c25 = /^[ \t\r\n]/,
       peg$c26 = peg$classExpectation([" ", "\t", "\r", "\n"], false, false),
@@ -692,6 +695,9 @@ function peg$parse(input, options) {
             s2 = peg$parsestring();
             if (s2 === peg$FAILED) {
               s2 = peg$parsewhitespace();
+              if (s2 === peg$FAILED) {
+                s2 = peg$parseComment();
+              }
             }
           }
         }
@@ -710,6 +716,9 @@ function peg$parse(input, options) {
               s2 = peg$parsestring();
               if (s2 === peg$FAILED) {
                 s2 = peg$parsewhitespace();
+                if (s2 === peg$FAILED) {
+                  s2 = peg$parseComment();
+                }
               }
             }
           }
@@ -1370,12 +1379,23 @@ function peg$parse(input, options) {
         comment = comments[i];
 
         if (comment) {
-          result['p' + (i + 1)] = comment;
+          result['p' + (i + 1)] = plainComments(comment);
           count++;
         }
       }
 
       return count > 0 ? result : null;
+    }
+
+    function plainComments(comments) {
+      var result = [];
+      var length = comments.length, i;
+
+      for (i = 0; i < length; i++) {
+        result.push(comments[i].value);
+      }
+
+      return result;
     }
 
     function cleanValues(values) {

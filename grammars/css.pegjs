@@ -8,12 +8,23 @@
       comment = comments[i];
 
       if (comment) {
-        result['p' + (i + 1)] = comment;
+        result['p' + (i + 1)] = plainComments(comment);
         count++;
       }
     }
 
     return count > 0 ? result : null;
+  }
+
+  function plainComments(comments) {
+    var result = [];
+    var length = comments.length, i;
+
+    for (i = 0; i < length; i++) {
+      result.push(comments[i].value);
+    }
+
+    return result;
   }
 
   function cleanValues(values) {
@@ -65,7 +76,7 @@ Declaration = w1:WhitespaceOrComment property:Property w2:WhitespaceOrComment ":
 
 Property = chars:[a-zA-Z\-]+ { return chars.join(''); }
 
-Value = values:(number / colour / function / word / string / whitespace)* { return cleanValues(values); }
+Value = values:(number / colour / function / word / string / whitespace / Comment)* { return cleanValues(values); }
 
 WhitespaceOrComment = comments:(whitespace / Comment)* {
   var result = [];
@@ -81,7 +92,10 @@ WhitespaceOrComment = comments:(whitespace / Comment)* {
 }
 
 Comment = "/*" comment:[^(?!\*/)]* "*/" {
-  return comment.join('').trim();
+  return {
+    type: 'comment',
+    value: comment.join('').trim()
+  };
 }
 
 whitespace = [ \t\r\n] { return null; }
