@@ -146,13 +146,13 @@ function peg$parse(input, options) {
       peg$c2 = "}",
       peg$c3 = peg$literalExpectation("}", false),
       peg$c4 = function(w1, selector, w2, w3, declarations, w4) {
-        var comments = [w1, w2, w3, w4];
+        var comments = compactComments([w1, w2, w3, w4]);
         var result = {
           selector: selector,
           declarations: declarations
         };
 
-        if (!isEmptyArray(comments)) {
+        if (comments) {
           result.comments = comments;
         }
 
@@ -166,13 +166,13 @@ function peg$parse(input, options) {
       peg$c10 = ";",
       peg$c11 = peg$literalExpectation(";", false),
       peg$c12 = function(w1, property, w2, w3, value, w4, w5) {
-        var comments = [w1, w2, w3, w4, w5];
+        var comments = compactComments([w1, w2, w3, w4, w5]);
         var result = {
           property: property,
           value: value
         };
 
-        if (!isEmptyArray(comments)) {
+        if (comments) {
           result.comments = comments;
         }
 
@@ -717,19 +717,23 @@ function peg$parse(input, options) {
   }
 
 
-    function isEmptyArray(array) {
-      var length = array.length, i;
-
-      var empty = true;
+    function compactComments(comments) {
+      var result = [];
+      var length = comments.length;
+      var i, comment;
 
       for (i = 0; i < length; i++) {
-        if (array[i]) {
-          empty = false;
-          break;
+        comment = comments[i];
+
+        if (comment) {
+          result.push({
+            pos: i + 1,
+            text: comment
+          });
         }
       }
 
-      return empty;
+      return result.length > 0 ? result : null;
     }
 
 

@@ -1,17 +1,21 @@
 {
-  function isEmptyArray(array) {
-    var length = array.length, i;
-
-    var empty = true;
+  function compactComments(comments) {
+    var result = [];
+    var length = comments.length;
+    var i, comment;
 
     for (i = 0; i < length; i++) {
-      if (array[i]) {
-        empty = false;
-        break;
+      comment = comments[i];
+
+      if (comment) {
+        result.push({
+          pos: i + 1,
+          text: comment
+        });
       }
     }
 
-    return empty;
+    return result.length > 0 ? result : null;
   }
 }
 
@@ -19,13 +23,13 @@ Content =
   (Rule / Comment)*
 
 Rule = w1:WhitespaceOrComment selector:Selector w2:WhitespaceOrComment "{" w3:WhitespaceOrComment declarations:Declaration* w4:WhitespaceOrComment "}" {
-  var comments = [w1, w2, w3, w4];
+  var comments = compactComments([w1, w2, w3, w4]);
   var result = {
     selector: selector,
     declarations: declarations
   };
 
-  if (!isEmptyArray(comments)) {
+  if (comments) {
     result.comments = comments;
   }
 
@@ -35,13 +39,13 @@ Rule = w1:WhitespaceOrComment selector:Selector w2:WhitespaceOrComment "{" w3:Wh
 Selector = chars:[^\{]*  { return chars.join('').replace(/\s\s+/g, ' ').trim(); }
 
 Declaration = w1:WhitespaceOrComment property:Property w2:WhitespaceOrComment ":" w3:WhitespaceOrComment value:Value w4:WhitespaceOrComment ";" w5:WhitespaceOrComment {
-  var comments = [w1, w2, w3, w4, w5];
+  var comments = compactComments([w1, w2, w3, w4, w5]);
   var result = {
     property: property,
     value: value
   };
 
-  if (!isEmptyArray(comments)) {
+  if (comments) {
     result.comments = comments;
   }
 
