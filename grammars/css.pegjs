@@ -18,10 +18,10 @@
 }
 
 Content =
-  (Rule / Comment)*
+  Rule*
 
-Rule = w1:WhitespaceOrComment selector:Selector w2:WhitespaceOrComment "{" w3:WhitespaceOrComment declarations:Declaration* w4:WhitespaceOrComment "}" {
-  var comments = compactComments([w1, w2, w3, w4]);
+Rule = w1:WhitespaceOrComment selector:Selector w2:WhitespaceOrComment "{" w3:WhitespaceOrComment declarations:Declaration* w4:WhitespaceOrComment "}" w5:WhitespaceOrComment {
+  var comments = compactComments([w1, w2, w3, w4, w5]);
   var result = {
     selector: selector,
     declarations: declarations

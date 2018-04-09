@@ -145,8 +145,8 @@ function peg$parse(input, options) {
       peg$c1 = peg$literalExpectation("{", false),
       peg$c2 = "}",
       peg$c3 = peg$literalExpectation("}", false),
-      peg$c4 = function(w1, selector, w2, w3, declarations, w4) {
-        var comments = compactComments([w1, w2, w3, w4]);
+      peg$c4 = function(w1, selector, w2, w3, declarations, w4, w5) {
+        var comments = compactComments([w1, w2, w3, w4, w5]);
         var result = {
           selector: selector,
           declarations: declarations
@@ -349,22 +349,16 @@ function peg$parse(input, options) {
 
     s0 = [];
     s1 = peg$parseRule();
-    if (s1 === peg$FAILED) {
-      s1 = peg$parseComment();
-    }
     while (s1 !== peg$FAILED) {
       s0.push(s1);
       s1 = peg$parseRule();
-      if (s1 === peg$FAILED) {
-        s1 = peg$parseComment();
-      }
     }
 
     return s0;
   }
 
   function peg$parseRule() {
-    var s0, s1, s2, s3, s4, s5, s6, s7, s8;
+    var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9;
 
     s0 = peg$currPos;
     s1 = peg$parseWhitespaceOrComment();
@@ -400,9 +394,15 @@ function peg$parse(input, options) {
                     if (peg$silentFails === 0) { peg$fail(peg$c3); }
                   }
                   if (s8 !== peg$FAILED) {
-                    peg$savedPos = s0;
-                    s1 = peg$c4(s1, s2, s3, s5, s6, s7);
-                    s0 = s1;
+                    s9 = peg$parseWhitespaceOrComment();
+                    if (s9 !== peg$FAILED) {
+                      peg$savedPos = s0;
+                      s1 = peg$c4(s1, s2, s3, s5, s6, s7, s9);
+                      s0 = s1;
+                    } else {
+                      peg$currPos = s0;
+                      s0 = peg$FAILED;
+                    }
                   } else {
                     peg$currPos = s0;
                     s0 = peg$FAILED;
