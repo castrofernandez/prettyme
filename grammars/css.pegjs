@@ -8,7 +8,7 @@
       comment = comments[i];
 
       if (comment) {
-        result[(i + 1)] = comment;
+        result['p' + (i + 1)] = comment;
         count++;
       }
     }

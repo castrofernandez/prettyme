@@ -178,10 +178,10 @@ describe('prettyme: parsing CSS', function () {
     const result = prettyme.parse('/* c1 */ .test1  { /*c2*/  color: /* c3 */ /* c4 */ red; } p {margin: 10px   0  0   0 ; /* c5 */ }');
     expect(result).to.deep.equal([
         { selector: '.test1', declarations: [
-            { property: 'color', value: 'red', comments: { 3: ['c3', 'c4'] } } 
-        ], comments: { 1: ['c1'], 3: ['c2'] } },
+            { property: 'color', value: 'red', comments: { p3: ['c3', 'c4'] } } 
+        ], comments: { p1: ['c1'], p3: ['c2'] } },
         { selector: 'p', declarations: [
-            { property: 'margin', value: '10px 0 0 0', comments: { 5: ['c5'] } }
+            { property: 'margin', value: '10px 0 0 0', comments: { p5: ['c5'] } }
         ] }
     ]);
   });
@@ -197,6 +197,6 @@ describe('prettyme: formatting CSS', function () {
   
   it('Two rules', async function () {
     const result = prettyme.format(' .test1  {   color:   red; } p {margin: 10px   0  0   0 ; }');
-    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>: {<p class="line tab"><span class="property">color</span>: <span class="value">red</span>;<p class="line">}</p><p class="line"><span class="selector">p</span>: {<p class="line tab"><span class="property">margin</span>: <span class="value">10px 0 0 0</span>;<p class="line">}</p>');
+    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>: {</p><p class="line tab"><span class="property">color</span>: <span class="value">red</span>;</p><p class="line">}</p><p class="line"><span class="selector">p</span>: {</p><p class="line tab"><span class="property">margin</span>: <span class="value">10px 0 0 0</span>;</p><p class="line">}</p>');
   });
 });

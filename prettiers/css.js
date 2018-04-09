@@ -14,7 +14,6 @@ var cssPrettier = (function() {
       }
 
       formatRule(output, rule);
-      output.push('</p>');
     }
 
     return output.join('');
@@ -23,6 +22,11 @@ var cssPrettier = (function() {
   function formatRule(output, rule) {
     var selector = rule.selector;
     var declarations = rule.declarations;
+    var comments = rule.comments || {};
+
+    if (comments.p1) {
+
+    }
 
     formatSelector(output, selector);
     formatDeclarations(output, declarations);
@@ -33,6 +37,7 @@ var cssPrettier = (function() {
     getTab(output, false);
     addClasses(output, selector, 'selector');
     output.push(': {');
+    output.push('</p>');
   }
 
   function formatDeclarations(output, declarations) {
@@ -49,12 +54,14 @@ var cssPrettier = (function() {
       output.push(': ');
       addClasses(output, value, 'value');
       output.push(';');
+      output.push('</p>');
     }
   }
 
   function formatClosing(output) {
     getTab(output, false);
     output.push('}');
+    output.push('</p>');
   }
 
   function getTab(output, tab) {
