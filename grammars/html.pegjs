@@ -94,6 +94,8 @@ emptyTagName = "area"
 
 whitespace = [ \t\r\n]
 
-tagName = chars:[a-zA-Z\-]+ { return chars.join(''); }
+tagName = first:[\:_a-zA-Z] chars:[a-zA-Z\-\:_0-9]* { 
+  return first + chars.join(''); 
+}
 
 quotedText = chars:[^\"]* { return chars.join(''); }

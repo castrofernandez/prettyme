@@ -93,6 +93,15 @@ describe('prettyme: parsing HTML', function () {
         { tag: 'div', type: 'close' }
     ]);
   });
+
+  it('Special attributes', async function () {
+    const result = prettyme.parse('<input :first _second third-3>');
+    expect(result).to.deep.equal([{ tag: 'input', type: 'empty', attributes: [
+        { name: ':first', value: null },
+        { name: '_second', value: null },
+        { name: 'third-3', value: null }
+    ] }]);
+  });
 });
 
 describe('prettyme: formatting HTML', function () {
