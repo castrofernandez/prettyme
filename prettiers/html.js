@@ -93,7 +93,7 @@ var htmlPrettier = (function() {
       value = attribute.value;
 
       output.push(' ');
-      addClasses(name, 'attribute');
+      addClasses(name, 'attribute ' + name);
 
       if (value) {
         output.push('=');
