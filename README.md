@@ -10,10 +10,11 @@ npm install prettyme
 2. Usage
 
 ```
-const htmlParse = require('../grammars/html');
-const cssParse = require('../grammars/css');
-const htmlPrettier = require('../prettiers/html');
-const cssPrettier = require('../prettiers/css');
+import prettyme from 'prettyme';
+import htmlParse from 'prettyme/grammars/html';
+import cssParse from 'prettyme/grammars/css';
+import htmlPrettier from 'prettyme/prettiers/html';
+import cssPrettier from 'prettyme/prettiers/css';
 
 prettyme.init({
   parser: htmlParse.parse,
