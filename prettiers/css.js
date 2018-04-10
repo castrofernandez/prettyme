@@ -90,10 +90,7 @@ var cssPrettier = (function() {
 
     switch(value.type) {
       case 'function':
-        addClasses(value.name, mergeClasses(['value function'], classes));
-        output.push('(');
-        getFunctionParams(value.params);
-        output.push(')');
+      getFunctionValue(value, classes);
         break;
       case 'comment':
         addClasses(['/* ', value.value, ' */'], mergeClasses(['value comment'], classes));
@@ -106,6 +103,13 @@ var cssPrettier = (function() {
     }
 
     addColourPreview(value);
+  }
+
+  function getFunctionValue(value, classes) {
+    addClasses(value.name, mergeClasses(['value function'], classes));
+    output.push('(');
+    getFunctionParams(value.params);
+    output.push(')');
   }
 
   function addColourPreview(value) {
@@ -127,6 +131,10 @@ var cssPrettier = (function() {
       return null;
     }
 
+    return getColourFunction(value);
+  }
+
+  function getColourFunction(value) {
     var result = [value.name, '('], processedParams = [];
     var params = value.params, param;
     var length = params.length, i, j;
