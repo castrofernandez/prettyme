@@ -1,17 +1,12 @@
 'use strict';
 
 const {expect} = require('chai');
-const prettyme = require('../index');
-const htmlParse = require('../grammars/html');
-const cssParse = require('../grammars/css');
-const htmlPrettier = require('../prettiers/html');
-const cssPrettier = require('../prettiers/css');
+const prettyme = require('../src/index');
 
 describe('prettyme: parsing HTML', function () {
   before(async function () {
     prettyme.init({
-      parser: htmlParse.parse,
-      prettier: htmlPrettier
+      language: 'html'
     });
   });
 
@@ -107,8 +102,7 @@ describe('prettyme: parsing HTML', function () {
 describe('prettyme: formatting HTML', function () {
   before(async function () {
     prettyme.init({
-      parser: htmlParse.parse,
-      prettier: htmlPrettier
+      language: 'html'
     });
   });
 
@@ -126,8 +120,7 @@ describe('prettyme: formatting HTML', function () {
 describe('prettyme: parsing CSS', function () {
   before(async function () {
     prettyme.init({
-      parser: cssParse.parse,
-      prettier: htmlPrettier
+      language: 'css'
     });
   });
 
@@ -269,8 +262,7 @@ describe('prettyme: parsing CSS', function () {
 describe('prettyme: formatting CSS', function () {
   before(async function () {
     prettyme.init({
-      parser: cssParse.parse,
-      prettier: cssPrettier
+      language: 'css'
     });
   });
   

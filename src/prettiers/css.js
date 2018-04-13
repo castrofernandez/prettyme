@@ -67,7 +67,7 @@ var cssPrettier = (function() {
       formatComments(comments.p2);
       output.push(':');
       formatComments(comments.p3);
-      
+
       formatValue(value, [], true);
 
       formatComments(comments.p4);
@@ -78,7 +78,8 @@ var cssPrettier = (function() {
   }
 
   function formatValue(values, classes, addPositionClasses) {
-    var length = values.length, i;
+    var length = values.length;
+    var i;
 
     for (i = 0; i < length; i++) {
       getValue(values[i], addPositionClasses ? getParamClass(classes, i, length) : classes);
@@ -88,18 +89,18 @@ var cssPrettier = (function() {
   function getValue(value, classes) {
     classes = classes || '';
 
-    switch(value.type) {
+    switch (value.type) {
       case 'function':
-      getFunctionValue(value, classes);
+        getFunctionValue(value, classes);
         break;
       case 'comment':
         addClasses(['/* ', value.value, ' */'], mergeClasses(['value comment'], classes));
-        break
+        break;
       case 'string':
         addClasses(['\'', value.value, '\''], mergeClasses(['value string'], classes));
-        break
+        break;
       default:
-        addClasses(value.value, mergeClasses(['value',  value.type], classes));
+        addClasses(value.value, mergeClasses(['value', value.type], classes));
     }
 
     addColourPreview(value);
@@ -135,9 +136,13 @@ var cssPrettier = (function() {
   }
 
   function getColourFunction(value) {
-    var result = [value.name, '('], processedParams = [];
-    var params = value.params, param;
-    var length = params.length, i, j;
+    var result = [value.name, '('];
+    var processedParams = [];
+    var params = value.params;
+    var param;
+    var length = params.length;
+    var i;
+    var j;
 
     for (i = 0; i < length; i++) {
       param = params[i];
@@ -157,11 +162,13 @@ var cssPrettier = (function() {
   }
 
   function mergeClasses(a, b) {
-    return a.concat(b).join(' ').replace(/ +(?= )/g,'');
+    return a.concat(b).join(' ').replace(/ +(?= )/g, '');
   }
 
   function getFunctionParams(params) {
-    var length = params.length, i, param;
+    var length = params.length;
+    var i;
+    var param;
 
     for (i = 0; i < length; i++) {
       param = params[i];
@@ -224,10 +231,11 @@ var cssPrettier = (function() {
       text = [text];
     }
 
-    var length = text.length, i;
+    var length = text.length;
+    var i;
 
     output.push('<span class="', classes, '">');
-    
+
     for (i = 0; i < length; i++) {
       output.push(text[i]);
     }

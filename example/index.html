@@ -154,24 +154,18 @@
     <script>
       var module = {};
     </script>
-    <script src="../grammars/html.js"></script>
-    <script src="../prettiers/html.js"></script>
-    <script src="../index.js"></script>
+    <script src="../prettyme.js"></script>
     <script>
       prettyme.init({
-        parser: peg$parse,
-        prettier: htmlPrettier,
+        language: 'html',
         selector: '.prettyme.html'
       });
 
       prettyme.load();
     </script>
-    <script src="../grammars/css.js"></script>
-    <script src="../prettiers/css.js"></script>
     <script>
       prettyme.init({
-        parser: peg$parse,
-        prettier: cssPrettier,
+        language: 'css',
         selector: '.prettyme.css'
       });
 

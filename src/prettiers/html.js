@@ -26,7 +26,7 @@ var htmlPrettier = (function() {
   }
 
   function formatElement(element) {
-    switch(element.type) {
+    switch (element.type) {
       case 'open':
         return formatOpenTag(element);
       case 'close':
@@ -117,11 +117,12 @@ var htmlPrettier = (function() {
   }
 
   function addClasses(text, classes) {
-    if (!text instanceof Array) {
+    if (!(text instanceof Array)) {
       text = [text];
     }
 
-    var length = text.length, i;
+    var length = text.length;
+    var i;
 
     output.push('<span class="');
     output.push(classes);

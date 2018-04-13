@@ -2,8 +2,13 @@
 
 // https://pegjs.org/documentation
 
+const htmlParse = require('./grammars/html');
+const cssParse = require('./grammars/css');
+const htmlPrettier = require('./prettiers/html');
+const cssPrettier = require('./prettiers/css');
+
 var prettyme = (function() {
-  var parser = null;
+  var parser = htmlParse.parse;
   var prettier = null;
   var selector = '.prettyme';
 
@@ -38,21 +43,34 @@ var prettyme = (function() {
   }
 
   function setOptions(options) {
-    if (! options) {
+    if (!options) {
       return;
     }
 
-    if (options.parser) {
-      parser = options.parser;
+    if (options.language) {
+      getParser(options.language);
+      getPrettier(options.language);
+    } else {
+      if (options.parser) {
+        parser = options.parser;
+      }
+
+      if (options.prettier) {
+        prettier = options.prettier;
+      }
     }
 
-    if (options.prettier) {
-      prettier = options.prettier;
-    }
-    
     if (options.selector) {
       selector = options.selector;
     }
+  }
+
+  function getParser(language) {
+    parser = language === 'html' ? htmlParse.parse : cssParse.parse;
+  }
+
+  function getPrettier(language) {
+    prettier = language === 'html' ? htmlPrettier : cssPrettier;
   }
 
   function checkParser(checkPrettier) {
