@@ -35,7 +35,7 @@ const htmlPrettier = (function() {
     outputLines.filter(line => line.value).forEach(line => {
       const tab = line.tab;
       const value = line.value;
-      const lineClass = tab ? `line tab ${tab}x`: 'line';
+      const lineClass = tab ? `line tab ${tab}x` : 'line';
 
       output.push(
         `<p class="${lineClass}">${value.join('')}</p>`

@@ -32,7 +32,7 @@ const cssPrettier = (function() {
     outputLines.filter(line => line.value).forEach(line => {
       const tab = line.tab;
       const value = line.value;
-      const lineClass = tab ? `line tab`: 'line';
+      const lineClass = tab ? 'line tab' : 'line';
 
       output.push(
         `<p class="${lineClass}">${value.join('')}</p>`
