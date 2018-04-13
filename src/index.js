@@ -2,8 +2,8 @@
 
 // https://pegjs.org/documentation
 
-const htmlParse = require('./grammars/html');
-const cssParse = require('./grammars/css');
+const htmlParse = require('./parsers/html');
+const cssParse = require('./parsers/css');
 const htmlPrettier = require('./prettiers/html');
 const cssPrettier = require('./prettiers/css');
 

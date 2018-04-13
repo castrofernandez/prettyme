@@ -23,7 +23,7 @@ prettyme.load();
 3. Generate parser from grammar
 
 ```
-pegjs ./grammars/html.pegjs
+pegjs ./src/parsers/html.pegjs
 ```
 
 4. Run depelopment watch
