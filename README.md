@@ -42,7 +42,7 @@ npm run test
 
 ```
 npm run build
-````
+```
 
 7. Upload build
 ```
