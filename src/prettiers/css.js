@@ -1,14 +1,17 @@
 'use strict';
 
 const cssPrettier = (function() {
-  var output;
+  var outputLines;
+  var line = 0;
 
   function format(parser, code) {
     var rules = parser(code.trim());
     var i, rule;
     var length = rules.length;
 
-    output = [];
+    outputLines = [];
+    line = -1;
+    newLine();
 
     for (i = 0; i < length; i++) {
       rule = rules[i];
@@ -19,6 +22,22 @@ const cssPrettier = (function() {
 
       formatRule(rule);
     }
+
+    return formatLines();
+  }
+
+  function formatLines() {
+    let output = [];
+
+    outputLines.filter(line => line.value).forEach(line => {
+      const tab = line.tab;
+      const value = line.value;
+      const lineClass = tab ? `line tab`: 'line';
+
+      output.push(
+        `<p class="${lineClass}">${value.join('')}</p>`
+      );
+    });
 
     return output.join('');
   }
@@ -45,9 +64,9 @@ const cssPrettier = (function() {
     getTab(false);
     addClasses(rule.selector, 'selector');
     formatComments(rule.comments.p2);
-    output.push('{');
+    push('{');
     formatComments(rule.comments.p3);
-    output.push('</p>');
+    newLine();
   }
 
   function formatDeclarations(rule) {
@@ -65,15 +84,15 @@ const cssPrettier = (function() {
       formatComments(comments.p1);
       addClasses(property, 'property');
       formatComments(comments.p2);
-      output.push(':');
+      push(':');
       formatComments(comments.p3);
 
       formatValue(value, [], true);
 
       formatComments(comments.p4);
-      output.push(';');
+      push(';');
       formatComments(comments.p5);
-      output.push('</p>');
+      newLine();
     }
   }
 
@@ -108,16 +127,16 @@ const cssPrettier = (function() {
 
   function getFunctionValue(value, classes) {
     addClasses(value.name, mergeClasses(['value function'], classes));
-    output.push('(');
+    push('(');
     getFunctionParams(value.params);
-    output.push(')');
+    push(')');
   }
 
   function addColourPreview(value) {
     var colour = getColour(value);
 
     if (colour) {
-      output.push(['<span class="color-preview" style="background-color:', colour, ';"></span>'].join(''));
+      push(['<span class="color-preview" style="background-color:', colour, ';"></span>'].join(''));
     }
   }
 
@@ -175,7 +194,7 @@ const cssPrettier = (function() {
       formatValue(param, getParamClass(['param'], i, length), false);
 
       if (i < length - 1) {
-        output.push(',');
+        push(',');
       }
     }
   }
@@ -198,7 +217,8 @@ const cssPrettier = (function() {
 
   function formatClosing() {
     getTab(false);
-    output.push('}', '</p>');
+    push('}');
+    newLine();
   }
 
   function formatComments(comments) {
@@ -215,15 +235,13 @@ const cssPrettier = (function() {
   }
 
   function getTab(tab) {
-    output.push('<p class="line');
+    outputLines[line].tab = tab ? 1 : 0;
+  }
 
-    if (tab) {
-      output.push(' tab');
-    }
+  function newLine() {
+    outputLines.push({});
 
-    output.push('">');
-
-    return output;
+    line++;
   }
 
   function addClasses(text, classes) {
@@ -234,13 +252,23 @@ const cssPrettier = (function() {
     var length = text.length;
     var i;
 
-    output.push('<span class="', classes, '">');
+    push('<span class="', classes, '">');
 
     for (i = 0; i < length; i++) {
-      output.push(text[i]);
+      push(text[i]);
     }
 
-    output.push('</span>');
+    push('</span>');
+  }
+
+  function push(...text) {
+    if (!outputLines[line].value) {
+      outputLines[line].value = [];
+    }
+
+    text.forEach(value => {
+      outputLines[line].value.push(value);
+    });
   }
 
   return {
