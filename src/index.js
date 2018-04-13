@@ -8,9 +8,10 @@ const htmlPrettier = require('./prettiers/html');
 const cssPrettier = require('./prettiers/css');
 
 var prettyme = (function() {
-  var parser = htmlParse.parse;
-  var prettier = null;
-  var selector = '.prettyme';
+  const languages = ['html', 'css'];
+  let parser = htmlParse.parse;
+  let prettier = null;
+  let selector = '.prettyme';
 
   function init(options) {
     setOptions(options);
@@ -48,6 +49,7 @@ var prettyme = (function() {
     }
 
     if (options.language) {
+      checkLanguage(options.language);
       getParser(options.language);
       getPrettier(options.language);
     } else {
@@ -71,6 +73,12 @@ var prettyme = (function() {
 
   function getPrettier(language) {
     prettier = language === 'html' ? htmlPrettier : cssPrettier;
+  }
+
+  function checkLanguage(language) {
+    if (!languages.includes(language)) {
+      throw new Error(`Invalid language "${language}". Valid languages are: ${languages.join(', ')}`);
+    }
   }
 
   function checkParser(checkPrettier) {

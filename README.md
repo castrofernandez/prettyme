@@ -11,14 +11,9 @@ npm install prettyme
 
 ```
 import prettyme from 'prettyme';
-import htmlParse from 'prettyme/grammars/html';
-import cssParse from 'prettyme/grammars/css';
-import htmlPrettier from 'prettyme/prettiers/html';
-import cssPrettier from 'prettyme/prettiers/css';
 
 prettyme.init({
-  parser: htmlParse.parse,
-  prettier: htmlPrettier,
+  language: 'html',
   selector: '.prettyme'
 });
 
@@ -31,17 +26,35 @@ prettyme.load();
 pegjs ./grammars/html.pegjs
 ```
 
-4. Run tests
+4. Run depelopment watch
 
 ```
-npm test
+npm run dev
 ```
 
-5. List of methods
+5. Run tests
+
+```
+npm run test
+```
+
+6. Build dist
+
+```
+npm run build
+````
+
+7. Upload build
+```
+npm publish
+```
+
+8. List of methods
 
 * init: sets initial options.
-   * parser: function to parse the code.
-   * prettier: prettier to use.
+   * language: 'html' or 'css'
+   * parser: function to parse the code. (only to use custom parser)
+   * prettier: prettier to use. (only to use custor prettier)
    * selector: CSS selector to use in *load* method.
 * load: formats every *selector* set in initial options.
 * parse(code, options): parses the received code with the optional options.
