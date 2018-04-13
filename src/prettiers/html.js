@@ -1,15 +1,18 @@
 'use strict';
 
-var htmlPrettier = (function() {
+const htmlPrettier = (function() {
   var tab = 0;
-  var output;
+  var line = 0;
+  var outputLines;
 
   function format(parser, code) {
     var elements = parser(code.trim());
     var i, element;
     var length = elements.length;
 
-    output = [];
+    tab = 0;
+    line = 0;
+    outputLines = [{}];
 
     for (i = 0; i < length; i++) {
       element = elements[i];
@@ -19,8 +22,25 @@ var htmlPrettier = (function() {
       }
 
       formatElement(element);
-      output.push('</p>');
+      outputLines.push({});
+      line++;
     }
+
+    return formatLines();
+  }
+
+  function formatLines() {
+    let output = [];
+
+    outputLines.filter(line => line.value).forEach(line => {
+      const tab = line.tab;
+      const value = line.value;
+      const lineClass = tab ? `line tab ${tab}x`: 'line';
+
+      output.push(
+        `<p class="${lineClass}">${value.join('')}</p>`
+      );
+    });
 
     return output.join('');
   }
@@ -51,9 +71,9 @@ var htmlPrettier = (function() {
   function formatCloseTag(element) {
     tab--;
     getTab();
-    output.push('&lt;/');
+    push('&lt;/');
     addClasses(element.tag, 'tag');
-    output.push('&gt;');
+    push('&gt;');
   }
 
   function formatEmptyTag(element) {
@@ -72,10 +92,10 @@ var htmlPrettier = (function() {
   }
 
   function getOpenTag(element, closing) {
-    output.push('&lt;');
+    push('&lt;');
     addClasses(element.tag, 'tag');
     getAttributes(element);
-    output.push(closing);
+    push(closing);
   }
 
   function getAttributes(element) {
@@ -92,28 +112,18 @@ var htmlPrettier = (function() {
       name = attribute.name;
       value = attribute.value;
 
-      output.push(' ');
+      push(' ');
       addClasses(name, 'attribute ' + name);
 
       if (value) {
-        output.push('=');
+        push('=');
         addClasses(['"', value, '"'], 'value');
       }
     }
   }
 
   function getTab() {
-    output.push('<p class="line');
-
-    if (tab > 0) {
-      output.push(' tab ');
-      output.push(tab);
-      output.push('x');
-    }
-
-    output.push('">');
-
-    return output;
+    outputLines[line].tab = tab;
   }
 
   function addClasses(text, classes) {
@@ -124,15 +134,23 @@ var htmlPrettier = (function() {
     var length = text.length;
     var i;
 
-    output.push('<span class="');
-    output.push(classes);
-    output.push('">');
+    push('<span class="');
+    push(classes);
+    push('">');
 
     for (i = 0; i < length; i++) {
-      output.push(text[i]);
+      push(text[i]);
     }
 
-    output.push('</span>');
+    push('</span>');
+  }
+
+  function push(text) {
+    if (!outputLines[line].value) {
+      outputLines[line].value = [];
+    }
+
+    outputLines[line].value.push(text);
   }
 
   return {

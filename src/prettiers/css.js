@@ -1,6 +1,6 @@
 'use strict';
 
-var cssPrettier = (function() {
+const cssPrettier = (function() {
   var output;
 
   function format(parser, code) {
