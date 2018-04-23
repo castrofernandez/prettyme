@@ -6,73 +6,88 @@ const htmlParse = require('./parsers/html');
 const cssParse = require('./parsers/css');
 const htmlPrettier = require('./prettiers/html');
 const cssPrettier = require('./prettiers/css');
+const htmlHighlighter = require('./lexers/html');
+const cssHighlighter = require('./lexers/css');
+
+const defaultOptions = {
+  compilation: true,
+  parser: htmlParse.parse,
+  prettier: null,
+  highlighter: null,
+  selector: '.prettyme'
+};
 
 var prettyme = (function() {
   const languages = ['html', 'css'];
-  let parser = htmlParse.parse;
-  let prettier = null;
-  let selector = '.prettyme';
+  let options;
 
-  function init(options) {
-    setOptions(options);
+  function init(customOptions) {
+    options = null;
+    setOptions(customOptions);
   }
 
-  function load(options) {
-    setOptions(options);
+  function load(customOptions) {
+    setOptions(customOptions);
 
-    var previews = document.querySelectorAll(selector);
+    var previews = document.querySelectorAll(options.selector);
     var length = previews.length;
     var preview, i;
 
     for (i = 0; i < length; i++) {
       preview = previews[i];
-      preview.innerHTML = format(preview.innerHTML);
+      preview.innerHTML = options.compilation ? format(preview.innerHTML) : highlight(preview.innerHTML);
     }
   }
 
-  function parse(code, options) {
-    setOptions(options);
-    checkParser(false);
+  function parse(code, customOptions) {
+    setOptions(customOptions);
+    checkParser();
 
-    return parser(code);
+    return options.parser(code);
   }
 
-  function format(code, options) {
-    setOptions(options);
-    checkParser(true);
-    return prettier.format(parser, code);
+  function format(code, customOptions) {
+    setOptions(customOptions);
+
+    checkParser();
+    checkPrettier();
+    return options.prettier.format(options.parser, code);
   }
 
-  function setOptions(options) {
+  function highlight(code, customOptions) {
+    setOptions(customOptions);
+    checkHighlighter(true);
+
+    return options.highlighter.highlight(code);
+  }
+
+  function setOptions(customOptions) {
     if (!options) {
-      return;
+      options = Object.assign({}, defaultOptions);
     }
 
-    if (options.language) {
-      checkLanguage(options.language);
-      getParser(options.language);
-      getPrettier(options.language);
-    } else {
-      if (options.parser) {
-        parser = options.parser;
-      }
-
-      if (options.prettier) {
-        prettier = options.prettier;
-      }
+    for (let option in customOptions) {
+      options[option] = customOptions[option];
     }
 
-    if (options.selector) {
-      selector = options.selector;
+    if (customOptions && customOptions.language) {
+      checkLanguage(customOptions.language);
+      getParser(customOptions.language);
+      getPrettier(customOptions.language);
+      getHighlighter(customOptions.language);
     }
   }
 
   function getParser(language) {
-    parser = language === 'html' ? htmlParse.parse : cssParse.parse;
+    options.parser = language === 'html' ? htmlParse.parse : cssParse.parse;
   }
 
   function getPrettier(language) {
-    prettier = language === 'html' ? htmlPrettier : cssPrettier;
+    options.prettier = language === 'html' ? htmlPrettier : cssPrettier;
+  }
+
+  function getHighlighter(language) {
+    options.highlighter = language === 'html' ? htmlHighlighter : cssHighlighter;
   }
 
   function checkLanguage(language) {
@@ -81,13 +96,21 @@ var prettyme = (function() {
     }
   }
 
-  function checkParser(checkPrettier) {
-    if (!parser) {
+  function checkParser() {
+    if (!options.parser) {
       throw new Error('Parser has not been set.\nUse prettyme.init({ parser: <parserObj> });');
     }
+  }
 
-    if (checkPrettier && !prettier) {
+  function checkPrettier() {
+    if (!options.prettier) {
       throw new Error('Prettier has not been set.\nUse prettyme.init({ prettier: <prettierObj> });');
+    }
+  }
+
+  function checkHighlighter() {
+    if (!options.highlighter) {
+      throw new Error('Highlighter has not been set.\nUse prettyme.init({ highlighter: <prettierObj> });');
     }
   }
 
@@ -95,7 +118,8 @@ var prettyme = (function() {
     init: init,
     load: load,
     parse: parse,
-    format: format
+    format: format,
+    highlight: highlight
   };
 })();
 

@@ -124,7 +124,17 @@
 
   <body>
     <h1>prettyme</h1>
-    <div class="prettyme html">
+
+    <pre class="prettyme html lexer">
+      <div class="example" style="margin:0;" data-imp>
+         <!-- Comment -->
+        <input  type="text"  />
+        Text  
+        <!-- Comment -->
+      </div>
+    </pre>
+
+    <div class="prettyme html parser">
       <div class="example">
         <!-- Comment -->
         <input type="text" />
@@ -132,6 +142,7 @@
         <!-- Comment -->
       </div>
     </div>
+
     <div class="prettyme css">
       /* Comment */
       .example {
@@ -158,12 +169,19 @@
     <script>
       prettyme.init({
         language: 'html',
-        selector: '.prettyme.html'
+        selector: '.prettyme.html.lexer',
+        compilation: false
       });
 
       prettyme.load();
-    </script>
-    <script>
+
+      prettyme.init({
+        language: 'html',
+        selector: '.prettyme.html.parser'
+      });
+
+      prettyme.load();
+
       prettyme.init({
         language: 'css',
         selector: '.prettyme.css'
