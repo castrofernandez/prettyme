@@ -1,22 +1,32 @@
 'use strict';
 
-const patterns = {
-  open: {
-    regex: /<([^\s>/!]+)\s*([^/>]*)\/?>/g,
-    attributes: true,
+const patterns = [
+  {
+    type: 'comment',
+    regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>)/g,
+    class: 'comment'
+  },
+  {
+    type: 'tag',
+    regex: /<([^\s>/!]+)/g,
     class: 'tag open'
   },
-  close: {
+  {
+    type: 'close',
     regex: /<\/([^\s>/!]+)>/g,
     class: 'tag close'
   },
-  comment: {
-    regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>)/g,
-    class: 'comment'
+  {
+    type: 'value',
+    regex: /=\s*("[^"]*"|'[^']*'|[^\s"']*)/g,
+    class: 'value'
+  },
+  {
+    type: 'attribute',
+    regex: /\s([^\s=/><"]+)/g,
+    class: 'attribute'
   }
-};
-
-const attributePattern = /([^\s=]+)\s*=?\s*([^\s]*)/g;
+];
 
 class HtmlHighlighter {
   highlight(code) {
@@ -50,7 +60,7 @@ class HtmlHighlighter {
 
     tokens.forEach(token => {
       output.push(this.escape(code.substring(previousIndex, token.index)));
-      output.push(`<span class="${token.class}">${this.escape(token.value)}</span>`);
+      output.push(`<span class="${token.className}">${this.escape(token.value)}</span>`);
 
       previousIndex = token.index + token.length;
     });
@@ -65,102 +75,136 @@ class HtmlHighlighter {
   }
 
   getTokens(code) {
-    const tokens = [];
-    let key;
-    let regex;
-    let hasAttributes;
-    let matches;
-    let value;
-    let attributes;
-    let index;
-    let theClass;
-
-    for (key in patterns) {
-      regex = patterns[key].regex;
-      hasAttributes = patterns[key].attributes;
-      theClass = patterns[key].class;
-      matches = regex.exec(code);
-
-      while (matches) {
-        value = matches[1];
-        attributes = matches[2];
-        index = matches.index + code.substring(matches.index).indexOf(value);
-
-        tokens.push({
-          type: key,
-          value: value,
-          index: index,
-          length: value.length,
-          class: theClass
-        });
-
-        if (hasAttributes && attributes) {
-          attributes = new AttributeHandler({
-            tokens: tokens,
-            code: attributes,
-            start: index + code.substring(index).indexOf(attributes)
-          });
-        }
-
-        matches = regex.exec(code);
-      }
+    if (!code || code.trim() === '') {
+      return [];
     }
 
-    return tokens;
+    return new TokenList({
+      content: code,
+      patterns: patterns
+    }).elements;
   }
 }
 
-class AttributeHandler {
+class TokenList {
   constructor(options) {
     this.options = options;
-    this.getAttributes();
+    this.elements = this.getElements();
   }
 
-  get tokens() {
-    return this.options.tokens;
+  getElements() {
+    return new Token({
+      content: this.content,
+      patterns: this.patterns,
+      index: 0
+    }).elements.sort((a, b) => { return a.index > b.index; });
   }
 
-  get code() {
-    return this.options.code;
+  get content() {
+    return this.options.content;
   }
 
-  get start() {
-    return this.options.start;
+  get patterns() {
+    return this.options.patterns;
   }
+}
 
-  getAttributes() {
-    let attribute;
-    let value;
-    let matches = attributePattern.exec(this.code);
+class Token {
+  constructor(options) {
+    this.options = options;
+    this.elements = [];
 
-    while (matches) {
-      attribute = matches[1];
-      value = matches[2];
-
-      this.tokens.push({
-        type: 'attribute',
-        class: 'attribute',
-        value: attribute,
-        index: this.start + matches.index,
-        length: attribute.length
-      });
-
-      if (this.hasValue(value)) {
-        this.tokens.push({
-          type: 'value',
-          class: 'value',
-          value: value,
-          index: this.start + matches.index + this.code.substring(matches.index).indexOf(value),
-          length: value.length
-        });
-      }
-
-      matches = attributePattern.exec(this.code);
+    if (!this.empty) {
+      this.applyPatterns(this.patterns);
     }
   }
 
-  hasValue(value) {
-    return value !== '' && value !== '""';
+  get type() {
+    return this.options.type;
+  }
+
+  get value() {
+    return this.options.value;
+  }
+
+  get index() {
+    return this.options.index;
+  }
+
+  get className() {
+    return this.options.className;
+  }
+
+  get length() {
+    return this.options.length;
+  }
+
+  get content() {
+    return this.options.content;
+  }
+
+  get patterns() {
+    return this.options.patterns || [];
+  }
+
+  get empty() {
+    return !this.content || this.content.trim() === '';
+  }
+
+  applyPatterns(patterns) {
+    if (patterns.length === 0) {
+      return;
+    }
+
+    const pattern = patterns[0];
+    const otherPatterns = patterns.slice(1);
+    const type = pattern.type;
+    const regex = pattern.regex;
+    const className = pattern.class;
+    let matches = regex.exec(this.content);
+    let value;
+    let index;
+    let length;
+    let previousIndex = 0;
+
+    while (matches) {
+      value = matches[1];
+      index = matches.index + this.content.substring(matches.index).indexOf(value);
+      length = value.length;
+
+      this.processPart({
+        content: this.content.substring(previousIndex, index),
+        patterns: otherPatterns,
+        index: this.index + previousIndex
+      });
+
+      this.elements.push(new Token({
+        type: type,
+        value: value,
+        index: this.index + index,
+        length: length,
+        className: className
+      }));
+
+      previousIndex = index + length;
+      matches = regex.exec(this.content);
+    }
+
+    this.processPart({
+      content: this.content.substring(previousIndex),
+      patterns: otherPatterns,
+      index: this.index + previousIndex
+    });
+  }
+
+  processPart(options) {
+    const content = options.content.trim();
+
+    if (content === '') {
+      return;
+    }
+
+    this.elements = this.elements.concat(new Token(options).elements);
   }
 }
 

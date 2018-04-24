@@ -29,14 +29,29 @@ var prettyme = (function() {
   function load(customOptions) {
     setOptions(customOptions);
 
-    var previews = document.querySelectorAll(options.selector);
-    var length = previews.length;
-    var preview, i;
+    let previews = document.querySelectorAll(options.selector);
+    let length = previews.length;
+    let preview, i;
+    let container;
 
     for (i = 0; i < length; i++) {
       preview = previews[i];
-      preview.innerHTML = options.compilation ? format(preview.innerHTML) : highlight(preview.innerHTML);
+      container = getContainer(preview);
+
+      container.innerHTML = options.compilation ? format(preview.innerHTML) : highlight(preview.innerHTML);
     }
+  }
+
+  function getContainer(element) {
+    if (element.tagName.toLowerCase() === 'script' && element.getAttribute('type') === 'codeme') {
+      const div = document.createElement('div');
+      div.className = element.className;
+      element.parentNode.insertBefore(div, element.nextSibling);
+
+      return div;
+    }
+
+    return element;
   }
 
   function parse(code, customOptions) {
