@@ -1,21 +1,27 @@
 'use strict';
 
-class Tokenizer {
+class Tokeniser {
   constructor(options) {
     this.options = options;
-    this.elements = this.getElements();
+    this.getElements();
+    this.types = this.elements.map(element => { return element.type; });
+    console.log(this.types);
   }
 
   getElements() {
     if (!this.content || this.content.trim() === '') {
-      return [];
+      this.elements = [];
     }
 
-    return new Token({
+    this.elements = new Token({
       content: this.content,
       patterns: this.patterns,
       index: 0
     }).elements.sort((a, b) => { return a.index > b.index; });
+  }
+
+  includes(type) {
+    return this.types.includes(type);
   }
 
   get content() {
@@ -127,5 +133,5 @@ class Token {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = Tokenizer;
+  module.exports = Tokeniser;
 }

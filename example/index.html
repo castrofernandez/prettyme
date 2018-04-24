@@ -43,74 +43,74 @@
         font-size: 30px;
       } 
 
-      .prettyme .tab {
+      .prettyme :not(.commented) .tab {
         margin-left: 20px;
       }
 
-      .prettyme .tag,
-      .prettyme .property {
+      .prettyme :not(.commented) .tag,
+      .prettyme :not(.commented) .property {
         color: #5882FA;
       }
 
-      .prettyme .text {
+      .prettyme  :not(.commented) .text {
         color: #fff;
       }
 
-      .prettyme .attribute,
-      .prettyme .selector {
+      .prettyme :not(.commented) .attribute,
+      .prettyme :not(.commented) .selector {
         color: #2ECCFA;
       }
 
-      .prettyme .selector {
+      .prettyme :not(.commented) .selector {
         margin-right: 10px;
       } 
 
-      .prettyme .value {
+      .prettyme :not(.commented) .value {
         color: #FFBF00;
       }
 
-      .prettyme.css .value:not(.param) {
+      .prettyme.css :not(.commented) .value:not(.param) {
         margin-left: 10px;
       }
 
-      .prettyme .param:not(.first) {
+      .prettyme :not(.commented) .param:not(.first) {
         margin-left: 10px;
       }
 
-      .prettyme.css .comment {
+      .prettyme.css :not(.commented) .comment, .prettyme.css .commented {
         margin-left: 10px;
         color: #01DFA5;
       }
 
-      .prettyme .string {
+      .prettyme :not(.commented) .string {
         color: #FFBF00;
       }
 
-      .prettyme .word {
+      .prettyme :not(.commented) .word {
         color: #F781F3;
       }
 
-      .prettyme .color {
+      .prettyme :not(.commented) .color {
         color: #9F81F7;
       }
 
-      .prettyme .function {
+      .prettyme :not(.commented) .function {
         color: #F3F781;
       }
 
-      .prettyme .number {
+      .prettyme :not(.commented) .number {
         color: #BFFF00;
       }
 
-      .prettyme .unit {
+      .prettyme :not(.commented) .unit {
         color: #58D3F7;
       }
 
-      .prettyme .selector + .comment {
+      .prettyme :not(.commented) .selector + .comment {
         margin: 0 10px 0 0;
       }
 
-      .prettyme .color-preview {
+      .prettyme :not(.commented) .color-preview {
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -132,7 +132,10 @@
           class="input text"
           value="foo"  />
         Text  
-        <!-- Comment -->
+        <!-- 
+          Comment 
+          <input  type="text" />
+        --> <a href="">foo</a>
       </div>
     </script>
 
@@ -145,6 +148,11 @@
           position: relative;
           content: 'text';
         }
+
+        /* 
+        Comment
+        h1 { color: red; }
+        */
   
         /* c1 */ .commented /* c2 */ { /* c3 */
         /* c4 */  color /* c5 */ : /* c6 */ #fff /* c7 */ ; /* c8 */

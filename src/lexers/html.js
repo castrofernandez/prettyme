@@ -9,6 +9,16 @@ const patterns = [
     class: 'comment'
   },
   {
+    type: 'open-comment',
+    regex: /(<![ \r\n\t]*--)/g,
+    class: 'comment open'
+  },
+  {
+    type: 'close-comment',
+    regex: /(--[ \r\n\t]*)>/g,
+    class: 'comment close'
+  },
+  {
     type: 'tag',
     regex: /<([^\s>/!]+)/g,
     class: 'tag open'
@@ -17,6 +27,11 @@ const patterns = [
     type: 'close',
     regex: /<\/([^\s>/!]+)>/g,
     class: 'tag close'
+  },
+  {
+    type: 'text',
+    regex: />([^<]*)</g,
+    class: 'text'
   },
   {
     type: 'value',
