@@ -15,6 +15,16 @@ const patterns = [
     class: 'comment'
   },
   {
+    type: 'open-comment',
+    regex: /(\/\*)/g,
+    class: 'comment open'
+  },
+  {
+    type: 'close-comment',
+    regex: /(\*\/)/g,
+    class: 'comment close'
+  },
+  {
     type: 'selector',
     regex: /[\s\n\r\t]*([^\s\n\r\t]+)[\s\n\r\t]*[^{]*{/g,
     class: 'selector'
@@ -70,8 +80,8 @@ class CssHighlighter {
     return this.lexer.highlight(code);
   }
 
-  getTokens(code) {
-    return this.lexer.getTokens(code);
+  lex(code) {
+    return this.lexer.lex(code);
   }
 }
 

@@ -5,7 +5,7 @@ const Lexer = require('./aux/lexer');
 const patterns = [
   {
     type: 'comment',
-    regex: /(<!--(.|\s)*?-->)/g,
+    regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>)/g,
     class: 'comment'
   },
   {
@@ -13,6 +13,16 @@ const patterns = [
     regex: /(<[^>]*>)/g,
     class: 'in-angles',
     accumulative: true
+  },
+  {
+    type: 'open-comment',
+    regex: /(<!--)/g,
+    class: 'comment open'
+  },
+  {
+    type: 'close-comment',
+    regex: /(-->)/g,
+    class: 'comment close'
   },
   {
     type: 'tag',
@@ -50,8 +60,8 @@ class HtmlHighlighter {
     return this.lexer.highlight(code);
   }
 
-  getTokens(code) {
-    return this.lexer.getTokens(code);
+  lex(code) {
+    return this.lexer.lex(code);
   }
 }
 

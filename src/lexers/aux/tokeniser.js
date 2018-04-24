@@ -89,6 +89,7 @@ class Token {
     let index;
     let length;
     let previousIndex = 0;
+    let isComment = false;
 
     while (matches) {
       value = matches[1];
@@ -99,7 +100,7 @@ class Token {
         content: this.content.substring(previousIndex, index),
         patterns: otherPatterns,
         index: this.index + previousIndex,
-        className: this.className
+        className: this.isCommented(this.className, isComment)
       });
 
       if (accumulative) {
@@ -107,7 +108,7 @@ class Token {
           content: value,
           patterns: otherPatterns,
           index: this.index + index,
-          className: className
+          className: this.isCommented(className, isComment)
         });
       } else {
         this.elements.push(new Token({
@@ -115,8 +116,14 @@ class Token {
           value: value,
           index: this.index + index,
           length: length,
-          className: className
+          className: this.isCommented(className, isComment)
         }));
+      }
+
+      if (type === 'open-comment') {
+        isComment = true;
+      } else if (type === 'close-comment') {
+        isComment = false;
       }
 
       previousIndex = index + length;
@@ -127,7 +134,7 @@ class Token {
       content: this.content.substring(previousIndex),
       patterns: otherPatterns,
       index: this.index + previousIndex,
-      className: this.className
+      className: this.isCommented(this.className, isComment)
     });
   }
 
@@ -139,6 +146,10 @@ class Token {
     }
 
     this.elements = this.elements.concat(new Token(options).elements);
+  }
+
+  isCommented(className, isComment) {
+    return isComment ? `comment ${className}` : className;
   }
 }
 
