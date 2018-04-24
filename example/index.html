@@ -136,6 +136,26 @@
       </div>
     </script>
 
+    <script type="codeme" class="prettyme css lexer">
+        /* Comment */
+        .example {
+          background-color: #fff;
+          color: rgba(200, 200, 200, 0.5);
+          margin: 10px 10px 0 0;
+          position: relative;
+          content: 'text';
+        }
+  
+        /* c1 */ .commented /* c2 */ { /* c3 */
+        /* c4 */  color /* c5 */ : /* c6 */ #fff /* c7 */ ; /* c8 */
+          margin: 10px 10px /* cv */ 0 0;
+          position: relative;
+          content: 'text';
+          background-image: url('../image.png');
+          background-color: hsl(120, 100%, 75%);
+        /* c9 */ } /* c10 */
+    </script>
+
     <div class="prettyme html parser">
       <div class="example">
         <!-- Comment -->
@@ -145,7 +165,7 @@
       </div>
     </div>
 
-    <div class="prettyme css">
+    <div class="prettyme css parser">
       /* Comment */
       .example {
         background-color: #fff;
@@ -178,6 +198,14 @@
       prettyme.load();
 
       prettyme.init({
+        language: 'css',
+        selector: '.prettyme.css.lexer',
+        compilation: false
+      });
+
+      prettyme.load();
+
+      prettyme.init({
         language: 'html',
         selector: '.prettyme.html.parser'
       });
@@ -186,7 +214,7 @@
 
       prettyme.init({
         language: 'css',
-        selector: '.prettyme.css'
+        selector: '.prettyme.css.parser'
       });
 
       prettyme.load();
