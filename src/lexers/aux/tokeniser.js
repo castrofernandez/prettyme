@@ -4,8 +4,6 @@ class Tokeniser {
   constructor(options) {
     this.options = options;
     this.getElements();
-    this.types = this.elements.map(element => { return element.type; });
-    console.log(this.types);
   }
 
   getElements() {
@@ -13,15 +11,15 @@ class Tokeniser {
       this.elements = [];
     }
 
-    this.elements = new Token({
+    const elements = new Token({
       content: this.content,
       patterns: this.patterns,
       index: 0
-    }).elements.sort((a, b) => { return a.index > b.index; });
-  }
+    }).elements;
 
-  includes(type) {
-    return this.types.includes(type);
+    elements.sort((a, b) => { return a.index - b.index; });
+
+    this.elements = elements;
   }
 
   get content() {
@@ -52,7 +50,7 @@ class Token {
   }
 
   get index() {
-    return this.options.index;
+    return parseInt(this.options.index);
   }
 
   get className() {
@@ -84,7 +82,8 @@ class Token {
     const otherPatterns = patterns.slice(1);
     const type = pattern.type;
     const regex = pattern.regex;
-    const className = pattern.class;
+    const accumulative = pattern.accumulative;
+    const className = [this.className, pattern.class].join(' ').trim();
     let matches = regex.exec(this.content);
     let value;
     let index;
@@ -99,16 +98,26 @@ class Token {
       this.processPart({
         content: this.content.substring(previousIndex, index),
         patterns: otherPatterns,
-        index: this.index + previousIndex
+        index: this.index + previousIndex,
+        className: this.className
       });
 
-      this.elements.push(new Token({
-        type: type,
-        value: value,
-        index: this.index + index,
-        length: length,
-        className: className
-      }));
+      if (accumulative) {
+        this.processPart({
+          content: value,
+          patterns: otherPatterns,
+          index: this.index + index,
+          className: className
+        });
+      } else {
+        this.elements.push(new Token({
+          type: type,
+          value: value,
+          index: this.index + index,
+          length: length,
+          className: className
+        }));
+      }
 
       previousIndex = index + length;
       matches = regex.exec(this.content);
@@ -117,7 +126,8 @@ class Token {
     this.processPart({
       content: this.content.substring(previousIndex),
       patterns: otherPatterns,
-      index: this.index + previousIndex
+      index: this.index + previousIndex,
+      className: this.className
     });
   }
 

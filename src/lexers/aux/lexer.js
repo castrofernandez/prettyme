@@ -1,7 +1,7 @@
 'use strict';
 
 const Tokeniser = require('./tokeniser');
-const Printer = require('./printer');
+const Formatter = require('./formatter');
 
 class Lexer {
   constructor(patterns) {
@@ -9,36 +9,24 @@ class Lexer {
   }
 
   highlight(code) {
-    const lines = code.split('\n');
-    let tokeniser;
-    let tokens = [];
-    let output = [];
-    let inComment = false;
+    return this.formatLines(this.lex(code));
+  }
 
-    lines.forEach(line => {
-      tokeniser = this.getTokeniser(line);
-      tokens = tokeniser.elements;
-      inComment = inComment && !tokeniser.includes('close-comment');
+  lex(code) {
+    const tokens = this.getTokeniser(code).elements;
 
-      if (line.trim() !== '') {
-        output.push(
-          '<p class="line',
-          inComment ? ' commented' : '',
-          '">',
-          new Printer({
-            code: line,
-            tokens: tokens
-          }).insertTokens(),
-          '</p>'
-        );
-      }
+    return new Formatter({
+      code: code,
+      tokens: tokens
+    }).insertTokens();
+  }
 
-      if (tokeniser.includes('open-comment')) {
-        inComment = true;
-      }      
-    });
-
-    return output.join('');
+  formatLines(lines) {
+    return [
+      '<p class="line">',
+      lines.split('\n').join('</p><p class="line">'),
+      '</p>'
+    ].join('');
   }
 
   getTokeniser(code) {
