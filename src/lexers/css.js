@@ -4,19 +4,15 @@ const Lexer = require('./aux/lexer');
 
 const patterns = [
   {
+    type: 'in-angles',
+    regex: /({[^}]*})/g,
+    class: 'in-angles',
+    accumulative: true
+  },
+  {
     type: 'comment',
     regex: /(\/\*((?!\*\/).|\n)+\*\/)/g,
     class: 'comment'
-  },
-  {
-    type: 'open-comment',
-    regex: /(\/\*)/g,
-    class: 'comment open'
-  },
-  {
-    type: 'close-comment',
-    regex: /(\*\/)/g,
-    class: 'comment close'
   },
   {
     type: 'selector',
@@ -27,6 +23,11 @@ const patterns = [
     type: 'property',
     regex: /([a-zA-Z-]+)[^:;{]*:/g,
     class: 'property'
+  },
+  {
+    type: 'text',
+    regex: /('[^']*'|"[^"]*")/g,
+    class: 'value text'
   },
   {
     type: 'function',
@@ -52,6 +53,11 @@ const patterns = [
     type: 'value',
     regex: /:[\s\n\t\r]*([^;]*);/g,
     class: 'value'
+  },
+  {
+    type: 'delimiter',
+    regex: /({|}|:|;|\(|\)|,)/g,
+    class: 'delimiter'
   }
 ];
 
