@@ -40,8 +40,8 @@
       color: #aaa;
     }
 
-    &:not(.in-bracket) {
-      color: #2ECCFA;
+    &.selector {
+      color: #fff;
     }
   }
 } 

@@ -9,6 +9,26 @@ const patterns = [
   //   class: ['comment']
   // },
   {
+    type: 'selector',
+    regex: /[\s\t\n\r]*([^{]+){[^}]*}/g,
+    class: ['selector'],
+    accumulative: true
+  },
+  {
+    type: 'open-value',
+    regex: /(:)/g,
+    class: ['in-value', 'delimiter'],
+    opening: true,
+    relatedClass: 'in-value'
+  },
+  {
+    type: 'close-value',
+    regex: /(;)/g,
+    class: ['in-value', 'delimiter'],
+    closing: true,
+    relatedClass: 'in-value'
+  },
+  {
     type: 'open-comment',
     regex: /(\/\*)/g,
     class: ['comment', 'open-comment'],
@@ -40,20 +60,6 @@ const patterns = [
     type: 'property',
     regex: /([a-zA-Z-]+)[^:;{]*:/g,
     class: ['property']
-  },
-  {
-    type: 'open-value',
-    regex: /{[^{}:]+(:)/g,
-    class: ['in-value', 'delimiter'],
-    opening: true,
-    relatedClass: 'in-value'
-  },
-  {
-    type: 'close-value',
-    regex: /(;)/g,
-    class: ['in-value', 'delimiter'],
-    closing: true,
-    relatedClass: 'in-value'
   },
   {
     type: 'in-angles',
@@ -93,7 +99,7 @@ const patterns = [
   },
   {
     type: 'delimiter',
-    regex: /(\(|\)|,)/g,
+    regex: /(\(|\)|,|:|;)/g,
     class: ['delimiter']
   },
   {
