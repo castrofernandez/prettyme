@@ -3,71 +3,103 @@
 const Lexer = require('./aux/lexer');
 
 const patterns = [
-  {
-    type: 'in-angles',
-    regex: /({[^}]*})/g,
-    class: 'in-angles',
-    accumulative: true
-  },
-  {
-    type: 'comment',
-    regex: /(\/\*((?!\*\/).|\n)+\*\/)/g,
-    class: 'comment'
-  },
+  // {
+  //   type: 'comment',
+  //   regex: /(\/\*((?!\*\/).|\n)+\*\/)/g,
+  //   class: ['comment']
+  // },
   {
     type: 'open-comment',
     regex: /(\/\*)/g,
-    class: 'comment open'
+    class: ['comment', 'open-comment'],
+    opening: true,
+    relatedClass: 'comment'
   },
   {
     type: 'close-comment',
     regex: /(\*\/)/g,
-    class: 'comment close'
+    class: ['comment', 'close-comment'],
+    closing: true,
+    relatedClass: 'comment'
   },
   {
-    type: 'selector',
-    regex: /[\s\n\r\t]*([^\s\n\r\t]+)[\s\n\r\t]*[^{]*{/g,
-    class: 'selector'
+    type: 'open-bracket',
+    regex: /({)/g,
+    class: ['in-bracket', 'delimiter'],
+    opening: true,
+    relatedClass: 'in-bracket'
+  },
+  {
+    type: 'close-bracket',
+    regex: /(})/g,
+    class: ['in-bracket', 'delimiter'],
+    closing: true,
+    relatedClass: 'in-bracket'
   },
   {
     type: 'property',
     regex: /([a-zA-Z-]+)[^:;{]*:/g,
-    class: 'property'
+    class: ['property']
+  },
+  {
+    type: 'open-value',
+    regex: /{[^{}:]+(:)/g,
+    class: ['in-value', 'delimiter'],
+    opening: true,
+    relatedClass: 'in-value'
+  },
+  {
+    type: 'close-value',
+    regex: /(;)/g,
+    class: ['in-value', 'delimiter'],
+    closing: true,
+    relatedClass: 'in-value'
+  },
+  {
+    type: 'in-angles',
+    regex: /({[^}]*})/g,
+    class: ['in-angles'],
+    accumulative: true
   },
   {
     type: 'text',
     regex: /('[^']*'|"[^"]*")/g,
-    class: 'value text'
+    class: ['value', 'text']
   },
   {
     type: 'function',
     regex: /([a-zA-Z\-_]*)[\s\t\r\n]*\(/g,
-    class: 'value function'
+    class: ['value', 'function']
   },
   {
     type: 'color',
     regex: /(#[0-9a-fA-F]{3,6})/g,
-    class: 'value color'
+    class: ['value', 'color']
   },
   {
     type: 'unit',
     regex: /([0-9.]+[a-zA-Z%]+)/g,
-    class: 'value unit'
+    class: ['value', 'unit']
   },
   {
     type: 'number',
     regex: /([0-9.]+)/g,
-    class: 'value number'
+    class: ['value', 'number']
   },
   {
     type: 'value',
     regex: /:[\s\n\t\r]*([^;]*);/g,
-    class: 'value'
+    class: ['value']
   },
   {
     type: 'delimiter',
-    regex: /({|}|:|;|\(|\)|,)/g,
-    class: 'delimiter'
+    regex: /(\(|\)|,)/g,
+    class: ['delimiter']
+  },
+  {
+    type: 'word',
+    regex: /([^\s\t\r\n]+)/g,
+    class: ['word']
   }
 ];
 

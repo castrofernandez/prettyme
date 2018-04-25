@@ -33,6 +33,7 @@
         top: 20px;
         right: 20px;
         font-size: 30px;
+        color: #aaa;
       }
 
       .prettyme.css::after {
@@ -41,85 +42,77 @@
         top: 20px;
         right: 20px;
         font-size: 30px;
-      }
-
-      .prettyme.html {
-        color: #fff;
-      }
-
-      .prettyme.html .delimiter,
-      .prettyme.html .comment {
         color: #aaa;
       }
 
-      .prettyme :not(.commented) .tab {
+      .prettyme.parser :not(.commented) .tab {
         margin-left: 20px;
       }
 
-      .prettyme :not(.commented) .tag,
-      .prettyme :not(.commented) .property {
+      .prettyme.parser :not(.commented) .tag,
+      .prettyme.parser :not(.commented) .property {
         color: #5882FA;
       }
 
-      .prettyme  :not(.commented) .text {
+      .prettyme.parser  :not(.commented) .text {
         color: #fff;
       }
 
-      .prettyme :not(.commented) .in-angles.attribute,
-      .prettyme :not(.commented) .selector {
+      .prettyme.parser :not(.commented) .in-angles.attribute,
+      .prettyme.parser :not(.commented) .selector {
         color: #2ECCFA;
       }
 
-      .prettyme :not(.commented) .selector {
+      .prettyme.parser :not(.commented) .selector {
         margin-right: 10px;
       } 
 
-      .prettyme :not(.commented) .value {
+      .prettyme.parser :not(.commented) .value {
         color: #FFBF00;
       }
 
-      .prettyme.css :not(.commented) .value:not(.param) {
+      .prettyme.parser.css :not(.commented) .value:not(.param) {
         margin-left: 10px;
       }
 
-      .prettyme :not(.commented) .param:not(.first) {
+      .prettyme.parser :not(.commented) .param:not(.first) {
         margin-left: 10px;
       }
 
-      .prettyme.css :not(.commented) .comment, .prettyme.css .commented {
+      .prettyme.parser.css :not(.commented) .comment, .prettyme.parser.css .commented {
         margin-left: 10px;
         color: #01DFA5;
       }
 
-      .prettyme :not(.commented) .string {
+      .prettyme.parser :not(.commented) .string {
         color: #FFBF00;
       }
 
-      .prettyme :not(.commented) .word {
+      .prettyme.parser :not(.commented) .word {
         color: #F781F3;
       }
 
-      .prettyme :not(.commented) .color {
+      .prettyme.parser :not(.commented) .color {
         color: #9F81F7;
       }
 
-      .prettyme :not(.commented) .function {
+      .prettyme.parser :not(.commented) .function {
         color: #F3F781;
       }
 
-      .prettyme :not(.commented) .number {
+      .prettyme.parser :not(.commented) .number {
         color: #BFFF00;
       }
 
-      .prettyme :not(.commented) .unit {
+      .prettyme.parser :not(.commented) .unit {
         color: #58D3F7;
       }
 
-      .prettyme :not(.commented) .selector + .comment {
+      .prettyme.parser :not(.commented) .selector + .comment {
         margin: 0 10px 0 0;
       }
 
-      .prettyme :not(.commented) .color-preview {
+      .prettyme.parser :not(.commented) .color-preview {
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -135,6 +128,7 @@
     <h1>prettyme</h1>
 
     <script type="codeme" class="prettyme html lexer">
+      <!--
       <div class="example" style="margin:0;" data-imp>
          <!-- Comment -->
         <input  type="text"
@@ -154,7 +148,7 @@
 
     <script type="codeme" class="prettyme css lexer">
         /* Comment */
-        .example {
+        .example:not(.e1) {
           background-color: #fff;
           color: rgba(200, 200, 200, 0.5);
           margin: 10px 10px 0 0;
@@ -168,7 +162,7 @@
         */
   
         /* c1 */ .commented /* c2 */ { /* c3 */
-        /* c4 */  color /* c5 */ : /* c6 */ #fff /* c7 */ ; /* c8 */
+        /* c4 */  color /* c5 */ : /* c6 */ red /* c7 */ ; /* c8 */
           margin: 10px 10px /* cv */ 0 0;
           position: relative;
           content: 'text';

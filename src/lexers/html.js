@@ -3,51 +3,55 @@
 const Lexer = require('./aux/lexer');
 
 const patterns = [
-  {
-    type: 'comment',
-    regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>)/g,
-    class: 'comment'
-  },
-  {
-    type: 'in-angles',
-    regex: /(<[^>]*>)/g,
-    class: 'in-angles',
-    accumulative: true
-  },
+  // {
+  //   type: 'comment',
+  //   regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>)/g,
+  //   class: ['comment']
+  // },
   {
     type: 'open-comment',
     regex: /(<!--)/g,
-    class: 'comment open'
+    class: ['comment', 'open'],
+    opening: true,
+    relatedClass: 'comment'
   },
   {
     type: 'close-comment',
     regex: /(-->)/g,
-    class: 'comment close'
+    class: ['comment', 'close'],
+    closing: true,
+    relatedClass: 'comment'
+  },
+  {
+    type: 'in-angles',
+    regex: /(<[^>]*>)/g,
+    class: ['in-angles'],
+    accumulative: true
   },
   {
     type: 'tag',
     regex: /<([^\s>/!]+)/g,
-    class: 'tag open'
+    class: ['tag', 'open']
   },
   {
     type: 'close',
     regex: /<\/([^\s>/!]+)>/g,
-    class: 'tag close'
+    class: ['tag', 'close']
   },
   {
     type: 'value',
     regex: /=\s*("[^"]*"|'[^']*'|[^\s"']*)/g,
-    class: 'value'
+    class: ['value']
   },
   {
     type: 'attribute',
     regex: /\s([^\s=/><"]+)/g,
-    class: 'attribute'
+    class: ['attribute']
   },
   {
     type: 'delimiter',
     regex: /(<\/|<|>|\/>|=)/g,
-    class: 'delimiter'
+    class: ['delimiter']
   }
 ];
 

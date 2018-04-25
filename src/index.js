@@ -1,5 +1,8 @@
 'use strict';
 
+require('./sass/html.scss');
+require('./sass/css.scss');
+
 // https://pegjs.org/documentation
 
 const htmlParse = require('./parsers/html');

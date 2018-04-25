@@ -1,0 +1,30 @@
+$c-default: #aaa;
+
+.prettyme.html.lexer {
+  color: #fff;
+
+  .comment {
+    color: $c-default;
+  }
+
+  :not(.comment) {
+    &.delimiter,
+    &.comment {
+      color: $c-default;
+    }
+
+    &.in-angles {
+      &.tag {
+        color: #5882FA;
+      }
+
+      &.attribute {
+        color: #2ECCFA;
+      }
+
+      &.value {
+        color: #FFBF06;
+      }
+    }
+  }
+}

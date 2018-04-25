@@ -31,7 +31,7 @@ class Formatter {
   }
 
   formatValue(value, className) {
-    const start = `<span class="${className}">`;
+    const start = `<span class="${Array.from(className).join(' ')}">`;
     const end = '</span>';
 
     return [

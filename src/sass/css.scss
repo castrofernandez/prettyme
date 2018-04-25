@@ -1,0 +1,47 @@
+.prettyme.css.lexer {
+  color: #2ECCFA;
+
+  .comment {
+    color: #01DFA6;
+  }
+
+  :not(.comment) {
+    &.property,
+    &.word.in-bracket:not(.in-value) {
+      color: #5882FA;
+    }
+
+    &.value,
+    &.in-value {
+      color: #F781F3;
+    }
+
+    &.color {
+      color: #9F81F7;
+    }
+
+    &.function {
+      color: #F3F783;
+    }
+
+    &.number {
+      color: #BFFF00;
+    }
+
+    &.text {
+      color: #FFBF00;
+    }
+
+    &.unit {
+      color: #58D3F7;
+    }
+
+    &.delimiter {
+      color: #aaa;
+    }
+
+    &:not(.in-bracket) {
+      color: #2ECCFA;
+    }
+  }
+} 

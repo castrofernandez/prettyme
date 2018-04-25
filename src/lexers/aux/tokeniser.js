@@ -1,5 +1,7 @@
 'use strict';
 
+const Limits = require('./limits');
+
 class Tokeniser {
   constructor(options) {
     this.options = options;
@@ -11,13 +13,18 @@ class Tokeniser {
       this.elements = [];
     }
 
+    const taggedLimits = new Limits();
+
     const elements = new Token({
       content: this.content,
       patterns: this.patterns,
-      index: 0
+      index: 0,
+      taggedLimits: taggedLimits
     }).elements;
 
     elements.sort((a, b) => { return a.index - b.index; });
+
+    taggedLimits.addLimits();
 
     this.elements = elements;
   }
@@ -37,7 +44,7 @@ class Token {
     this.elements = [];
 
     if (!this.empty) {
-      this.applyPatterns(this.patterns);
+      this.applyPatterns();
     }
   }
 
@@ -54,7 +61,7 @@ class Token {
   }
 
   get className() {
-    return this.options.className;
+    return this.options.className || new Set();
   }
 
   get length() {
@@ -73,23 +80,38 @@ class Token {
     return !this.content || this.content.trim() === '';
   }
 
-  applyPatterns(patterns) {
-    if (patterns.length === 0) {
+  get taggedLimits() {
+    return this.options.taggedLimits;
+  }
+
+  get relatedClass() {
+    return this.options.pattern ? this.options.pattern.relatedClass : null;
+  }
+
+  get isOpening() {
+    return this.options.pattern && this.options.pattern.opening;
+  }
+
+  get isClosing() {
+    return this.options.pattern && this.options.pattern.closing;
+  }
+
+  applyPatterns() {
+    if (this.patterns.length === 0) {
       return;
     }
 
-    const pattern = patterns[0];
-    const otherPatterns = patterns.slice(1);
-    const type = pattern.type;
+    const pattern = this.patterns[0];
+    const otherPatterns = this.patterns.slice(1);
     const regex = pattern.regex;
-    const accumulative = pattern.accumulative;
-    const className = [this.className, pattern.class].join(' ').trim();
+    const className = new Set(this.className);
     let matches = regex.exec(this.content);
     let value;
     let index;
     let length;
     let previousIndex = 0;
-    let isComment = false;
+
+    pattern.class.forEach(element => { className.add(element); });
 
     while (matches) {
       value = matches[1];
@@ -100,30 +122,25 @@ class Token {
         content: this.content.substring(previousIndex, index),
         patterns: otherPatterns,
         index: this.index + previousIndex,
-        className: this.isCommented(this.className, isComment)
+        className: this.className
       });
 
-      if (accumulative) {
+      if (pattern.accumulative) {
         this.processPart({
           content: value,
           patterns: otherPatterns,
           index: this.index + index,
-          className: this.isCommented(className, isComment)
+          className: className
         });
       } else {
-        this.elements.push(new Token({
-          type: type,
+        this.generateToken({
+          type: pattern.type,
           value: value,
           index: this.index + index,
           length: length,
-          className: this.isCommented(className, isComment)
-        }));
-      }
-
-      if (type === 'open-comment') {
-        isComment = true;
-      } else if (type === 'close-comment') {
-        isComment = false;
+          className: className,
+          pattern: pattern
+        });
       }
 
       previousIndex = index + length;
@@ -134,22 +151,25 @@ class Token {
       content: this.content.substring(previousIndex),
       patterns: otherPatterns,
       index: this.index + previousIndex,
-      className: this.isCommented(this.className, isComment)
+      className: this.className
     });
   }
 
   processPart(options) {
-    const content = options.content.trim();
+    if (options.content.trim() !== '') {
+      options = Object.assign(options, {
+        taggedLimits: this.taggedLimits
+      });
 
-    if (content === '') {
-      return;
+      this.elements = this.elements.concat(new Token(options).elements);
     }
-
-    this.elements = this.elements.concat(new Token(options).elements);
   }
 
-  isCommented(className, isComment) {
-    return isComment ? `comment ${className}` : className;
+  generateToken(options) {
+    const token = new Token(options);
+
+    this.taggedLimits.store(token);
+    this.elements.push(token);
   }
 }
 
