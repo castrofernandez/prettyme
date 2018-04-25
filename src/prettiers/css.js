@@ -1,17 +1,20 @@
 'use strict';
 
-const cssPrettier = (function() {
-  var outputLines;
-  var line = 0;
+class CssPrettier {
+  constructor() {
+    this.outputLines = null;
+    this.line = 0;
+  }
 
-  function format(parser, code) {
-    var rules = parser(code.trim());
-    var i, rule;
-    var length = rules.length;
+  format(parser, code) {
+    const rules = parser(code.trim());
+    let i;
+    let rule;
+    const length = rules.length;
 
-    outputLines = [];
-    line = -1;
-    newLine();
+    this.outputLines = [];
+    this.line = -1;
+    this.newLine();
 
     for (i = 0; i < length; i++) {
       rule = rules[i];
@@ -20,16 +23,16 @@ const cssPrettier = (function() {
         continue;
       }
 
-      formatRule(rule);
+      this.formatRule(rule);
     }
 
-    return formatLines();
+    return this.formatLines();
   }
 
-  function formatLines() {
+  formatLines() {
     let output = [];
 
-    outputLines.filter(line => line.value).forEach(line => {
+    this.outputLines.filter(line => line.value).forEach(line => {
       const tab = line.tab;
       const value = line.value;
       const lineClass = tab ? 'line tab' : 'line';
@@ -42,106 +45,110 @@ const cssPrettier = (function() {
     return output.join('');
   }
 
-  function formatRule(rule) {
+  formatRule(rule) {
     rule.comments = rule.comments || {};
 
     if (rule.comments.p1) {
-      getTab(false);
-      formatComments(rule.comments.p1);
+      this.getTab(false);
+      this.formatComments(rule.comments.p1);
     }
 
-    formatSelector(rule);
-    formatDeclarations(rule);
-    formatClosing();
+    this.formatSelector(rule);
+    this.formatDeclarations(rule);
+    this.formatClosing();
 
     if (rule.comments.p5) {
-      getTab(false);
-      formatComments(rule.comments.p5);
+      this.getTab(false);
+      this.formatComments(rule.comments.p5);
     }
   }
 
-  function formatSelector(rule) {
-    getTab(false);
-    addClasses(rule.selector, 'selector');
-    formatComments(rule.comments.p2);
-    push('{');
-    formatComments(rule.comments.p3);
-    newLine();
+  formatSelector(rule) {
+    this.getTab(false);
+    this.addClasses(rule.selector, 'selector');
+    this.formatComments(rule.comments.p2);
+    this.push('{');
+    this.formatComments(rule.comments.p3);
+    this.newLine();
   }
 
-  function formatDeclarations(rule) {
-    var declarations = rule.declarations;
-    var length = declarations.length;
-    var declaration, i, property, value, comments;
+  formatDeclarations(rule) {
+    const declarations = rule.declarations;
+    const length = declarations.length;
+    let declaration;
+    let i;
+    let property;
+    let value;
+    let comments;
 
     for (i = 0; i < length; i++) {
       declaration = declarations[i];
       property = declaration.property;
       value = declaration.value;
       comments = declaration.comments || {};
-      getTab(true);
+      this.getTab(true);
 
-      formatComments(comments.p1);
-      addClasses(property, 'property');
-      formatComments(comments.p2);
-      push(':');
-      formatComments(comments.p3);
+      this.formatComments(comments.p1);
+      this.addClasses(property, 'property');
+      this.formatComments(comments.p2);
+      this.push(':');
+      this.formatComments(comments.p3);
 
-      formatValue(value, [], true);
+      this.formatValue(value, [], true);
 
-      formatComments(comments.p4);
-      push(';');
-      formatComments(comments.p5);
-      newLine();
+      this.formatComments(comments.p4);
+      this.push(';');
+      this.formatComments(comments.p5);
+      this.newLine();
     }
   }
 
-  function formatValue(values, classes, addPositionClasses) {
-    var length = values.length;
-    var i;
+  formatValue(values, classes, addPositionClasses) {
+    const length = values.length;
+    let i;
 
     for (i = 0; i < length; i++) {
-      getValue(values[i], addPositionClasses ? getParamClass(classes, i, length) : classes);
+      this.getValue(values[i], addPositionClasses ? this.getParamClass(classes, i, length) : classes);
     }
   }
 
-  function getValue(value, classes) {
+  getValue(value, classes) {
     classes = classes || '';
 
     switch (value.type) {
       case 'function':
-        getFunctionValue(value, classes);
+        this.getFunctionValue(value, classes);
         break;
       case 'comment':
-        addClasses(['/* ', value.value, ' */'], mergeClasses(['value comment'], classes));
+        this.addClasses(['/* ', value.value, ' */'], this.mergeClasses(['value comment'], classes));
         break;
       case 'string':
-        addClasses(['\'', value.value, '\''], mergeClasses(['value string'], classes));
+        this.addClasses(['\'', value.value, '\''], this.mergeClasses(['value string'], classes));
         break;
       default:
-        addClasses(value.value, mergeClasses(['value', value.type], classes));
+        this.addClasses(value.value, this.mergeClasses(['value', value.type], classes));
     }
 
-    addColourPreview(value);
+    this.addColourPreview(value);
   }
 
-  function getFunctionValue(value, classes) {
-    addClasses(value.name, mergeClasses(['value function'], classes));
-    push('(');
-    getFunctionParams(value.params);
-    push(')');
+  getFunctionValue(value, classes) {
+    this.addClasses(value.name, this.mergeClasses(['value function'], classes));
+    this.push('(');
+    this.getFunctionParams(value.params);
+    this.push(')');
   }
 
-  function addColourPreview(value) {
-    var colour = getColour(value);
+  addColourPreview(value) {
+    const colour = this.getColour(value);
 
     if (colour) {
-      push(['<span class="color-preview" style="background-color:', colour, ';"></span>'].join(''));
+      this.push(['<span class="color-preview" style="background-color:', colour, ';"></span>'].join(''));
     }
   }
 
-  function getColour(value) {
-    var type = value.type;
+  getColour(value) {
+    const type = value.type;
 
     if (type === 'color') {
       return value.value;
@@ -151,17 +158,17 @@ const cssPrettier = (function() {
       return null;
     }
 
-    return getColourFunction(value);
+    return this.getColourFunction(value);
   }
 
-  function getColourFunction(value) {
-    var result = [value.name, '('];
-    var processedParams = [];
-    var params = value.params;
-    var param;
-    var length = params.length;
-    var i;
-    var j;
+  getColourFunction(value) {
+    const result = [value.name, '('];
+    const processedParams = [];
+    const params = value.params;
+    let param;
+    const length = params.length;
+    let i;
+    let j;
 
     for (i = 0; i < length; i++) {
       param = params[i];
@@ -180,27 +187,27 @@ const cssPrettier = (function() {
     return result.join('');
   }
 
-  function mergeClasses(a, b) {
+  mergeClasses(a, b) {
     return a.concat(b).join(' ').replace(/ +(?= )/g, '');
   }
 
-  function getFunctionParams(params) {
-    var length = params.length;
-    var i;
-    var param;
+  getFunctionParams(params) {
+    const length = params.length;
+    let i;
+    let param;
 
     for (i = 0; i < length; i++) {
       param = params[i];
-      formatValue(param, getParamClass(['param'], i, length), false);
+      this.formatValue(param, this.getParamClass(['param'], i, length), false);
 
       if (i < length - 1) {
-        push(',');
+        this.push(',');
       }
     }
   }
 
-  function getParamClass(classes, pos, length) {
-    var result = new Array(classes) || [];
+  getParamClass(classes, pos, length) {
+    const result = new Array(classes) || [];
 
     result.push('p' + pos);
 
@@ -215,67 +222,63 @@ const cssPrettier = (function() {
     return result;
   }
 
-  function formatClosing() {
-    getTab(false);
-    push('}');
-    newLine();
+  formatClosing() {
+    this.getTab(false);
+    this.push('}');
+    this.newLine();
   }
 
-  function formatComments(comments) {
+  formatComments(comments) {
     if (!comments) {
       return;
     }
 
-    var length = comments.length;
-    var i;
+    const length = comments.length;
+    let i;
 
     for (i = 0; i < length; i++) {
-      addClasses(['/* ', comments[i], ' */'], 'comment');
+      this.addClasses(['/* ', comments[i], ' */'], 'comment');
     }
   }
 
-  function getTab(tab) {
-    outputLines[line].tab = tab ? 1 : 0;
+  getTab(tab) {
+    this.outputLines[this.line].tab = tab ? 1 : 0;
   }
 
-  function newLine() {
-    outputLines.push({});
+  newLine() {
+    this.outputLines.push({});
 
-    line++;
+    this.line++;
   }
 
-  function addClasses(text, classes) {
+  addClasses(text, classes) {
     if (!(text instanceof Array)) {
       text = [text];
     }
 
-    var length = text.length;
-    var i;
+    const length = text.length;
+    let i;
 
-    push('<span class="', classes, '">');
+    this.push('<span class="', classes, '">');
 
     for (i = 0; i < length; i++) {
-      push(text[i]);
+      this.push(text[i]);
     }
 
-    push('</span>');
+    this.push('</span>');
   }
 
-  function push(...text) {
-    if (!outputLines[line].value) {
-      outputLines[line].value = [];
+  push(...text) {
+    if (!this.outputLines[this.line].value) {
+      this.outputLines[this.line].value = [];
     }
 
     text.forEach(value => {
-      outputLines[line].value.push(value);
+      this.outputLines[this.line].value.push(value);
     });
   }
-
-  return {
-    format: format
-  };
-})();
+};
 
 if (typeof module !== 'undefined') {
-  module.exports = cssPrettier;
+  module.exports = new CssPrettier();
 }
