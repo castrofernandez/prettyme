@@ -1,37 +1,8 @@
 'use strict';
 
-class HtmlPrettier {
-  constructor() {
-    this.tab = 0;
-    this.line = 0;
-    this.outputLines = null;
-  }
+const Formatter = require('./_formatter');
 
-  format(parser, code) {
-    const elements = parser(code.trim());
-    let i;
-    let element;
-    const length = elements.length;
-
-    this.tab = 0;
-    this.line = 0;
-    this.outputLines = [{}];
-
-    for (i = 0; i < length; i++) {
-      element = elements[i];
-
-      if (!element) {
-        continue;
-      }
-
-      this.formatElement(element);
-      this.outputLines.push({});
-      this.line++;
-    }
-
-    return this.formatLines();
-  }
-
+class HtmlPrettier extends Formatter {
   formatLines() {
     const output = [];
 
@@ -49,20 +20,29 @@ class HtmlPrettier {
   }
 
   formatElement(element) {
+    let output = null;
+
     switch (element.type) {
       case 'open':
-        return this.formatOpenTag(element);
+        output = this.formatOpenTag(element);
+        break;
       case 'close':
-        return this.formatCloseTag(element);
+        output = this.formatCloseTag(element);
+        break;
       case 'empty':
-        return this.formatEmptyTag(element);
+        output = this.formatEmptyTag(element);
+        break;
       case 'text':
-        return this.formatText(element);
+        output = this.formatText(element);
+        break;
       case 'comment':
-        return this.formatComment(element);
+        output = this.formatComment(element);
+        break;
     }
 
-    return null;
+    this.newLine();
+
+    return output;
   }
 
   formatOpenTag(element) {
@@ -130,33 +110,6 @@ class HtmlPrettier {
 
   getTab() {
     this.outputLines[this.line].tab = this.tab;
-  }
-
-  addClasses(text, classes) {
-    if (!(text instanceof Array)) {
-      text = [text];
-    }
-
-    const length = text.length;
-    let i;
-
-    this.push('<span class="');
-    this.push(classes);
-    this.push('">');
-
-    for (i = 0; i < length; i++) {
-      this.push(text[i]);
-    }
-
-    this.push('</span>');
-  }
-
-  push(text) {
-    if (!this.outputLines[this.line].value) {
-      this.outputLines[this.line].value = [];
-    }
-
-    this.outputLines[this.line].value.push(text);
   }
 };
 

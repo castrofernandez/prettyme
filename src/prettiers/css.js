@@ -1,51 +1,9 @@
 'use strict';
 
-class CssPrettier {
-  constructor() {
-    this.outputLines = null;
-    this.line = 0;
-  }
+const Formatter = require('./_formatter');
 
-  format(parser, code) {
-    const rules = parser(code.trim());
-    let i;
-    let rule;
-    const length = rules.length;
-
-    this.outputLines = [];
-    this.line = -1;
-    this.newLine();
-
-    for (i = 0; i < length; i++) {
-      rule = rules[i];
-
-      if (!rule) {
-        continue;
-      }
-
-      this.formatRule(rule);
-    }
-
-    return this.formatLines();
-  }
-
-  formatLines() {
-    let output = [];
-
-    this.outputLines.filter(line => line.value).forEach(line => {
-      const tab = line.tab;
-      const value = line.value;
-      const lineClass = tab ? 'line tab' : 'line';
-
-      output.push(
-        `<p class="${lineClass}">${value.join('')}</p>`
-      );
-    });
-
-    return output.join('');
-  }
-
-  formatRule(rule) {
+class CssPrettier extends Formatter {
+  formatElement(rule) {
     rule.comments = rule.comments || {};
 
     if (rule.comments.p1) {
@@ -243,39 +201,6 @@ class CssPrettier {
 
   getTab(tab) {
     this.outputLines[this.line].tab = tab ? 1 : 0;
-  }
-
-  newLine() {
-    this.outputLines.push({});
-
-    this.line++;
-  }
-
-  addClasses(text, classes) {
-    if (!(text instanceof Array)) {
-      text = [text];
-    }
-
-    const length = text.length;
-    let i;
-
-    this.push('<span class="', classes, '">');
-
-    for (i = 0; i < length; i++) {
-      this.push(text[i]);
-    }
-
-    this.push('</span>');
-  }
-
-  push(...text) {
-    if (!this.outputLines[this.line].value) {
-      this.outputLines[this.line].value = [];
-    }
-
-    text.forEach(value => {
-      this.outputLines[this.line].value.push(value);
-    });
   }
 };
 
