@@ -7,8 +7,11 @@ const env = require('yargs').argv.env; // use --env with webpack 2
 const pkg = require('./package.json');
 
 let libraryName = pkg.name;
+let outputFile;
 
-let plugins = [], outputFile;
+const plugins = [
+  new webpack.HotModuleReplacementPlugin()
+];
 
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ }));
@@ -17,9 +20,8 @@ if (env === 'build') {
   outputFile = libraryName + '.js';
 }
 
-const config = {
+const baseConfig = {
   mode: 'development',
-  entry: __dirname + '/src/index.js',
   devtool: 'source-map',
   output: {
     path: __dirname + '/dist',
@@ -27,12 +29,6 @@ const config = {
     library: libraryName,
     libraryTarget: 'umd',
     umdNamedDefine: true
-  },
-  devServer: {
-    host: '0.0.0.0',
-    port: 8383,
-    inline: true,
-    hot: true
   },
   module: {
     rules: [
@@ -59,4 +55,40 @@ const config = {
   plugins: plugins
 };
 
-module.exports = config;
+const mainConfig = Object.assign({}, baseConfig, {
+  entry: [__dirname + '/src/index.js'],
+  devServer: {
+    host: '0.0.0.0',
+    port: 8383,
+    inline: true,
+    hot: true
+  }
+});
+
+const htmlConfig = Object.assign({}, baseConfig, {
+  entry: [__dirname + '/src/languages/html.js'],
+  output: {
+    path: __dirname + '/dist/languages',
+    filename: 'html.js',
+    library: libraryName,
+    libraryTarget: 'umd',
+    umdNamedDefine: true
+  }
+});
+
+const cssConfig = Object.assign({}, baseConfig, {
+  entry: [__dirname + '/src/languages/css.js'],
+  output: {
+    path: __dirname + '/dist/languages',
+    filename: 'css.js',
+    library: libraryName,
+    libraryTarget: 'umd',
+    umdNamedDefine: true
+  }
+});
+
+module.exports = [
+  mainConfig,
+  cssConfig,
+  htmlConfig
+];

@@ -1,30 +1,39 @@
 'use strict';
 
-require('./sass/html.scss');
-require('./sass/css.scss');
-
 // https://pegjs.org/documentation
 
 const Formatter = require('./formatter');
-const htmlParse = require('./parsers/html');
-const cssParse = require('./parsers/css');
-const htmlPrettier = require('./prettiers/html');
-const cssPrettier = require('./prettiers/css');
-const htmlHighlighter = require('./lexers/html');
-const cssHighlighter = require('./lexers/css');
+const Language = require('./languages/_language');
 
 const defaultOptions = {
   compilation: true,
-  parser: htmlParse.parse,
-  prettier: null,
-  highlighter: null,
+  language: null,
   selector: '.prettyme'
 };
 
 class Prettyme {
   constructor() {
-    this.languages = ['html', 'css'];
     this.options = null;
+  }
+
+  get language() {
+    return this.options.language;
+  }
+
+  get parser() {
+    return this.languageConfig ? this.languageConfig.parser : null;
+  }
+
+  get prettier() {
+    return this.languageConfig ? this.languageConfig.prettier : null;
+  }
+
+  get lexer() {
+    return this.languageConfig ? this.languageConfig.lexer : null;
+  }
+
+  get languageConfig() {
+    return Language.get(this.language);
   }
 
   init(customOptions) {
@@ -62,26 +71,25 @@ class Prettyme {
 
   parse(code, customOptions) {
     this.setOptions(customOptions);
-    this.checkParser();
+    this.checkLanguage();
 
-    return this.options.parser(code);
+    return this.parser(code);
   }
 
   format(code, customOptions) {
     this.setOptions(customOptions);
 
-    this.checkParser();
-    this.checkPrettier();
-    return this.options.prettier.format(this.options.parser, code);
+    this.checkLanguage();
+    return this.prettier.format(this.parser, code);
   }
 
   highlight(code, customOptions) {
     this.setOptions(customOptions);
-    this.checkHighlighter(true);
+    this.checkLanguage();
 
     return new Formatter({
       code: code,
-      tokens: this.options.highlighter.lex(code)
+      tokens: this.lexer.lex(code)
     }).formatLines();
   }
 
@@ -95,46 +103,13 @@ class Prettyme {
     }
 
     if (customOptions && customOptions.language) {
-      this.checkLanguage(customOptions.language);
-      this.getParser(customOptions.language);
-      this.getPrettier(customOptions.language);
-      this.getHighlighter(customOptions.language);
+      this.checkLanguage();
     }
   }
 
-  getParser(language) {
-    this.options.parser = language === 'html' ? htmlParse.parse : cssParse.parse;
-  }
-
-  getPrettier(language) {
-    this.options.prettier = language === 'html' ? htmlPrettier : cssPrettier;
-  }
-
-  getHighlighter(language) {
-    this.options.highlighter = language === 'html' ? htmlHighlighter : cssHighlighter;
-  }
-
-  checkLanguage(language) {
-    if (!this.languages.includes(language)) {
-      throw new Error(`Invalid language "${language}". Valid languages are: ${this.languages.join(', ')}`);
-    }
-  }
-
-  checkParser() {
-    if (!this.options.parser) {
-      throw new Error('Parser has not been set.\nUse prettyme.init({ parser: <parserObj> });');
-    }
-  }
-
-  checkPrettier() {
-    if (!this.options.prettier) {
-      throw new Error('Prettier has not been set.\nUse prettyme.init({ prettier: <prettierObj> });');
-    }
-  }
-
-  checkHighlighter() {
-    if (!this.options.highlighter) {
-      throw new Error('Highlighter has not been set.\nUse prettyme.init({ highlighter: <prettierObj> });');
+  checkLanguage() {
+    if (!this.languageConfig) {
+      throw new Error(`Invalid language "${this.language}". Loaded languages are: ${Language.languages.join(', ')}`);
     }
   }
 };
