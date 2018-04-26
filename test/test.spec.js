@@ -1,7 +1,10 @@
 'use strict';
 
+require('babel-register');
 const {expect} = require('chai');
 const prettyme = require('../src/index');
+require('../src/languages/html');
+require('../src/languages/css');
 
 describe('prettyme: parsing HTML', function () {
   before(async function () {

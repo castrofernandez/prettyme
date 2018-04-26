@@ -44,13 +44,13 @@ const baseConfig = {
       },
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        loaders: ["style-loader", "css-loader", "sass-loader", "postcss-loader"]
       }
     ]
   },
   resolve: {
-    modules: [path.resolve('./node_modules'), path.resolve('./src')],
-    extensions: ['.json', '.js']
+    modules: [path.resolve('./node_modules'), path.resolve('./src'), path.resolve('./src/sass')],
+    extensions: ['.json', '.js', '.scss']
   },
   plugins: plugins
 };

@@ -1,4 +1,6 @@
-require('../sass/html.scss');
+if (typeof window !== 'undefined') {
+  require('../sass/html.scss');
+}
 
 const Language = require('./_language');
 
