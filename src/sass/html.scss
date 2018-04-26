@@ -1,29 +1,30 @@
-$c-default: #aaa;
+@import '_prettyme';
 
 .prettyme.html.lexer {
-  color: #fff;
+  color: $c-default-dark;
 
   .comment {
     color: $c-default;
+    font-style: italic;
   }
 
   :not(.comment) {
     &.delimiter,
     &.comment {
-      color: $c-default;
+      color: $c-default-dark;
     }
 
     &.in-angles {
       &.tag {
-        color: #5882FA;
+        color: $c-primary;
       }
 
       &.attribute {
-        color: #2ECCFA;
+        color: $c-secondary;
       }
 
       &.value {
-        color: #FFBF06;
+        color: $c-tertiary;
       }
     }
   }

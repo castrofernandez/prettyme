@@ -1,19 +1,22 @@
+@import '_prettyme';
+
 .prettyme.css.lexer {
   color: #2ECCFA;
 
   .comment {
-    color: #01DFA6;
+    color: $c-default;
   }
 
   :not(.comment) {
     &.property,
-    &.word.in-bracket:not(.in-value) {
-      color: #5882FA;
+    &.word.in-bracket:not(.value) {
+      color: $c-secondary;
     }
 
     &.value,
-    &.in-value {
-      color: #F781F3;
+    &.in-value,
+    &.word.in-value:not(.property) {
+      color: $c-tertiary;
     }
 
     &.color {
@@ -21,27 +24,24 @@
     }
 
     &.function {
-      color: #F3F783;
+      color: #ff3385;
     }
 
-    &.number {
-      color: #BFFF00;
+    &.number,
+    &.unit {
+      color: #00cca3;
     }
 
     &.text {
-      color: #FFBF00;
-    }
-
-    &.unit {
-      color: #58D3F7;
+      color: #F781F3;
     }
 
     &.delimiter {
-      color: #aaa;
+      color: $c-default-dark;
     }
 
     &.selector {
-      color: #fff;
+      color: $c-primary;
     }
   }
 } 

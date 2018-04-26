@@ -1,0 +1,36 @@
+$c-default: #aaa;
+$c-default-dark: #777;
+
+$c-primary: #396cf9;
+$c-secondary: #06ade0;
+$c-tertiary: #ffbf00;
+
+.prettyme {
+  padding: 5px 20px 5px 80px;
+  margin-bottom: 40px;
+  color: #444;
+  position: relative;
+
+  &.theme-dark {
+    background-color: #444;
+    color: $c-default;
+  }
+
+  &.numbered {
+    counter-reset: lines;
+
+    .line {
+      position: relative;
+
+      &::before {
+        counter-increment: lines;
+        content: counter(lines);
+        position: absolute;
+        left: -80px;
+        text-align: right;
+        color: lighten($c-default, 15%);
+        min-width: 40px;
+      }
+    }
+  }
+}

@@ -36,6 +36,14 @@ class Prettyme {
     return Language.get(this.language);
   }
 
+  get theme() {
+    return this.options.theme || 'default';
+  }
+
+  get showLines() {
+    return !!this.options.lines;
+  }
+
   init(customOptions) {
     this.options = null;
     this.setOptions(customOptions);
@@ -52,9 +60,23 @@ class Prettyme {
     for (i = 0; i < length; i++) {
       preview = previews[i];
       container = this.getContainer(preview);
+      this.addTheme(container);
 
       container.innerHTML = this.options.compilation ? this.format(preview.innerHTML) : this.highlight(preview.innerHTML);
     }
+  }
+
+  addTheme(container) {
+    const theme = `theme-${this.theme}`;
+    const classes = new Set(container.className.split(' '));
+
+    classes.add(theme);
+
+    if (this.showLines) {
+      classes.add('numbered');
+    }
+
+    container.className = Array.from(classes).join(' ');
   }
 
   getContainer(element) {

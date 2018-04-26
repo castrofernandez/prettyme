@@ -3,123 +3,47 @@
   <head>
     <meta charset="UTF-8">
     <title>prettyme</title>
-    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,400i" rel="stylesheet">
     <style>
       body {
-        font-family: 'Inconsolata', monospace;
-        width: 800px;
+        font-family: 'Roboto Mono', monospace;
+        width: 900px;
         margin: 0 auto;
         padding: 30px 0;
         color: #444;
       }
 
       h1 {
-        margin-bottom: 40px;
+        font-size: 60px;
+        line-height: 50px;
+        margin: 0 0 30px 80px;
       }
 
       .prettyme {
-        padding: 5px 20px;
-        margin-bottom: 40px;
-        background-color: #444;
-        color: #aaa;
-        font-size: 20px;
-        line-height: 20px;
-        position: relative;
+        font-size: 26px;
+        line-height: 26px;
+      }
+
+      .prettyme .line {
+        min-height: 26px;
       }
 
       .prettyme.html::after {
         content: 'html';
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: 10px;
+        right: 10px;
         font-size: 30px;
-        color: #aaa;
+        color: #06ade0;
       }
 
       .prettyme.css::after {
         content: 'css';
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: 10px;
+        right: 10px;
         font-size: 30px;
-        color: #aaa;
-      }
-
-      .prettyme .tab {
-        margin-left: 20px;
-      }
-
-      .prettyme.parser :not(.commented) .tag,
-      .prettyme.parser :not(.commented) .property {
-        color: #5882FA;
-      }
-
-      .prettyme.parser  :not(.commented) .text {
-        color: #fff;
-      }
-
-      .prettyme.parser :not(.commented) .in-angles.attribute,
-      .prettyme.parser :not(.commented) .selector {
-        color: #2ECCFA;
-      }
-
-      .prettyme.parser :not(.commented) .selector {
-        margin-right: 10px;
-      } 
-
-      .prettyme.parser :not(.commented) .value {
-        color: #FFBF00;
-      }
-
-      .prettyme.parser.css :not(.commented) .value:not(.param) {
-        margin-left: 10px;
-      }
-
-      .prettyme.parser :not(.commented) .param:not(.first) {
-        margin-left: 10px;
-      }
-
-      .prettyme.parser.css :not(.commented) .comment, .prettyme.parser.css .commented {
-        margin-left: 10px;
-        color: #01DFA5;
-      }
-
-      .prettyme.parser :not(.commented) .string {
-        color: #FFBF00;
-      }
-
-      .prettyme.parser :not(.commented) .word {
-        color: #F781F3;
-      }
-
-      .prettyme.parser :not(.commented) .color {
-        color: #9F81F7;
-      }
-
-      .prettyme.parser :not(.commented) .function {
-        color: #F3F781;
-      }
-
-      .prettyme.parser :not(.commented) .number {
-        color: #BFFF00;
-      }
-
-      .prettyme.parser :not(.commented) .unit {
-        color: #58D3F7;
-      }
-
-      .prettyme.parser :not(.commented) .selector + .comment {
-        margin: 0 10px 0 0;
-      }
-
-      .prettyme.parser :not(.commented) .color-preview {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        margin-left: 10px;
-        position: relative;
-        top: 3px;
+        color: #ff3385;
       }
     </style>
   </head>
@@ -127,8 +51,7 @@
   <body>
     <h1>prettyme</h1>
 
-    <script type="codeme" class="prettyme html lexer">
-      <!--
+    <script type="codeme" class="prettyme html lexer">  <!--
       <div class="example" style="margin:0;" data-imp>
          <!-- Comment -->
         <input  type="text"
@@ -206,35 +129,33 @@
     <script src="../languages/css.js"></script>
     <script src="../prettyme.js"></script>
     <script>
-      prettyme.init({
+      prettyme.load({
         language: 'html',
         selector: '.prettyme.html.lexer',
-        compilation: false
+        compilation: false,
+        lines: true
       });
 
-      prettyme.load();
-
-      prettyme.init({
+      prettyme.load({
         language: 'css',
         selector: '.prettyme.css.lexer',
-        compilation: false
+        compilation: false,
+        lines: false
       });
 
-      prettyme.load();
-
-      prettyme.init({
+      prettyme.load({
         language: 'html',
-        selector: '.prettyme.html.parser'
+        selector: '.prettyme.html.parser',
+        theme: 'dark',
+        compilation: true
       });
 
-      prettyme.load();
-
-      prettyme.init({
+      prettyme.load({
         language: 'css',
-        selector: '.prettyme.css.parser'
+        selector: '.prettyme.css.parser',
+        theme: 'dark',
+        compilation: true
       });
-
-      prettyme.load();
     </script>
   </body>
 </html>
