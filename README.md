@@ -33,6 +33,8 @@ pegjs ./src/parsers/html.pegjs
 npm run dev
 ```
 
+Open browser pointing to http://localhost:8383/example/
+
 5. Run tests
 
 ```
