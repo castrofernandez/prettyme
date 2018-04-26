@@ -49,6 +49,16 @@ class Formatter {
   replaceAll(str, search, replace) {
     return str.split(search).join(replace);
   }
+
+  formatLines() {
+    const lines = this.insertTokens();
+
+    return [
+      '<p class="line">',
+      lines.split('\n').join('</p><p class="line">'),
+      '</p>'
+    ].join('');
+  }
 }
 
 if (typeof module !== 'undefined') {

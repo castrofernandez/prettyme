@@ -5,6 +5,7 @@ require('./sass/css.scss');
 
 // https://pegjs.org/documentation
 
+const Formatter = require('./formatter');
 const htmlParse = require('./parsers/html');
 const cssParse = require('./parsers/css');
 const htmlPrettier = require('./prettiers/html');
@@ -78,7 +79,10 @@ class Prettyme {
     this.setOptions(customOptions);
     this.checkHighlighter(true);
 
-    return this.options.highlighter.highlight(code);
+    return new Formatter({
+      code: code,
+      tokens: this.options.highlighter.lex(code)
+    }).formatLines();
   }
 
   setOptions(customOptions) {

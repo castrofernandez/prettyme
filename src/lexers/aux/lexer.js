@@ -1,32 +1,14 @@
 'use strict';
 
 const Tokeniser = require('./tokeniser');
-const Formatter = require('./formatter');
 
 class Lexer {
   constructor(patterns) {
     this.patterns = patterns;
   }
 
-  highlight(code) {
-    return this.formatLines(this.lex(code));
-  }
-
   lex(code) {
-    const tokens = this.getTokeniser(code).elements;
-
-    return new Formatter({
-      code: code,
-      tokens: tokens
-    }).insertTokens();
-  }
-
-  formatLines(lines) {
-    return [
-      '<p class="line">',
-      lines.split('\n').join('</p><p class="line">'),
-      '</p>'
-    ].join('');
+    return this.getTokeniser(code).elements;
   }
 
   getTokeniser(code) {
