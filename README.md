@@ -11,6 +11,7 @@ npm install prettyme
 
 ```
 import prettyme from 'prettyme';
+import html from 'prettyme/languages/html';
 
 prettyme.init({
   language: 'html',
@@ -45,6 +46,9 @@ npm run build
 ```
 
 7. Upload build
+
+The build must be generated before (point 6)
+
 ```
 npm publish
 ```
