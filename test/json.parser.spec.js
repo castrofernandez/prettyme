@@ -200,8 +200,8 @@ describe('prettyme: formatting JSON', function () {
     });
   });
   
-  it('Two rules', async function () {
-    const result = prettyme.format('[ 1,   2,3]');
-    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>{</p><p class="line tab tab1x"><span class="property">color</span>:<span class="value word p0 first last">red</span>;</p><p class="line">}</p><p class="line"><span class="selector">p</span>{</p><p class="line tab tab1x"><span class="property">margin</span>:<span class="value unit p0 first">10px</span><span class="value number p1">0</span><span class="value number p2">0</span><span class="value number p3 last">0</span>;</p><p class="line">}</p>');
+  it('Array', async function () {
+    const result = prettyme.format('[{ "foo": "bar", "second": [1, 2, null], "done": false, "great": true }]');
+    expect(result).to.equal('<p class="line">[</p><p class="line tab tab1x">{</p><p class="line tab tab2x"><span class="string property">"foo"</span>: <span class="string">"bar"</span>, </p><p class="line tab tab2x"><span class="string property">"second"</span>: [</p><p class="line tab tab3x"><span class="number">1</span>, </p><p class="line tab tab3x"><span class="number">2</span>, </p><p class="line tab tab3x"><span class="null">null</span></p><p class="line tab tab2x">], </p><p class="line tab tab2x"><span class="string property">"done"</span>: <span class="false">false</span>, </p><p class="line tab tab2x"><span class="string property">"great"</span>: <span class="true">true</span></p><p class="line tab tab1x">}</p><p class="line">]</p>');
   });
 });
