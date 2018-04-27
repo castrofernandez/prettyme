@@ -8,7 +8,7 @@ const htmlParse = require('../parsers/html');
 const htmlPrettier = require('../prettiers/html');
 const htmlLexer = require('../lexers/html');
 
-class HTML extends Language {
+class HtmlLanguage extends Language {
   constructor() {
     super({
       name: 'html',
@@ -20,5 +20,5 @@ class HTML extends Language {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = new HTML();
+  module.exports = new HtmlLanguage();
 }

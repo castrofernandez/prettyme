@@ -1,14 +1,14 @@
 if (typeof window !== 'undefined') {
-  require('../sass/html.scss');
+  require('../sass/json.scss');
 }
 
 const Language = require('./_language');
 
 const jsonParse = require('../parsers/json');
-const jsonPrettier = null;
+const jsonPrettier = require('../prettiers/json');
 const jsonLexer = null;
 
-class JSON extends Language {
+class JsonLanguage extends Language {
   constructor() {
     super({
       name: 'json',
@@ -20,5 +20,5 @@ class JSON extends Language {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = new JSON();
+  module.exports = new JsonLanguage();
 }

@@ -9,6 +9,8 @@ npm install prettyme
 
 2. Usage
 
+You need to include the file(s) of the language(s) to use.
+
 ```
 import prettyme from 'prettyme';
 import html from 'prettyme/languages/html';
@@ -58,10 +60,20 @@ npm publish
 8. List of methods
 
 * init: sets initial options.
-   * language: 'html' or 'css'
+   * language: 'html', 'css' or 'json'
    * parser: function to parse the code. (only to use custom parser)
    * prettier: prettier to use. (only to use custor prettier)
    * selector: CSS selector to use in *load* method.
+   * compilation: if true uses the parser, when false uses the lexer
+   * lines: when true show line numbers.
 * load: formats every *selector* set in initial options.
 * parse(code, options): parses the received code with the optional options.
 * format(code, options): formats the received code with the optional options.
+
+9. Create new language
+
+* Create language in src/languages this will need:
+   * create grammar in src/parsers and generate parser (point 3)
+   * create prettier in src/prettiers
+   * create lexer in src/languages
+* Adds language config in webpack.config.js to generate the new output file.

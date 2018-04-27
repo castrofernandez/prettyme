@@ -1,0 +1,32 @@
+@import '_prettyme';
+
+.prettyme.json {
+
+  &.parser {
+    @for $i from 0 through 10 {
+      .tab.tab#{$i}x {
+        padding-left: 40px * $i;
+      }
+    }
+
+    .property.string {
+      color: $c-secondary;
+    }
+
+    .number {
+      color: $c-number;
+    }
+
+    .string {
+      color: $c-text;
+    }
+
+    .null {
+      color: $c-primary;
+    }
+
+    .true, .false {
+      color: $c-tertiary;
+    }
+  }
+}

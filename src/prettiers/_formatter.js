@@ -39,10 +39,14 @@ class Formatter {
       text = [text];
     }
 
+    if (!(classes instanceof Array)) {
+      classes = [classes];
+    }
+
     const length = text.length;
     let i;
 
-    this.push('<span class="', classes, '">');
+    this.push('<span class="', classes.join(' '), '">');
 
     for (i = 0; i < length; i++) {
       this.push(text[i]);
@@ -80,6 +84,10 @@ class Formatter {
   newLine() {
     this.outputLines.push({});
     this.line++;
+  }
+
+  getTab() {
+    this.outputLines[this.line].tab = this.tab;
   }
 };
 

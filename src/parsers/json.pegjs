@@ -12,8 +12,7 @@
   }
 }
 
-Content = Array
-  / Object
+Content = element:(Array / Object) { return [ element ]; }
 
 Array = "[" whitespace* elements:ArrayElement? whitespace* "]" {
     return {
@@ -22,7 +21,7 @@ Array = "[" whitespace* elements:ArrayElement? whitespace* "]" {
     }; 
   }
 
-ArrayElement = element:ValueElement whitespace* elements:("," whitespace* elements:ValueElement { return elements; })* {
+ArrayElement = element:ValueElement whitespace* elements:( whitespace* "," whitespace* elements:ValueElement { return elements; })* {
     return escapeArray(element).concat(elements);
   }
 
@@ -33,7 +32,7 @@ Object = "{" whitespace* properties:PropertyList? whitespace* "}" {
     };
 }
 
-PropertyList = property:Property whitespace* properties:("," whitespace* properties:Property { return properties; })* {
+PropertyList = property:Property whitespace* properties:(whitespace* "," whitespace* properties:Property { return properties; })* {
     return escapeArray(property).concat(properties);
   }
 

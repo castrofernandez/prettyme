@@ -3,22 +3,6 @@
 const Formatter = require('./_formatter');
 
 class HtmlPrettier extends Formatter {
-  formatLines() {
-    const output = [];
-
-    this.outputLines.filter(line => line.value).forEach(line => {
-      const tab = line.tab;
-      const value = line.value;
-      const lineClass = tab ? `line tab tab${tab}x` : 'line';
-
-      output.push(
-        `<p class="${lineClass}">${value.join('')}</p>`
-      );
-    });
-
-    return output.join('');
-  }
-
   formatElement(element) {
     let output = null;
 
@@ -106,10 +90,6 @@ class HtmlPrettier extends Formatter {
         this.addClasses(['"', value, '"'], 'value');
       }
     }
-  }
-
-  getTab() {
-    this.outputLines[this.line].tab = this.tab;
   }
 };
 

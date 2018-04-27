@@ -8,7 +8,7 @@ const cssParse = require('../parsers/css');
 const cssPrettier = require('../prettiers/css');
 const cssLexer = require('../lexers/css');
 
-class CSS extends Language {
+class CssLanguage extends Language {
   constructor() {
     super({
       name: 'css',
@@ -20,5 +20,5 @@ class CSS extends Language {
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = new CSS();
+  module.exports = new CssLanguage();
 }

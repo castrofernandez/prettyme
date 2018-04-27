@@ -87,8 +87,20 @@ const cssConfig = Object.assign({}, baseConfig, {
   }
 });
 
+const jsonConfig = Object.assign({}, baseConfig, {
+  entry: [__dirname + '/src/languages/json.js'],
+  output: {
+    path: __dirname + '/dist/languages',
+    filename: 'json.js',
+    library: libraryName,
+    libraryTarget: 'umd',
+    umdNamedDefine: true
+  }
+});
+
 module.exports = [
   mainConfig,
+  htmlConfig,
   cssConfig,
-  htmlConfig
+  jsonConfig
 ];

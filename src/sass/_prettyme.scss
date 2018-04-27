@@ -5,10 +5,15 @@ $c-primary: #1a8cff;
 $c-secondary: #06ade0;
 $c-tertiary: #ffbf00;
 
+$c-color: #9f81f7;
+$c-function: #ff3385;
+$c-number: #00cca3;
+$c-text: #f781f3;
+
 .prettyme {
   padding: 5px 20px 5px 80px;
   margin-bottom: 40px;
-  color: #444;
+  color: $c-default-dark;
   position: relative;
 
   &.numbered {
