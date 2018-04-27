@@ -2,62 +2,50 @@
 
 const Lexer = require('./aux/lexer');
 
-const patterns = [
-  // {
-  //   type: 'comment',
-  //   regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>)/g,
-  //   class: ['comment']
-  // },
-  {
-    type: 'open-comment',
-    regex: /(<!--)/g,
-    class: ['comment', 'open'],
-    opening: true,
-    relatedClass: 'comment'
+const config = {
+  comments: {
+    type: 'comment',
+    regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>)/g,
+    class: ['comment']
   },
-  {
-    type: 'close-comment',
-    regex: /(-->)/g,
-    class: ['comment', 'close'],
-    closing: true,
-    relatedClass: 'comment'
-  },
-  {
-    type: 'in-angles',
-    regex: /(<[^>]*>)/g,
-    class: ['in-angles'],
-    accumulative: true
-  },
-  {
-    type: 'tag',
-    regex: /<([^\s>/!]+)/g,
-    class: ['tag', 'open']
-  },
-  {
-    type: 'close',
-    regex: /<\/([^\s>/!]+)>/g,
-    class: ['tag', 'close']
-  },
-  {
-    type: 'value',
-    regex: /=\s*("[^"]*"|'[^']*'|[^\s"']*)/g,
-    class: ['value']
-  },
-  {
-    type: 'attribute',
-    regex: /\s([^\s=/><"]+)/g,
-    class: ['attribute']
-  },
-  {
-    type: 'delimiter',
-    regex: /(<\/|<|>|\/>|=)/g,
-    class: ['delimiter']
-  }
-];
+  patterns: [
+    {
+      type: 'in-angle',
+      regex: /(<[^>]*>)/g,
+      class: ['in-angle'],
+      accumulative: true
+    },
+    {
+      type: 'tag',
+      regex: /<([^\s>/!]+)/g,
+      class: ['tag', 'open']
+    },
+    {
+      type: 'close',
+      regex: /<\/([^\s>/!]+)>/g,
+      class: ['tag', 'close']
+    },
+    {
+      type: 'value',
+      regex: /=\s*("[^"]*["\n\r]|'[^']*['\n\r]|[^\s"']*)/g,
+      class: ['value']
+    },
+    {
+      type: 'attribute',
+      regex: /\s([^\s=/><"]+)/g,
+      class: ['attribute']
+    },
+    {
+      type: 'delimiter',
+      regex: /(<\/|<|>|\/>|=)/g,
+      class: ['delimiter']
+    }
+  ]
+};
 
 class HtmlHighlighter {
   constructor() {
-    this.lexer = new Lexer(patterns);
+    this.lexer = new Lexer(config);
   }
 
   highlight(code) {

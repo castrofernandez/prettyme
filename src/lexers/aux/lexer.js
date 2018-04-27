@@ -3,8 +3,16 @@
 const Tokeniser = require('./tokeniser');
 
 class Lexer {
-  constructor(patterns) {
-    this.patterns = patterns;
+  constructor(config) {
+    this.config = config;
+  }
+
+  get comments() {
+    return this.config.comments;
+  }
+
+  get patterns() {
+    return this.config.patterns;
   }
 
   lex(code) {
@@ -14,6 +22,7 @@ class Lexer {
   getTokeniser(code) {
     return new Tokeniser({
       content: code,
+      comments: this.comments,
       patterns: this.patterns
     });
   }

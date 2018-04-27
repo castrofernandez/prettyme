@@ -8,19 +8,34 @@ class Tokeniser {
     this.getElements();
   }
 
+  get content() {
+    return this.options.content;
+  }
+
+  get patterns() {
+    return this.options.patterns;
+  }
+
+  get comments() {
+    return this.options.comments;
+  }
+
   getElements() {
+    this.elements = [];
+
     if (!this.content || this.content.trim() === '') {
-      this.elements = [];
+      return;
     }
 
     const taggedLimits = new Limits();
 
     const elements = new Token({
-      content: this.content,
+      content: this.getContentWithoutComments(),
       patterns: this.patterns,
       index: 0,
       taggedLimits: taggedLimits
-    }).elements;
+    }).elements
+      .concat(this.elements); // this.elements has comments from getContentWithoutComments()
 
     elements.sort((a, b) => { return a.index - b.index; });
 
@@ -29,12 +44,34 @@ class Tokeniser {
     this.elements = elements;
   }
 
-  get content() {
-    return this.options.content;
+  getContentWithoutComments() {
+    this.elements = this.getComments();
+    const output = [];
+    let previousIndex = 0;
+    let index;
+    let length;
+
+    this.elements.forEach(comment => {
+      index = comment.index;
+      length = comment.length;
+
+      output.push(this.content.slice(previousIndex, index));
+      output.push(' '.repeat(length));
+
+      previousIndex = index + length;
+    });
+
+    output.push(this.content.slice(previousIndex));
+
+    return output.join('');
   }
 
-  get patterns() {
-    return this.options.patterns;
+  getComments() {
+    return new Token({
+      content: this.content,
+      patterns: [this.comments],
+      index: 0
+    }).elements;
   }
 }
 
@@ -168,7 +205,7 @@ class Token {
   generateToken(options) {
     const token = new Token(options);
 
-    this.taggedLimits.store(token);
+    this.taggedLimits && this.taggedLimits.store(token);
     this.elements.push(token);
   }
 }

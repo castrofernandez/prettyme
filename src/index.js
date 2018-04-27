@@ -62,7 +62,9 @@ class Prettyme {
       container = this.getContainer(preview);
       this.addTheme(container);
 
-      container.innerHTML = this.options.compilation ? this.format(preview.innerHTML) : this.highlight(preview.innerHTML);
+      container.innerHTML = this.options.compilation
+        ? this.format(preview.innerHTML)
+        : this.highlight(preview.innerHTML);
     }
   }
 
