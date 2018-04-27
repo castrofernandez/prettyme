@@ -116,7 +116,7 @@ describe('prettyme: formatting HTML', function () {
 
   it('Compound', async function () {
     const result = prettyme.format('<div><input type="text" />This is a text.</div>');
-    expect(result).to.equal('<p class="line">&lt;<span class="tag">div</span>&gt;</p><p class="line tab 1x">&lt;<span class="tag">input</span> <span class="attribute type">type</span>=<span class="value">"text"</span> /&gt;</p><p class="line tab 1x"><span class="text">This is a text.</span></p><p class="line">&lt;/<span class="tag">div</span>&gt;</p>');
+    expect(result).to.equal('<p class="line">&lt;<span class="tag">div</span>&gt;</p><p class="line tab tab1x">&lt;<span class="tag">input</span> <span class="attribute type">type</span>=<span class="value">"text"</span> /&gt;</p><p class="line tab tab1x"><span class="text">This is a text.</span></p><p class="line">&lt;/<span class="tag">div</span>&gt;</p>');
   });
 });
 
@@ -271,6 +271,6 @@ describe('prettyme: formatting CSS', function () {
   
   it('Two rules', async function () {
     const result = prettyme.format(' .test1  {   color:   red; } p {margin: 10px   0  0   0 ; }');
-    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>{</p><p class="line tab"><span class="property">color</span>:<span class="value word p0 first last">red</span>;</p><p class="line">}</p><p class="line"><span class="selector">p</span>{</p><p class="line tab"><span class="property">margin</span>:<span class="value unit p0 first">10px</span><span class="value number p1">0</span><span class="value number p2">0</span><span class="value number p3 last">0</span>;</p><p class="line">}</p>');
+    expect(result).to.equal('<p class="line"><span class="selector">.test1</span>{</p><p class="line tab tab1x"><span class="property">color</span>:<span class="value word p0 first last">red</span>;</p><p class="line">}</p><p class="line"><span class="selector">p</span>{</p><p class="line tab tab1x"><span class="property">margin</span>:<span class="value unit p0 first">10px</span><span class="value number p1">0</span><span class="value number p2">0</span><span class="value number p3 last">0</span>;</p><p class="line">}</p>');
   });
 });
