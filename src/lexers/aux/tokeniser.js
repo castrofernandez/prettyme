@@ -67,6 +67,10 @@ class Tokeniser {
   }
 
   getComments() {
+    if (!this.comments) {
+      return [];
+    }
+
     return new Token({
       content: this.content,
       patterns: [this.comments],

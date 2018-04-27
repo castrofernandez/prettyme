@@ -6,7 +6,7 @@ const Language = require('./_language');
 
 const jsonParse = require('../parsers/json');
 const jsonPrettier = require('../prettiers/json');
-const jsonLexer = null;
+const jsonLexer = require('../lexers/json');
 
 class JsonLanguage extends Language {
   constructor() {
