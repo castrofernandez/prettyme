@@ -1,51 +1,41 @@
 @import '_prettyme';
 
 .prettyme.html {
+  color: $c-default-dark;
+
+  .comment {
+    color: $c-default;
+    font-style: italic;
+  }
 
   &.lexer {
-    color: $c-default-dark;
-
-    .comment {
-      color: $c-default;
-      font-style: italic;
+    &.delimiter,
+    &.comment {
+      color: $c-default-dark;
     }
   
-    :not(.comment) {
-      &.delimiter,
-      &.comment {
-        color: $c-default-dark;
+    .in-angle {
+      &.tag {
+        color: $c-primary;
       }
   
-      &.in-angle {
-        &.tag {
-          color: $c-primary;
-        }
+      &.attribute {
+        color: $c-secondary;
+      }
   
-        &.attribute {
-          color: $c-secondary;
-        }
-  
-        &.value {
-          color: $c-tertiary;
-        }
+      &.value {
+        color: $c-tertiary;
       }
     }
   }
   
   &.parser {
-    color: $c-default-dark;
-
     @for $i from 0 through 10 {
       .tab.tab#{$i}x {
         padding-left: 20px * $i;
       }
     }
 
-    .comment {
-      color: $c-default;
-      font-style: italic;
-    }
-  
     :not(.comment) {
       &.delimiter,
       &.comment {
@@ -62,6 +52,14 @@
   
       &.value {
         color: $c-tertiary;
+      }
+    }
+
+    &.theme-dark {
+      :not(.comment) {
+        .text {
+          color: #eee;
+        }
       }
     }
   }

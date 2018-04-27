@@ -1,7 +1,7 @@
 $c-default: #aaa;
 $c-default-dark: #777;
 
-$c-primary: #396cf9;
+$c-primary: #1a8cff;
 $c-secondary: #06ade0;
 $c-tertiary: #ffbf00;
 
@@ -10,11 +10,6 @@ $c-tertiary: #ffbf00;
   margin-bottom: 40px;
   color: #444;
   position: relative;
-
-  &.theme-dark {
-    background-color: #444;
-    color: $c-default;
-  }
 
   &.numbered {
     counter-reset: lines;
@@ -30,6 +25,17 @@ $c-tertiary: #ffbf00;
         text-align: right;
         color: lighten($c-default, 15%);
         min-width: 40px;
+      }
+    }
+  }
+
+  &.theme-dark {
+    background-color: #444;
+    color: $c-default;
+
+    &.numbered {
+      .line::before {
+        color: darken($c-default, 25%);
       }
     }
   }
