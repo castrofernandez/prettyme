@@ -1,22 +1,95 @@
-Content = 
-  Element
+{
+  function escapeArray(value) {
+    if (!value) {
+      return [];
+    }
 
-Element = Array
+    if (value instanceof Array) {
+      return value;
+    }
 
-Array = "[" whitespace* elements:ArrayElement* whitespace* "]" {
+    return [value];
+  }
+}
+
+Content = Array
+  / Object
+
+Array = "[" whitespace* elements:ArrayElement? whitespace* "]" {
     return {
       type: 'array',
-      value: elements
+      value: escapeArray(elements)
     }; 
   }
 
-ArrayElement = element:Element {
-    return element;
+ArrayElement = element:ValueElement whitespace* elements:("," whitespace* elements:ValueElement { return elements; })* {
+    return escapeArray(element).concat(elements);
   }
-  / element:Element "," elements:Element+ {
-    elements.push(element);
 
-    return elements;
+Object = "{" whitespace* properties:PropertyList? whitespace* "}" {
+    return {
+      type: 'object',
+      value: escapeArray(properties)
+    };
+}
+
+PropertyList = property:Property whitespace* properties:("," whitespace* properties:Property { return properties; })* {
+    return escapeArray(property).concat(properties);
+  }
+
+Property = identifier:string whitespace* ":" whitespace* value:ValueElement {
+    return {
+      type: 'property',
+      name: identifier.value,
+      value: value
+    };
+  }
+
+ValueElement = Array
+  / Object
+  / number
+  / string
+  / true
+  / false
+  / null
+
+number = "-"? integer ("." [0-9]+)? exponent? {
+    return {
+      type: 'number',
+      value: parseFloat(text())
+    };
+  }
+
+integer = '0' / [1-9][0-9]*
+
+exponent = [Ee] [+-]? integer
+
+string = '"' value:[^"]* '"' {
+    return {
+      type: 'string',
+      value: value.join('')
+    }
+  }
+
+true = "true" {
+    return {
+      type: 'boolean',
+      value: true
+    };
+  }
+
+false = "false" {
+    return {
+      type: 'boolean',
+      value: false
+    };
+  }
+
+null = "null" {
+    return {
+      type: 'null',
+      value: null
+    };
   }
 
 whitespace = [ \t\r\n]
