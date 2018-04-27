@@ -1,28 +1,65 @@
 @import '_prettyme';
 
-.prettyme.html.lexer {
-  color: $c-default-dark;
+.prettyme.html {
 
-  .comment {
-    color: $c-default;
-    font-style: italic;
+  &.lexer {
+    color: $c-default-dark;
+
+    .comment {
+      color: $c-default;
+      font-style: italic;
+    }
+  
+    :not(.comment) {
+      &.delimiter,
+      &.comment {
+        color: $c-default-dark;
+      }
+  
+      &.in-angles {
+        &.tag {
+          color: $c-primary;
+        }
+  
+        &.attribute {
+          color: $c-secondary;
+        }
+  
+        &.value {
+          color: $c-tertiary;
+        }
+      }
+    }
   }
+  
+  &.parser {
+    color: $c-default-dark;
 
-  :not(.comment) {
-    &.delimiter,
-    &.comment {
-      color: $c-default-dark;
+    @for $i from 0 through 10 {
+      .tab.tab#{$i}x {
+        padding-left: 20px * $i;
+      }
     }
 
-    &.in-angles {
+    .comment {
+      color: $c-default;
+      font-style: italic;
+    }
+  
+    :not(.comment) {
+      &.delimiter,
+      &.comment {
+        color: $c-default-dark;
+      }
+
       &.tag {
         color: $c-primary;
       }
-
+  
       &.attribute {
         color: $c-secondary;
       }
-
+  
       &.value {
         color: $c-tertiary;
       }

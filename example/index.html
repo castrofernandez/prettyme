@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <title>prettyme</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,400i" rel="stylesheet">
+    <script src="../languages/html.js"></script>
+    <script src="../languages/css.js"></script>
+    <script src="../prettyme.js"></script>
     <style>
+      html, body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
       body {
         font-family: 'Roboto Mono', monospace;
-        width: 900px;
-        margin: 0 auto;
-        padding: 30px 0;
         color: #444;
       }
 
@@ -19,9 +25,24 @@
         margin: 0 0 30px 80px;
       }
 
+      .wrapper {
+        padding: 40px;
+      }
+
+      .wrapper.dark {
+        background-color: #444;
+      }
+
+      .wrapper-content {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
       .prettyme {
         font-size: 26px;
         line-height: 26px;
+        padding-top: 30px;
+        padding-right: 80px;
       }
 
       .prettyme .line {
@@ -49,85 +70,89 @@
   </head>
 
   <body>
-    <h1>prettyme</h1>
+    <div class="wrapper">
+      <div class="wrapper-content">
+        <h1>prettyme</h1>
 
-    <script type="codeme" class="prettyme html lexer">  <!--
-      <div class="example" style="margin:0;" data-imp>
-         <!-- Comment -->
-        <input  type="text"
-          class="input text"
-          value="foo"  />
-        Text  
-        <!-- 
-          Comment 
-          <input  type="text" />
-        --> <a href="">foo</a>
+        <pre class="prettyme html lexer">
+<div class="example" style="margin:0;" data-imp>
+  <!-- Comment -->
+  <input  type="text"
+    class="input text"
+    value="foo"  />
+  Text  
+  <!-- 
+  Comment 
+  <input  type="text" />
+  --> <a href="">foo</a>
 
-        <!--
-          Open comment
-          More comment
-      </div>
-    </script>
+  <!--
+  Open comment
+  More comment
+  -->
+</div></pre>
 
-    <script type="codeme" class="prettyme css lexer">
-        /* Comment */
-        .example:not(.e1) {
-          background-color: #fff;
-          color: rgba(200, 200, 200, 0.5);
-          margin: 10px 10px 0 0;
-          position: relative;
-          content: 'text';
-        }
+        <script type="codeme" class="prettyme css lexer">
+            /* Comment */
+            .example:not(.e1) {
+              background-color: #fff;
+              color: rgba(200, 200, 200, 0.5);
+              margin: 10px 10px 0 0;
+              position: relative;
+              content: 'text';
+            }
 
-        /* 
-        Comment
-        h1 { color: red; }
-        */
-  
-        /* c1 */ .commented /* c2 */ { /* c3 */
-        /* c4 */  color /* c5 */ : /* c6 */ red /* c7 */ ; /* c8 */
-          margin: 10px 10px /* cv */ 0 0;
-          position: relative;
-          content: 'text';
-          background-image: url('../image.png');
-          background-color: hsl(120, 100%, 75%);
-        /* c9 */ } /* c10 */
-    </script>
-
-    <div class="prettyme html parser">
-      <div class="example">
-        <!-- Comment -->
-        <input type="text" />
-        Text
-        <!-- Comment -->
+            /* 
+            Comment
+            h1 { color: red; }
+            */
+      
+            /* c1 */ .commented /* c2 */ { /* c3 */
+            /* c4 */  color /* c5 */ : /* c6 */ red /* c7 */ ; /* c8 */
+              margin: 10px 10px /* cv */ 0 0;
+              position: relative;
+              content: 'text';
+              background-image: url('../image.png');
+              background-color: hsl(120, 100%, 75%);
+            /* c9 */ } /* c10 */
+        </script>
       </div>
     </div>
+    <div class="wrapper dark">
+      <div class="wrapper-content">
+        <div class="prettyme html parser">
+          <div class="example">
+            <!-- Comment -->
+            <input type="text" />
+            Text
+            <!-- Comment -->
+          </div>
+        </div>
 
-    <div class="prettyme css parser">
-      /* Comment */
-      .example {
-        background-color: #fff;
-        color: rgba(200, 200, 200, 0.5);
-        margin: 10px 10px 0 0;
-        position: relative;
-        content: 'text';
-      }
+        <div class="prettyme css parser">
+          /* Comment */
+          .example {
+            background-color: #fff;
+            color: rgba(200, 200, 200, 0.5);
+            margin: 10px 10px 0 0;
+            position: relative;
+            content: 'text';
+          }
 
-      /* c1 */ .commented /* c2 */ { /* c3 */
-      /* c4 */  color /* c5 */ : /* c6 */ #fff /* c7 */ ; /* c8 */
-        margin: 10px 10px /* cv */ 0 0;
-        position: relative;
-        content: 'text';
-        background-image: url('../image.png');
-        background-color: hsl(120, 100%, 75%);
-      /* c9 */ } /* c10 */
+          /* c1 */ .commented /* c2 */ { /* c3 */
+          /* c4 */  color /* c5 */ : /* c6 */ #fff /* c7 */ ; /* c8 */
+            margin: 10px 10px /* cv */ 0 0;
+            position: relative;
+            content: 'text';
+            background-image: url('../image.png');
+            background-color: hsl(120, 100%, 75%);
+          /* c9 */ } /* c10 */
+        </div>
+      </div>
     </div>
     <script>
       var module = {};
     </script>
-    <script src="../languages/html.js"></script>
-    <script src="../languages/css.js"></script>
-    <script src="../prettyme.js"></script>
     <script>
       prettyme.load({
         language: 'html',
