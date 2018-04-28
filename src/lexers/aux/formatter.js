@@ -1,5 +1,7 @@
 'use strict';
 
+const Utils = require('../../utils/utils');
+
 class Formatter {
   constructor(options) {
     this.options = options;
@@ -26,7 +28,7 @@ class Formatter {
 
     tokens.forEach(token => {
       index = token.wrapper ? token.start : token.index;
-      output.push(this.escape(code.substring(previousIndex, index)));
+      output.push(Utils.escape(code.substring(previousIndex, index)));
 
       if (token.wrapper) {
         className = new Set(token.className);
@@ -40,7 +42,7 @@ class Formatter {
       previousIndex = index + token.length;
     });
 
-    output.push(this.escape(code.substring(previousIndex)));
+    output.push(Utils.escape(code.substring(previousIndex)));
 
     return output.join('');
   }
@@ -50,7 +52,7 @@ class Formatter {
   }
 
   formatValue(value, className) {
-    return this.formatContainer(this.escape(value), className, 'span');
+    return this.formatContainer(Utils.escape(value), className, 'span');
   }
 
   formatContainer(value, className, tag) {
@@ -62,23 +64,10 @@ class Formatter {
     }).join('\n');
   }
 
-  escape(code) {
-    const replaced = this.replaceAll(code, '<', '&lt;');
-    return this.replaceAll(replaced, '>', '&gt;');
-  }
-
-  replaceAll(str, search, replace) {
-    return str.split(search).join(replace);
-  }
-
-  formatLines() {
+  format() {
     const lines = this.insertTokens();
 
-    return [
-      '<div class="line">',
-      lines.split('\n').join('</div><div class="line">'),
-      '</div>'
-    ].join('');
+    return Utils.formatLines(lines);
   }
 }
 

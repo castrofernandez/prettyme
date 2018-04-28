@@ -1,6 +1,7 @@
 'use strict';
 
 const Tokeniser = require('./tokeniser');
+const LexerFormatter = require('./formatter');
 
 class Lexer {
   constructor(config) {
@@ -17,6 +18,13 @@ class Lexer {
 
   lex(code) {
     return this.getTokeniser(code).elements;
+  }
+
+  highlight(code) {
+    return new LexerFormatter({
+      code: code,
+      tokens: this.lex(code)
+    }).format();
   }
 
   getTokeniser(code) {

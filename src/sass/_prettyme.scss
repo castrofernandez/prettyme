@@ -30,6 +30,10 @@ $c-text: #f781f3;
 
   .token-wrapper {
     display: inline-block;
+
+    i {
+      font-style: normal;
+    }
   }
 
   &.numbered {

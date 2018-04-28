@@ -2,16 +2,61 @@
 
 .prettyme.markdown {
   .header {
-    color: $c-primary;
+    .a {
+      color: $c-primary;
+    }
   }
 
   .bold {
-    font-weight: bold;
+    font-weight: 700;
     color: $c-color;
   }
 
   .italic {
     font-style: italic;
     color: $c-secondary;
+  }
+
+  .list {
+    &.ul-list,
+    &.ol-list {
+      i {
+        color: $c-tertiary;
+      }
+    }
+  }
+
+  .link {
+    i {
+      color: $c-function;
+
+      &.b {
+        color: $c-text;
+      }
+
+      &.p {
+        color: $c-color;
+      }
+    }
+
+    .u {
+      color: $c-primary;
+    }
+  }
+
+  .code-inline {
+    color: $c-function;
+  }
+
+  .code {
+    i {
+      color: $c-function;
+    }
+  }
+
+  .quote {
+    i {
+      color: $c-number;
+    }
   }
 }

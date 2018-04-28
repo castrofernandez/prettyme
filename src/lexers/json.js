@@ -1,6 +1,6 @@
 'use strict';
 
-const Lexer = require('./aux/lexer');
+const Highlighter = require('./_highlighter');
 
 const config = {
   comments: null,
@@ -43,20 +43,6 @@ const config = {
   ]
 };
 
-class JsonHighlighter {
-  constructor() {
-    this.lexer = new Lexer(config);
-  }
-
-  highlight(code) {
-    return this.lexer.highlight(code);
-  }
-
-  lex(code) {
-    return this.lexer.lex(code);
-  }
-}
-
 if (typeof module !== 'undefined') {
-  module.exports = new JsonHighlighter();
+  module.exports = new Highlighter(config);
 }

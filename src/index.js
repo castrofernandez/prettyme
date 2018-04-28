@@ -2,7 +2,6 @@
 
 // https://pegjs.org/documentation
 
-const LexerFormatter = require('./lexers/aux/formatter');
 const Language = require('./languages/_language');
 
 const defaultOptions = {
@@ -111,10 +110,7 @@ class Prettyme {
     this.setOptions(customOptions);
     this.checkLanguage();
 
-    return new LexerFormatter({
-      code: code,
-      tokens: this.lexer.lex(code)
-    }).formatLines();
+    return this.lexer.highlight(code);
   }
 
   setOptions(customOptions) {

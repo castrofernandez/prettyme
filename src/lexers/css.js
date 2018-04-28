@@ -1,6 +1,6 @@
 'use strict';
 
-const Lexer = require('./aux/lexer');
+const Highlighter = require('./_highlighter');
 
 const config = {
   comments: {
@@ -76,20 +76,6 @@ const config = {
   ]
 };
 
-class CssHighlighter {
-  constructor() {
-    this.lexer = new Lexer(config);
-  }
-
-  highlight(code) {
-    return this.lexer.highlight(code);
-  }
-
-  lex(code) {
-    return this.lexer.lex(code);
-  }
-}
-
 if (typeof module !== 'undefined') {
-  module.exports = new CssHighlighter();
+  module.exports = new Highlighter(config);
 }
