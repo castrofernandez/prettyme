@@ -22,7 +22,11 @@ class Transformer {
       className = ['token-wrapper'].concat(pattern.class).join(' ');
       formatter = pattern.formatter || `$${group}`;
 
-      code = code.replace(pattern.regex, `<div class="${className}">${formatter}</div>`);
+      if (pattern.repl) {
+        code = code.replace(pattern.regex, pattern.repl);
+      } else {
+        code = code.replace(pattern.regex, `<div class="${className}">${formatter}</div>`);
+      }
     });
 
     return Utils.formatLines(code);

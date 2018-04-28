@@ -2,6 +2,7 @@
 
 const Highlighter = require('./_highlighter');
 const Transformer = require('./aux/transformer');
+const Utils = require('../utils/utils');
 
 const config = {
   patterns: [
@@ -80,9 +81,16 @@ const config = {
     },
     {
       type: 'code',
-      regex: /(^```)([\s\S]*)\1/gm,
+      regex: /^```([a-z]*)\n([\s\S]*?)\n```$/gm,
       class: ['code'],
-      formatter: `<i>&#96&#96&#96</i><i>$2<i>&#96&#96&#96</i>`
+      repl: (match, $1, $2) => {
+        const start = '<div class="code">';
+        const end = '</div>';
+        const exp = `<i>&#96&#96&#96</i>${$1}\n${$2}\n<i>&#96&#96&#96</i>`;
+        const code = Utils.replaceAll(exp, '\n', `${end}\n${start}`);
+
+        return `${start}${code}${end}`;
+      }
     },
     {
       type: 'code-inline',
