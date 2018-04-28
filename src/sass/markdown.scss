@@ -1,0 +1,17 @@
+@import '_prettyme';
+
+.prettyme.markdown {
+  .header {
+    color: $c-primary;
+  }
+
+  .bold {
+    font-weight: bold;
+    color: $c-color;
+  }
+
+  .italic {
+    font-style: italic;
+    color: $c-secondary;
+  }
+}

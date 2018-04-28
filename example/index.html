@@ -7,6 +7,7 @@
     <script src="../languages/html.js"></script>
     <script src="../languages/css.js"></script>
     <script src="../languages/json.js"></script>
+    <script src="../languages/markdown.js"></script>
     <script src="../prettyme.js"></script>
     <style>
       html, body {
@@ -84,6 +85,52 @@
       <div class="wrapper-content">
         <h1>prettyme</h1>
 
+        <script type="codeme" class="prettyme markdown lexer">
+# This is an <h1> *tag*
+## This is an __<h2>__ tag
+            
+*This text will be italic*
+_This will also be italic_
+                
+**This text will be bold**
+__This will also be bold__
+                
+_You **can** combine them_
+            
+Sometimes you want numbered lists:
+            
+1. One
+2. Two
+3. Three
+            
+Sometimes you want bullet points:
+            
+* Start a line with a star
+* Profit!
+            
+Alternatively,
+            
+- Dashes work just as well
+- And if you have sub points, put two spaces before the dash or star:
+  - Like this
+  - And this
+            
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+            
+You can use one `#` all the way up to `######` six for different heading sizes.
+            
+If you'd like to quote someone, use the > character before the line:
+            
+> Coffee. The finest organic suspension ever devised... I beat the Borg with it.
+> - Captain Janeway
+            
+```
+if (isAwesome){
+  return true
+}
+```
+</script>
+
         <script type="codeme" class="prettyme json parser default">
           [{
             "foo": "bar",
@@ -97,7 +144,7 @@
     <div class="wrapper dark">
       <div class="wrapper-content">
 
-        <script type="codeme" class="prettyme json parser dark">
+        <script type="codeme" class="prettyme json lexer dark">
             [{
               "foo": "bar",
               "second": [1, 2, null], 
@@ -195,15 +242,22 @@
     </script>
     <script>
       prettyme.load({
-        language: 'json',
-        selector: '.prettyme.json.parser.default',
+        language: 'markdown',
+        selector: '.prettyme.markdown.lexer',
         compilation: false,
         lines: true
       });
 
       prettyme.load({
         language: 'json',
-        selector: '.prettyme.json.parser.dark',
+        selector: '.prettyme.json.parser',
+        compilation: false,
+        lines: true
+      });
+
+      prettyme.load({
+        language: 'json',
+        selector: '.prettyme.json.lexer',
         compilation: true,
         lines: true,
         theme: 'dark'

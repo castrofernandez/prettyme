@@ -16,6 +16,22 @@ $c-text: #f781f3;
   color: $c-default-dark;
   position: relative;
 
+  .line {
+    margin: 20px 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .token-wrapper {
+    display: inline-block;
+  }
+
   &.numbered {
     counter-reset: lines;
 

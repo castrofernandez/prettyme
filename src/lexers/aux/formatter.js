@@ -14,31 +14,52 @@ class Formatter {
   }
 
   insertTokens() {
+    return this.performInsertTokens(this.tokens, this.code);
+  }
+
+  performInsertTokens(tokens, code) {
     let output = [];
-
     let previousIndex = 0;
+    let index;
+    let value;
+    let className;
 
-    this.tokens.forEach(token => {
-      output.push(this.escape(this.code.substring(previousIndex, token.index)));
-      output.push(this.formatValue(token.value, token.className));
+    tokens.forEach(token => {
+      index = token.wrapper ? token.start : token.index;
+      output.push(this.escape(code.substring(previousIndex, index)));
 
-      previousIndex = token.index + token.length;
+      if (token.wrapper) {
+        className = new Set(token.className);
+        className.add('token-wrapper');
+        value = this.performInsertTokens(token.elements, token.content);
+        output.push(this.formatWrapper(value, className));
+      } else {
+        output.push(this.formatValue(token.value, token.className));
+      }
+
+      previousIndex = index + token.length;
     });
 
-    output.push(this.escape(this.code.substring(previousIndex)));
+    output.push(this.escape(code.substring(previousIndex)));
 
     return output.join('');
   }
 
-  formatValue(value, className) {
-    const start = `<span class="${Array.from(className).join(' ')}">`;
-    const end = '</span>';
+  formatWrapper(value, className) {
+    return this.formatContainer(value, className, 'div');
+  }
 
-    return [
-      start,
-      this.replaceAll(this.escape(value), '\n', `${end}\n${start}`),
-      end
-    ].join('');
+  formatValue(value, className) {
+    return this.formatContainer(this.escape(value), className, 'span');
+  }
+
+  formatContainer(value, className, tag) {
+    const start = `<${tag} class="${Array.from(className).join(' ')}">`;
+    const end = `</${tag}>`;
+
+    return value.split('\n').map(line => {
+      return line.trim() !== '' ? `${start}${line}${end}` : line;
+    }).join('\n');
   }
 
   escape(code) {
@@ -54,9 +75,9 @@ class Formatter {
     const lines = this.insertTokens();
 
     return [
-      '<p class="line">',
-      lines.split('\n').join('</p><p class="line">'),
-      '</p>'
+      '<div class="line">',
+      lines.split('\n').join('</div><div class="line">'),
+      '</div>'
     ].join('');
   }
 }

@@ -101,6 +101,10 @@ class Token {
     return parseInt(this.options.index);
   }
 
+  get start() {
+    return this.options.start ? parseInt(this.options.start) : 0;
+  }
+
   get className() {
     return this.options.className || new Set();
   }
@@ -137,6 +141,10 @@ class Token {
     return this.options.pattern && this.options.pattern.closing;
   }
 
+  get wrapper() {
+    return this.options.wrapper;
+  }
+
   applyPatterns() {
     if (this.patterns.length === 0) {
       return;
@@ -145,6 +153,7 @@ class Token {
     const pattern = this.patterns[0];
     const otherPatterns = this.patterns.slice(1);
     const regex = pattern.regex;
+    const group = pattern.group || 1;
     const className = new Set(this.className);
     let matches = regex.exec(this.content);
     let value;
@@ -155,7 +164,7 @@ class Token {
     pattern.class.forEach(element => { className.add(element); });
 
     while (matches) {
-      value = matches[1];
+      value = matches[group];
       index = matches.index + this.content.substring(matches.index).indexOf(value);
       length = value.length;
 
@@ -171,7 +180,18 @@ class Token {
           content: value,
           patterns: otherPatterns,
           index: this.index + index,
+          length: value.length,
           className: className
+        });
+      } else if (pattern.wrapper) {
+        this.processPart({
+          content: value,
+          patterns: otherPatterns,
+          index: 0,
+          start: this.index + index,
+          length: value.length,
+          className: className,
+          wrapper: true
         });
       } else {
         this.generateToken({
@@ -202,7 +222,11 @@ class Token {
         taggedLimits: this.taggedLimits
       });
 
-      this.elements = this.elements.concat(new Token(options).elements);
+      if (options.wrapper) {
+        this.elements.push(new Token(options));
+      } else {
+        this.elements = this.elements.concat(new Token(options).elements);
+      }
     }
   }
 

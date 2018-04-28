@@ -98,9 +98,22 @@ const jsonConfig = Object.assign({}, baseConfig, {
   }
 });
 
+
+const markdownConfig = Object.assign({}, baseConfig, {
+  entry: [__dirname + '/src/languages/markdown.js'],
+  output: {
+    path: __dirname + '/dist/languages',
+    filename: 'markdown.js',
+    library: libraryName,
+    libraryTarget: 'umd',
+    umdNamedDefine: true
+  }
+});
+
 module.exports = [
   mainConfig,
   htmlConfig,
   cssConfig,
-  jsonConfig
+  jsonConfig,
+  markdownConfig
 ];

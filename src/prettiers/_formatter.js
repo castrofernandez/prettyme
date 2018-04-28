@@ -74,7 +74,7 @@ class Formatter {
       const lineClass = tab ? `line tab tab${tab}x` : 'line';
 
       output.push(
-        `<p class="${lineClass}">${value.join('')}</p>`
+        `<div class="${lineClass}">${value.join('')}</div>`
       );
     });
 
