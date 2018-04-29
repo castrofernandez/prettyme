@@ -1,0 +1,25 @@
+@import '_prettyme';
+
+.prettyme.javascript {
+  color: $c-secondary;
+
+  .comment {
+    color: $c-number;
+  }
+
+  .delimiter {
+    color: $c-default;
+  }
+
+  .string {
+    color: $c-text;
+  }
+
+  .reserved {
+    color: $c-primary;
+  }
+
+  .function.name:not(.reserved) {
+    color: $c-function;
+  }
+}

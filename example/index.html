@@ -8,6 +8,7 @@
     <script src="../languages/css.js"></script>
     <script src="../languages/json.js"></script>
     <script src="../languages/markdown.js"></script>
+    <script src="../languages/javascript.js"></script>
     <script src="../prettyme.js"></script>
     <style>
       html, body {
@@ -84,6 +85,34 @@
     <div class="wrapper">
       <div class="wrapper-content">
         <h1>prettyme</h1>
+
+        <script type="codeme" class="prettyme javascript">
+            /*
+              Comment
+            */
+            
+            if (typeof window !== 'undefined') {
+              require('../sass/css.scss');
+            }
+
+            // Comment
+            
+            const Language = require('./_language');
+            const cssLexer = require('../lexers/css');
+            
+            class CssLanguage extends Language {
+              constructor() {
+                super({
+                  name: 'css',
+                  lexer: cssLexer
+                });
+              }
+            }
+            
+            if (typeof module !== 'undefined') {
+              module.exports = new CssLanguage();
+            }
+        </script>
 
         <script type="codeme" class="prettyme markdown">
 # This is an <h1> *tag*
@@ -253,16 +282,20 @@ if (isAwesome){
     </script>
     <script>
       prettyme.load({
+        language: 'javascript',
+        selector: '.prettyme.javascript',
+        lines: true
+      });
+
+      prettyme.load({
         language: 'markdown',
         selector: '.prettyme.markdown',
-        compilation: false,
         lines: true
       });
 
       prettyme.load({
         language: 'json',
         selector: '.prettyme.json',
-        compilation: true,
         lines: true,
         theme: 'dark'
       });
@@ -270,7 +303,6 @@ if (isAwesome){
       prettyme.load({
         language: 'html',
         selector: '.prettyme.html',
-        compilation: false,
         lines: true,
         theme: 'default'
       });
@@ -279,7 +311,6 @@ if (isAwesome){
         language: 'css',
         selector: '.prettyme.css',
         theme: 'dark',
-        compilation: true,
         lines: true
       });
     </script>
