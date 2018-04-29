@@ -17,7 +17,7 @@ class Tokeniser {
   }
 
   get comments() {
-    return this.options.comments;
+    return this.options.comments || [];
   }
 
   getElements() {
@@ -73,7 +73,7 @@ class Tokeniser {
 
     return new Token({
       content: this.content,
-      patterns: [this.comments],
+      patterns: this.comments,
       index: 0
     }).elements;
   }

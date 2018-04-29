@@ -3,11 +3,11 @@
 const Highlighter = require('./_highlighter');
 
 const config = {
-  comments: {
+  comments: [{
     type: 'comment',
     regex: /(\/\*((?!\*\/).|\n)+\*\/)/g,
     class: ['comment']
-  },
+  }],
   patterns: [
     {
       type: 'selector',

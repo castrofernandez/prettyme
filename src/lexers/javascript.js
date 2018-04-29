@@ -1,28 +1,62 @@
 'use strict';
 
 const Highlighter = require('./_highlighter');
+const Tokens = require('./_tokens');
 
 const config = {
-  comments: {
-    type: 'comment',
-    regex: /(\/\*((?!\*\/).|\n)+\*\/|\/\/(.*?)*)/g,
-    class: ['comment']
-  },
+  comments: [
+    Tokens.multilineComment,
+    Tokens.singleComment
+  ],
   patterns: [
+    Tokens.singleString,
+    Tokens.doubleString,
     {
-      type: 'string',
-      regex: /("[^"\n\n]*"?|'[^'\n\n]*'?)/g,
-      class: ['string']
+      type: 'regex',
+      regex: /(\/[^/]*\/[a-z]*)/g,
+      class: ['regex']
     },
     {
-      type: 'function',
-      regex: /([$_a-zA-Z0-9]+)\s*\(/g,
-      class: ['function'],
+      type: 'template',
+      regex: /(`[^`]*`)/g,
+      class: ['string-template'],
       accumulative: true
     },
     {
+      type: 'template-parameter',
+      regex: /(\$\{[^}]*\})/g,
+      class: ['string-template-parameter'],
+      accumulative: true
+    },
+    Tokens.functionCall,
+    Tokens.null,
+    {
+      type: 'undefined',
+      regex: /(undefined)/g,
+      class: ['null', 'undefined']
+    },
+    Tokens.false,
+    Tokens.true,
+    {
+      type: 'binary',
+      regex: /(0[bB][01]+)/g,
+      class: ['number', 'binary']
+    },
+    {
+      type: 'octal',
+      regex: /(0[oO][0-7]+)/g,
+      class: ['number', 'octal']
+    },
+    {
+      type: 'hexadecimal',
+      regex: /(0[xX][0-9a-fA-F]+)/g,
+      class: ['number', 'hexadecimal']
+    },
+    Tokens.floating,
+    Tokens.integer,
+    {
       type: 'delimiter',
-      regex: /([{}[\]();.=+\-*:/!,])/g,
+      regex: /([{}[\]();.=+\-*:/!,`])/g,
       class: ['delimiter']
     },
     {

@@ -1,40 +1,21 @@
 'use strict';
 
 const Highlighter = require('./_highlighter');
+const Tokens = require('./_tokens');
 
 const config = {
   comments: null,
   patterns: [
-    {
-      type: 'null',
-      regex: /(null)/g,
-      class: ['null']
-    },
-    {
-      type: 'false',
-      regex: /(false)/g,
-      class: ['false', 'boolean']
-    },
-    {
-      type: 'true',
-      regex: /(true)/g,
-      class: ['true', 'boolean']
-    },
+    Tokens.null,
+    Tokens.false,
+    Tokens.true,
     {
       type: 'property',
       regex: /[{,][\s\n\r\t]*("[^"\n\n]*"?)/g,
       class: ['property', 'string']
     },
-    {
-      type: 'string',
-      regex: /("[^"\n\n]*"?)/g,
-      class: ['string']
-    },
-    {
-      type: 'number',
-      regex: /(-?[-+eE0-9.]+)/g,
-      class: ['number']
-    },
+    Tokens.doubleString,
+    Tokens.floating,
     {
       type: 'delimiter',
       regex: /({|}|[|]|:|,)/g,
