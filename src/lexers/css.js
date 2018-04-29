@@ -1,13 +1,12 @@
 'use strict';
 
 const Highlighter = require('./_highlighter');
+const Tokens = require('./_tokens');
 
 const config = {
-  comments: [{
-    type: 'comment',
-    regex: /(\/\*((?!\*\/).|\n)+\*\/)/g,
-    class: ['comment']
-  }],
+  comments: [
+    Tokens.multilineComment
+  ],
   patterns: [
     {
       type: 'selector',
