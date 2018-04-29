@@ -3,17 +3,12 @@ if (typeof window !== 'undefined') {
 }
 
 const Language = require('./_language');
-
-const jsonParse = require('../parsers/json');
-const jsonPrettier = require('../prettiers/json');
 const jsonLexer = require('../lexers/json');
 
 class JsonLanguage extends Language {
   constructor() {
     super({
       name: 'json',
-      parser: jsonParse.parse,
-      prettier: jsonPrettier,
       lexer: jsonLexer
     });
   }

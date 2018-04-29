@@ -5,7 +5,6 @@
 const Language = require('./languages/_language');
 
 const defaultOptions = {
-  compilation: true,
   language: null,
   selector: '.prettyme'
 };
@@ -17,14 +16,6 @@ class Prettyme {
 
   get language() {
     return this.options.language;
-  }
-
-  get parser() {
-    return this.languageConfig ? this.languageConfig.parser : null;
-  }
-
-  get prettier() {
-    return this.languageConfig ? this.languageConfig.prettier : null;
   }
 
   get lexer() {
@@ -61,9 +52,7 @@ class Prettyme {
       container = this.getContainer(preview);
       this.addTheme(container);
 
-      container.innerHTML = this.options.compilation
-        ? this.format(preview.innerHTML)
-        : this.highlight(preview.innerHTML);
+      container.innerHTML = this.highlight(preview.innerHTML);
     }
   }
 
@@ -90,20 +79,6 @@ class Prettyme {
     }
 
     return element;
-  }
-
-  parse(code, customOptions) {
-    this.setOptions(customOptions);
-    this.checkLanguage();
-
-    return this.parser(code);
-  }
-
-  format(code, customOptions) {
-    this.setOptions(customOptions);
-
-    this.checkLanguage();
-    return this.prettier.format(this.parser, code);
   }
 
   highlight(code, customOptions) {

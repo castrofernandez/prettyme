@@ -72,7 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e6793de81c21b990701f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7d7fb2cab230a1527c92"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -805,75 +805,6 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./src/formatter.js":
-/*!**************************!*\
-  !*** ./src/formatter.js ***!
-  \**************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-class Formatter {
-  constructor(options) {
-    this.options = options;
-  }
-
-  get code() {
-    return this.options.code;
-  }
-
-  get tokens() {
-    return this.options.tokens;
-  }
-
-  insertTokens() {
-    let output = [];
-
-    let previousIndex = 0;
-
-    this.tokens.forEach(token => {
-      output.push(this.escape(this.code.substring(previousIndex, token.index)));
-      output.push(this.formatValue(token.value, token.className));
-
-      previousIndex = token.index + token.length;
-    });
-
-    output.push(this.escape(this.code.substring(previousIndex)));
-
-    return output.join('');
-  }
-
-  formatValue(value, className) {
-    const start = `<span class="${Array.from(className).join(' ')}">`;
-    const end = '</span>';
-
-    return [start, this.replaceAll(this.escape(value), '\n', `${end}\n${start}`), end].join('');
-  }
-
-  escape(code) {
-    const replaced = this.replaceAll(code, '<', '&lt;');
-    return this.replaceAll(replaced, '>', '&gt;');
-  }
-
-  replaceAll(str, search, replace) {
-    return str.split(search).join(replace);
-  }
-
-  formatLines() {
-    const lines = this.insertTokens();
-
-    return ['<p class="line">', lines.split('\n').join('</p><p class="line">'), '</p>'].join('');
-  }
-}
-
-if (true) {
-  module.exports = Formatter;
-}
-
-/***/ }),
-
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -886,11 +817,9 @@ if (true) {
 
 // https://pegjs.org/documentation
 
-const Formatter = __webpack_require__(/*! ./formatter */ "./src/formatter.js");
 const Language = __webpack_require__(/*! ./languages/_language */ "./src/languages/_language.js");
 
 const defaultOptions = {
-  compilation: true,
   language: null,
   selector: '.prettyme'
 };
@@ -904,20 +833,20 @@ class Prettyme {
     return this.options.language;
   }
 
-  get parser() {
-    return this.languageConfig ? this.languageConfig.parser : null;
-  }
-
-  get prettier() {
-    return this.languageConfig ? this.languageConfig.prettier : null;
-  }
-
   get lexer() {
     return this.languageConfig ? this.languageConfig.lexer : null;
   }
 
   get languageConfig() {
     return Language.get(this.language);
+  }
+
+  get theme() {
+    return this.options.theme || 'default';
+  }
+
+  get showLines() {
+    return !!this.options.lines;
   }
 
   init(customOptions) {
@@ -936,9 +865,23 @@ class Prettyme {
     for (i = 0; i < length; i++) {
       preview = previews[i];
       container = this.getContainer(preview);
+      this.addTheme(container);
 
-      container.innerHTML = this.options.compilation ? this.format(preview.innerHTML) : this.highlight(preview.innerHTML);
+      container.innerHTML = this.highlight(preview.innerHTML);
     }
+  }
+
+  addTheme(container) {
+    const theme = `theme-${this.theme}`;
+    const classes = new Set(container.className.split(' '));
+
+    classes.add(theme);
+
+    if (this.showLines) {
+      classes.add('numbered');
+    }
+
+    container.className = Array.from(classes).join(' ');
   }
 
   getContainer(element) {
@@ -953,28 +896,11 @@ class Prettyme {
     return element;
   }
 
-  parse(code, customOptions) {
-    this.setOptions(customOptions);
-    this.checkLanguage();
-
-    return this.parser(code);
-  }
-
-  format(code, customOptions) {
-    this.setOptions(customOptions);
-
-    this.checkLanguage();
-    return this.prettier.format(this.parser, code);
-  }
-
   highlight(code, customOptions) {
     this.setOptions(customOptions);
     this.checkLanguage();
 
-    return new Formatter({
-      code: code,
-      tokens: this.lexer.lex(code)
-    }).formatLines();
+    return this.lexer.highlight(code);
   }
 
   setOptions(customOptions) {
@@ -1020,14 +946,6 @@ if (true) {
 
   get name() {
     return this.options.name;
-  }
-
-  get parser() {
-    return this.options.parser;
-  }
-
-  get prettier() {
-    return this.options.prettier;
   }
 
   get lexer() {

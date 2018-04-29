@@ -8,59 +8,22 @@
     font-style: italic;
   }
 
-  &.lexer {
-    &.delimiter,
-    &.comment {
-      color: $c-default-dark;
-    }
-  
-    .in-angle {
-      &.tag {
-        color: $c-primary;
-      }
-  
-      &.attribute {
-        color: $c-secondary;
-      }
-  
-      &.value {
-        color: $c-tertiary;
-      }
-    }
+  &.delimiter,
+  &.comment {
+    color: $c-default-dark;
   }
   
-  &.parser {
-    @for $i from 0 through 10 {
-      .tab.tab#{$i}x {
-        padding-left: 20px * $i;
-      }
+  .in-angle {
+    &.tag {
+      color: $c-primary;
     }
-
-    :not(.comment) {
-      &.delimiter,
-      &.comment {
-        color: $c-default-dark;
-      }
-
-      &.tag {
-        color: $c-primary;
-      }
   
-      &.attribute {
-        color: $c-secondary;
-      }
-  
-      &.value {
-        color: $c-tertiary;
-      }
+    &.attribute {
+      color: $c-secondary;
     }
-
-    &.theme-dark {
-      :not(.comment) {
-        .text {
-          color: #eee;
-        }
-      }
+  
+    &.value {
+      color: $c-tertiary;
     }
   }
 }

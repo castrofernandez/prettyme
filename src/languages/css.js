@@ -3,17 +3,12 @@ if (typeof window !== 'undefined') {
 }
 
 const Language = require('./_language');
-
-const cssParse = require('../parsers/css');
-const cssPrettier = require('../prettiers/css');
 const cssLexer = require('../lexers/css');
 
 class CssLanguage extends Language {
   constructor() {
     super({
       name: 'css',
-      parser: cssParse.parse,
-      prettier: cssPrettier,
       lexer: cssLexer
     });
   }

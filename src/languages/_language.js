@@ -9,14 +9,6 @@ class Language {
     return this.options.name;
   }
 
-  get parser() {
-    return this.options.parser;
-  }
-
-  get prettier() {
-    return this.options.prettier;
-  }
-
   get lexer() {
     return this.options.lexer;
   }

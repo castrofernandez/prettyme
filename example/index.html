@@ -85,7 +85,7 @@
       <div class="wrapper-content">
         <h1>prettyme</h1>
 
-        <script type="codeme" class="prettyme markdown lexer">
+        <script type="codeme" class="prettyme markdown">
 # This is an <h1> *tag*
 ## This is an __<h2>__ tag
             
@@ -142,7 +142,7 @@ if (isAwesome){
 ```
 </script>
 
-        <script type="codeme" class="prettyme json parser default">
+        <script type="codeme" class="prettyme json default">
           [{
             "foo": "bar",
             "second": [1, 2, null], 
@@ -155,7 +155,7 @@ if (isAwesome){
     <div class="wrapper dark">
       <div class="wrapper-content">
 
-        <script type="codeme" class="prettyme json lexer dark">
+        <script type="codeme" class="prettyme json dark">
             [{
               "foo": "bar",
               "second": [1, 2, null], 
@@ -168,7 +168,7 @@ if (isAwesome){
     <div class="wrapper">
       <div class="wrapper-content">
 
-        <script type="codeme" class="prettyme html lexer">
+        <script type="codeme" class="prettyme html">
           <div class="example" style="margin:0;" data-imp>
             <!-- Comment -->
             <input  type="text"
@@ -188,7 +188,7 @@ if (isAwesome){
           </div>
         </script>
 
-        <script type="codeme" class="prettyme css lexer">
+        <script type="codeme" class="prettyme css">
             /* Comment */
             .example:not(.e1) {
               background-color: #fff;
@@ -218,7 +218,7 @@ if (isAwesome){
     </div>
     <div class="wrapper dark">
       <div class="wrapper-content">
-        <div class="prettyme html parser">
+        <div class="prettyme html">
           <div class="example">
             <!-- Comment -->
             <input type="text" />
@@ -227,7 +227,7 @@ if (isAwesome){
           </div>
         </div>
 
-        <div class="prettyme css parser">
+        <div class="prettyme css">
           /* Comment */
           .example {
             background-color: #fff;
@@ -254,21 +254,14 @@ if (isAwesome){
     <script>
       prettyme.load({
         language: 'markdown',
-        selector: '.prettyme.markdown.lexer',
+        selector: '.prettyme.markdown',
         compilation: false,
         lines: true
       });
 
       prettyme.load({
         language: 'json',
-        selector: '.prettyme.json.parser',
-        compilation: false,
-        lines: true
-      });
-
-      prettyme.load({
-        language: 'json',
-        selector: '.prettyme.json.lexer',
+        selector: '.prettyme.json',
         compilation: true,
         lines: true,
         theme: 'dark'
@@ -276,7 +269,7 @@ if (isAwesome){
 
       prettyme.load({
         language: 'html',
-        selector: '.prettyme.html.lexer',
+        selector: '.prettyme.html',
         compilation: false,
         lines: true,
         theme: 'default'
@@ -284,21 +277,7 @@ if (isAwesome){
 
       prettyme.load({
         language: 'css',
-        selector: '.prettyme.css.lexer',
-        compilation: false,
-        lines: false
-      });
-
-      prettyme.load({
-        language: 'html',
-        selector: '.prettyme.html.parser',
-        theme: 'dark',
-        compilation: true
-      });
-
-      prettyme.load({
-        language: 'css',
-        selector: '.prettyme.css.parser',
+        selector: '.prettyme.css',
         theme: 'dark',
         compilation: true,
         lines: true
