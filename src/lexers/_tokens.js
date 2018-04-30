@@ -36,12 +36,12 @@ const Tokens = {
     regex: /\W+(-?(0|[1-9])[0-9]*)/g,
     class: ['number', 'integer']
   },
-  multilineComment: {
+  singleComment: {
     type: 'comment',
     regex: /(\/\/(.*?)*)/g,
     class: ['comment', 'multiline']
   },
-  singleComment: {
+  multilineComment: {
     type: 'comment',
     regex: /(\/\*((?!\*\/).|\n)+\*\/)/g,
     class: ['comment', 'single']

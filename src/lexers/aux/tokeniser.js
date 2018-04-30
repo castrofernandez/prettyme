@@ -46,6 +46,7 @@ class Tokeniser {
 
   getContentWithoutComments() {
     this.elements = this.getComments();
+
     const output = [];
     let previousIndex = 0;
     let index;

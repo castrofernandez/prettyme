@@ -39,7 +39,7 @@ const config = {
     },
     {
       type: 'function',
-      regex: /([a-zA-Z\-_]*)[\s\t\r\n]*\(/g,
+      regex: /([a-zA-Z\-_]+)[\s\t\r\n]*\(/g,
       class: ['value', 'function']
     },
     {
