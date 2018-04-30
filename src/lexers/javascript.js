@@ -67,7 +67,7 @@ const config = {
     },
     {
       type: 'name',
-      regex: /([$_a-zA-Z0-9]+)/g,
+      regex: /([$_a-zA-Z]+[$_a-zA-Z0-9]*)/g,
       class: ['name']
     }
   ]
