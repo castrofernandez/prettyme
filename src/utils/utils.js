@@ -5,7 +5,7 @@ class Utils {
   }
 
   replaceAll(str, search, replace) {
-    return str.split(search).join(replace);
+    return str ? str.split(search).join(replace) : '';
   }
 
   formatLines(code) {
