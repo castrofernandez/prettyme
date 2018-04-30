@@ -151,69 +151,70 @@ class Token {
       return;
     }
 
+    const initialIndex = this.index;
+    const content = this.content;
     const pattern = this.patterns[0];
     const otherPatterns = this.patterns.slice(1);
     const regex = pattern.regex;
     const group = pattern.group || 1;
-    const className = new Set(this.className);
+    const className = this.className;
+    const classNameAccum = new Set(this.className);
     let matches = regex.exec(this.content);
     let value;
     let index;
     let length;
     let previousIndex = 0;
 
-    pattern.class.forEach(element => { className.add(element); });
+    pattern.class.forEach(element => { classNameAccum.add(element); });
 
     while (matches) {
       value = matches[group];
-      index = matches.index + this.content.substring(matches.index).indexOf(value);
+      index = matches.index + content.substring(matches.index).indexOf(value);
       length = value.length;
 
       this.processPart({
-        content: this.content.substring(previousIndex, index),
+        content: content.substring(previousIndex, index),
         patterns: otherPatterns,
-        index: this.index + previousIndex,
-        className: this.className
+        index: initialIndex + previousIndex,
+        className: className
       });
 
       if (pattern.accumulative) {
         this.processPart({
           content: value,
           patterns: otherPatterns,
-          index: this.index + index,
-          length: value.length,
-          className: className
+          index: initialIndex + index,
+          className: classNameAccum
         });
       } else if (pattern.wrapper) {
         this.processPart({
           content: value,
           patterns: otherPatterns,
           index: 0,
-          start: this.index + index,
-          length: value.length,
-          className: className,
+          start: initialIndex + index,
+          className: classNameAccum,
           wrapper: true
         });
       } else {
         this.generateToken({
           type: pattern.type,
           value: value,
-          index: this.index + index,
+          index: initialIndex + index,
           length: length,
-          className: className,
+          className: classNameAccum,
           pattern: pattern
         });
       }
 
       previousIndex = index + length;
-      matches = regex.exec(this.content);
+      matches = regex.exec(content);
     }
 
     this.processPart({
-      content: this.content.substring(previousIndex),
+      content: content.substring(previousIndex),
       patterns: otherPatterns,
-      index: this.index + previousIndex,
-      className: this.className
+      index: initialIndex + previousIndex,
+      className: className
     });
   }
 
