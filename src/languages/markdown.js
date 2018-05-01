@@ -2,7 +2,7 @@ if (typeof window !== 'undefined') {
   require('../sass/markdown.scss');
 }
 
-const Language = require('./_language');
+const Language = require('../utils/language');
 const markdownLexer = require('../lexers/markdown');
 
 class MarkdownLanguage extends Language {
