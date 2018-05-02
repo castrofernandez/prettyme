@@ -14,22 +14,8 @@ $c-null: #06ade0;
 $c-boolean: #ffbf00;
 
 .prettyme {
-  padding: 5px 20px 5px 80px;
-  margin-bottom: 40px;
   color: $c-default-dark;
   position: relative;
-
-  .line {
-    margin: 20px 0;
-
-    &:first-child {
-      margin-top: 0;
-    }
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
 
   .token-wrapper {
     display: inline-block;
