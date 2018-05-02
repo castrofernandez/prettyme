@@ -72,7 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7d7fb2cab230a1527c92"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0726a1b9be39714e819a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -817,7 +817,7 @@ module.exports = g;
 
 // https://pegjs.org/documentation
 
-const Language = __webpack_require__(/*! ./languages/_language */ "./src/languages/_language.js");
+const Language = __webpack_require__(/*! ./lexers/language */ "./src/lexers/language.js");
 
 const defaultOptions = {
   language: null,
@@ -930,10 +930,10 @@ if (true) {
 
 /***/ }),
 
-/***/ "./src/languages/_language.js":
-/*!************************************!*\
-  !*** ./src/languages/_language.js ***!
-  \************************************/
+/***/ "./src/lexers/language.js":
+/*!********************************!*\
+  !*** ./src/lexers/language.js ***!
+  \********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
