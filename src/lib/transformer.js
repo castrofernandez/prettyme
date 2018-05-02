@@ -1,6 +1,6 @@
 'use strict';
 
-const Utils = require('../../utils/utils');
+const Utils = require('./utils');
 
 class Transformer {
   constructor(config) {

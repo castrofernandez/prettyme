@@ -2,7 +2,7 @@
 
 // https://pegjs.org/documentation
 
-const Language = require('./utils/language');
+const Language = require('./lexers/language');
 
 const defaultOptions = {
   language: null,

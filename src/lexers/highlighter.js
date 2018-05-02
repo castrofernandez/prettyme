@@ -1,6 +1,6 @@
 'use strict';
 
-const Lexer = require('./aux/lexer');
+const Lexer = require('../lib/lexer');
 
 class Highlighter {
   constructor(config) {
