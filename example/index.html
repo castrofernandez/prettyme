@@ -9,6 +9,7 @@
     <script src="../languages/json.js"></script>
     <script src="../languages/markdown.js"></script>
     <script src="../languages/javascript.js"></script>
+    <script src="../languages/php.js"></script>
     <script src="../prettyme.js"></script>
     <style>
       html, body {
@@ -85,6 +86,42 @@
     <div class="wrapper">
       <div class="wrapper-content">
         <h1>prettyme</h1>
+
+        <script type="codeme" class="prettyme php">
+          <?php
+            // This is a single-line comment
+
+            # This is also a single-line comment
+
+            /*
+            This is a multiple-lines comment block
+            that spans over multiple
+            lines
+            */
+            $hola = "hola";
+
+            $array = array(
+                "foo" => "bar",
+                "bar" => "foo",
+            );
+
+            $array = [
+                "foo" => "bar",
+                "bar" => "foo",
+            ];
+
+            class foo
+            {
+                function hacer_algo()
+                {
+                    echo "Haciendo algo."; 
+                }
+            }
+
+            $bar = new foo;
+            $bar->hacer_algo();
+          ?>
+        </script>
 
         <script type="codeme" class="prettyme javascript">
             /*
@@ -296,6 +333,12 @@ if (isAwesome){
       var module = {};
     </script>
     <script>
+      prettyme.load({
+        language: 'php',
+        selector: '.prettyme.php',
+        lines: true
+      });
+
       prettyme.load({
         language: 'javascript',
         selector: '.prettyme.javascript',

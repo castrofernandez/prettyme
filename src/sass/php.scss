@@ -1,0 +1,51 @@
+@import '_prettyme';
+
+.prettyme.php {
+  color: $c-secondary;
+
+  .tag {
+    color: $c-function;
+  }
+
+  .comment {
+    color: $c-comment;
+  }
+
+  .delimiter {
+    color: $c-default;
+  }
+
+  .string {
+    color: $c-text;
+  }
+
+  .number {
+    color: $c-number;
+  }
+
+  .reserved {
+    color: $c-primary;
+  }
+
+  .function.name:not(.reserved) {
+    color: $c-function;
+  }
+
+  .null {
+    color: $c-null;
+  }
+
+  .boolean {
+    color: $c-boolean;
+  }
+
+  .regex {
+    color: $c-tertiary;
+  }
+
+  .string-template {
+    &:not(.string-template-parameter) {
+      color: $c-text;
+    }
+  }
+}
