@@ -2,7 +2,7 @@ if (typeof window !== 'undefined') {
   require('../sass/markdown.scss');
 }
 
-const Utils = require('../utils/utils');
+const Utils = require('../lib/utils');
 const Language = require('../lexers/language');
 const MarkdownHighlighter = require('../lexers/markdown_highlighter');
 
