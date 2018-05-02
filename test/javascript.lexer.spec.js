@@ -8,7 +8,8 @@ require('../src/languages/javascript');
 describe('prettyme: highlighting JavaScript', function () {
   before(async function () {
     prettyme.init({
-      language: 'javascript'
+      language: 'javascript',
+      lineWrapper: ['<div class="line">', '</div>']
     });
   });
   

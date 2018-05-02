@@ -336,40 +336,46 @@ if (isAwesome){
       prettyme.load({
         language: 'php',
         selector: '.prettyme.php',
-        lines: true
+        lines: true,
+        lineWrapper: ['<div class="line">', '</div>']
       });
 
       prettyme.load({
         language: 'javascript',
         selector: '.prettyme.javascript',
-        lines: true
+        lines: true,
+        lineWrapper: ['<div class="line">', '</div>']
       });
 
       prettyme.load({
         language: 'markdown',
         selector: '.prettyme.markdown',
-        lines: true
+        lines: true,
+        lineWrapper: ['<div class="line">', '</div>']
       });
 
       prettyme.load({
         language: 'json',
         selector: '.prettyme.json',
         lines: true,
-        theme: 'dark'
+        theme: 'dark',
+        lineWrapper: ['<div class="line">', '</div>']
       });
 
       prettyme.load({
         language: 'html',
         selector: '.prettyme.html',
         lines: true,
-        theme: 'default'
+        theme: 'default',
+        lineWrapper: ['<div class="line">', '</div>']
       });
 
       prettyme.load({
         language: 'css',
         selector: '.prettyme.css',
         theme: 'dark',
-        lines: true
+        lines: true,
+        lineWrapper: ['<div class="line">', '</div>']
       });
     </script>
   </body>

@@ -21,6 +21,10 @@ class Tokeniser {
     return this.options.comments || [];
   }
 
+  get customOptions() {
+    return this.options.custom || {};
+  }
+
   getElements() {
     this.elements = [];
 

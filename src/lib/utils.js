@@ -8,8 +8,10 @@ class Utils {
     return str ? str.split(search).join(replace) : '';
   }
 
-  formatLines(code) {
-    return ['<div class="line">', code.split('\n').join('</div><div class="line">'), '</div>'].join('');
+  formatLines(code, lineWrapper = []) {
+    const start = lineWrapper.length === 2 ? lineWrapper[0] : '';
+    const end = lineWrapper.length === 2 ? lineWrapper[1] : '';
+    return [start, code.split('\n').join(`${end}\n${start}`), end].join('');
   }
 }
 

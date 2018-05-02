@@ -72,7 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0726a1b9be39714e819a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "0dca886b0e72020d6148"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -867,7 +867,7 @@ class Prettyme {
       container = this.getContainer(preview);
       this.addTheme(container);
 
-      container.innerHTML = this.highlight(preview.innerHTML);
+      container.innerHTML = this.highlight(preview.innerHTML, this.options);
     }
   }
 
@@ -900,7 +900,7 @@ class Prettyme {
     this.setOptions(customOptions);
     this.checkLanguage();
 
-    return this.lexer.highlight(code);
+    return this.lexer.highlight(code, this.options);
   }
 
   setOptions(customOptions) {

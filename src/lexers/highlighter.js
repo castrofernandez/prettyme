@@ -7,12 +7,12 @@ class Highlighter {
     this.lexer = config ? new Lexer(config) : null;
   }
 
-  highlight(code) {
-    return this.lexer ? this.lexer.highlight(code) : null;
+  highlight(code, options = {}) {
+    return this.lexer ? this.lexer.highlight(code, options) : null;
   }
 
-  lex(code) {
-    return this.lexer ? this.lexer.lex(code) : null;
+  lex(code, options = {}) {
+    return this.lexer ? this.lexer.lex(code, options) : null;
   }
 }
 

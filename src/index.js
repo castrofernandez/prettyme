@@ -52,7 +52,7 @@ class Prettyme {
       container = this.getContainer(preview);
       this.addTheme(container);
 
-      container.innerHTML = this.highlight(preview.innerHTML);
+      container.innerHTML = this.highlight(preview.innerHTML, this.options);
     }
   }
 
@@ -85,7 +85,7 @@ class Prettyme {
     this.setOptions(customOptions);
     this.checkLanguage();
 
-    return this.lexer.highlight(code);
+    return this.lexer.highlight(code, this.options);
   }
 
   setOptions(customOptions) {

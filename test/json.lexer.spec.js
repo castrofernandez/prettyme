@@ -8,7 +8,8 @@ require('../src/languages/json');
 describe('prettyme: highlighting JSON', function () {
   before(async function () {
     prettyme.init({
-      language: 'json'
+      language: 'json',
+      lineWrapper: ['<div class="line">', '</div>']
     });
   });
   

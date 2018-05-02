@@ -8,7 +8,8 @@ require('../src/languages/css');
 describe('prettyme: highlighting CSS', function () {
   before(async function () {
     prettyme.init({
-      language: 'css'
+      language: 'css',
+      lineWrapper: ['<div class="line">', '</div>']
     });
   });
   

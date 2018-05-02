@@ -11,7 +11,7 @@ class Transformer {
     return this.config.patterns;
   }
 
-  transform(code) {
+  transform(code, options = {}) {
     code = Utils.escape(code);
     let group;
     let className;
@@ -29,7 +29,7 @@ class Transformer {
       }
     });
 
-    return Utils.formatLines(code);
+    return Utils.formatLines(code, options.lineWrapper);
   }
 }
 

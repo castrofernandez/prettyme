@@ -15,6 +15,10 @@ class Formatter {
     return this.options.tokens;
   }
 
+  get customOptions() {
+    return this.options.custom || {};
+  }
+
   insertTokens() {
     return this.performInsertTokens(this.tokens, this.code);
   }
@@ -67,7 +71,7 @@ class Formatter {
   format() {
     const lines = this.insertTokens();
 
-    return Utils.formatLines(lines);
+    return Utils.formatLines(lines, this.customOptions.lineWrapper);
   }
 }
 

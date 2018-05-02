@@ -9,11 +9,11 @@ class MarkdownHighlighter extends Highlighter {
     this.lexer = new Transformer(config);
   }
 
-  highlight(code) {
-    return this.lexer.transform(code);
+  highlight(code, options = {}) {
+    return this.lexer.transform(code, options);
   }
 
-  lex(code) {
+  lex(code, options = {}) {
     return null;
   }
 }
