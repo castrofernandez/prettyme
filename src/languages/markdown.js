@@ -5,9 +5,18 @@ if (typeof window !== 'undefined') {
 const Utils = require('../lib/utils');
 const Language = require('../lexers/language');
 const MarkdownHighlighter = require('../lexers/markdown_highlighter');
+const {SPACE} = require('../lib/transformer');
 
 const config = {
   patterns: [
+    {
+      type: 'space',
+      regex: /( +)/g,
+      class: ['space'],
+      repl: (match, $1) => {
+        return SPACE.repeat($1.length);
+      }
+    },
     {
       type: 'header',
       regex: /^\s{0,3}(#+)\s(.*)/gm,

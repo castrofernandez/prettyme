@@ -64,7 +64,7 @@ class Formatter {
     const end = `</${tag}>`;
 
     return value.split('\n').map(line => {
-      return line.trim() !== '' ? `${start}${line}${end}` : line;
+      return line.length > 0 ? `${start}${line}${end}` : line;
     }).join('\n');
   }
 

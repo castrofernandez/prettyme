@@ -1,6 +1,11 @@
 'use strict';
 
 const Tokens = {
+  space: {
+    type: 'space',
+    regex: /( +)/g,
+    class: ['space']
+  },
   null: {
     type: 'null',
     regex: /(null)/g,

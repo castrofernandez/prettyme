@@ -5,9 +5,7 @@ class Token {
     this.options = options;
     this.elements = [];
 
-    if (!this.empty) {
-      this.applyPatterns();
-    }
+    this.applyPatterns();
   }
 
   get type() {
@@ -149,16 +147,14 @@ class Token {
   }
 
   processPart(options) {
-    if (options.content.trim() !== '') {
-      options = Object.assign(options, {
-        taggedLimits: this.taggedLimits
-      });
+    options = Object.assign(options, {
+      taggedLimits: this.taggedLimits
+    });
 
-      if (options.wrapper) {
-        this.elements.push(new Token(options));
-      } else {
-        this.elements = this.elements.concat(new Token(options).elements);
-      }
+    if (options.wrapper) {
+      this.elements.push(new Token(options));
+    } else {
+      this.elements = this.elements.concat(new Token(options).elements);
     }
   }
 

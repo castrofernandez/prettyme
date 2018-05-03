@@ -2,6 +2,8 @@
 
 const Utils = require('./utils');
 
+const SPACE = '!@NBSP@!';
+
 class Transformer {
   constructor(config) {
     this.config = config;
@@ -29,10 +31,15 @@ class Transformer {
       }
     });
 
+    code = code.replace(new RegExp(SPACE, 'g'), '<span class="space"> </span>');
+
     return Utils.formatLines(code, options.lineWrapper);
   }
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = Transformer;
+  module.exports = {
+    Transformer: Transformer,
+    SPACE: SPACE
+  };
 }

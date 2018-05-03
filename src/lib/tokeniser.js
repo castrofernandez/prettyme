@@ -2,6 +2,7 @@
 
 const Limits = require('./limits');
 const Token = require('./token');
+const Tokens = require('../lexers/tokens');
 
 class Tokeniser {
   constructor(options) {
@@ -14,7 +15,9 @@ class Tokeniser {
   }
 
   get patterns() {
-    return this.options.patterns;
+    return this.options.patterns.concat([
+      Tokens.space
+    ]);
   }
 
   get comments() {
@@ -62,7 +65,7 @@ class Tokeniser {
       length = comment.length;
 
       output.push(this.content.slice(previousIndex, index));
-      output.push(' '.repeat(length));
+      output.push('\n'.repeat(length));
 
       previousIndex = index + length;
     });
