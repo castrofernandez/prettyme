@@ -8,7 +8,7 @@ const Highlighter = require('../lexers/highlighter');
 const config = {
   comments: [{
     type: 'comment',
-    regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>)/g,
+    regex: /(<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*--[ \r\n\t]*)>|<![ \r\n\t]*(--([^-]|[\r\n]|-[^-])*))/g,
     class: ['comment']
   }],
   patterns: [
