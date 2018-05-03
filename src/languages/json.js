@@ -21,7 +21,7 @@ const config = {
     Tokens.floating,
     {
       type: 'delimiter',
-      regex: /({|}|[|]|:|,)/g,
+      regex: /({|}|\[|\]|:|,)/g,
       class: ['delimiter']
     }
   ]

@@ -25,12 +25,12 @@ const config = {
     },
     {
       type: 'close',
-      regex: /<\/([^\s>/!]+)>/g,
+      regex: /<\/([^\s>/!]+)>?/g,
       class: ['tag', 'close']
     },
     {
       type: 'value',
-      regex: /=\s*("[^"<>]*"|"[^\n\r<>]*[\n\r<>]|'[^'<>]*'|'[^\n\r<>]*[\n\r<>])/g,
+      regex: /=\s*("[^"<>]*"|"[^\n\r<>]*[\n\r<>]|'[^'<>]*'|'[^\n\r<>]*[\n\r<>]|[^\s>]+)/g,
       class: ['value']
     },
     {

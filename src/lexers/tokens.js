@@ -6,6 +6,11 @@ const Tokens = {
     regex: /( +)/g,
     class: ['space']
   },
+  wildcard: {
+    type: 'any',
+    regex: /(.+)/g,
+    class: ['any']
+  },
   null: {
     type: 'null',
     regex: /(null)/g,

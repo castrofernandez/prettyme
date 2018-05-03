@@ -16,7 +16,8 @@ class Tokeniser {
 
   get patterns() {
     return this.options.patterns.concat([
-      Tokens.space
+      Tokens.space,
+      Tokens.wildcard
     ]);
   }
 
