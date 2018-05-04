@@ -4,7 +4,11 @@
   color: $c-secondary;
 
   .tag {
-    color: $c-function;
+    color: $c-tag;
+  }
+
+  .name {
+    color: $c-name;
   }
 
   .comment {
@@ -12,7 +16,7 @@
   }
 
   .delimiter {
-    color: $c-default;
+    color: $c-delimiter;
   }
 
   .string {
@@ -25,6 +29,10 @@
 
   .reserved {
     color: $c-primary;
+  }
+
+  .object {
+    color: $c-object;
   }
 
   .function.name:not(.reserved) {

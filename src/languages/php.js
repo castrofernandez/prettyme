@@ -37,6 +37,7 @@ const config = {
       class: ['string-template-parameter'],
       accumulative: true
     },
+    Tokens.object,
     Tokens.functionCall,
     {
       type: 'null',

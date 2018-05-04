@@ -61,6 +61,12 @@ const Tokens = {
     regex: /(\/\*((?!\*\/).|\n)+\*\/)/g,
     class: ['comment', 'multiline']
   },
+  object: {
+    type: 'object',
+    regex: /(new|class|extends)\s+([$_a-zA-Z0-9]+)/g,
+    group: 2,
+    class: ['object']
+  },
   functionCall: {
     type: 'function',
     regex: /([$_a-zA-Z0-9]+)\s*\(/g,
