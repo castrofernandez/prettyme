@@ -1,59 +1,8 @@
 @import '_prettyme';
+@import '_base_language';
 
 .prettyme.php {
-  color: $c-secondary;
-
   .tag {
     color: $c-tag;
-  }
-
-  .name {
-    color: $c-name;
-  }
-
-  .comment {
-    color: $c-comment;
-  }
-
-  .delimiter {
-    color: $c-delimiter;
-  }
-
-  .string {
-    color: $c-text;
-  }
-
-  .number {
-    color: $c-number;
-  }
-
-  .reserved {
-    color: $c-primary;
-  }
-
-  .object {
-    color: $c-object;
-  }
-
-  .function.name:not(.reserved) {
-    color: $c-function;
-  }
-
-  .null {
-    color: $c-null;
-  }
-
-  .boolean {
-    color: $c-boolean;
-  }
-
-  .regex {
-    color: $c-tertiary;
-  }
-
-  .string-template {
-    &:not(.string-template-parameter) {
-      color: $c-text;
-    }
   }
 }

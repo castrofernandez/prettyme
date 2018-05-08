@@ -8,7 +8,7 @@
   }
 
   .property.string {
-    color: $c-secondary;
+    color: $c-name;
   }
 
   .number {
@@ -20,10 +20,10 @@
   }
 
   .null {
-    color: $c-primary;
+    color: $c-null;
   }
 
   .true, .false {
-    color: $c-tertiary;
+    color: $c-boolean;
   }
 }

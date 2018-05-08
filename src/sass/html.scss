@@ -4,13 +4,13 @@
   color: $c-default-dark;
 
   .comment {
-    color: $c-default;
+    color: $c-comment;
     font-style: italic;
   }
 
   &.delimiter,
   &.comment {
-    color: $c-default-dark;
+    color: $c-delimiter;
   }
   
   .in-angle {
@@ -19,7 +19,7 @@
     }
   
     &.attribute {
-      color: $c-secondary;
+      color: $c-name;
     }
   
     &.value {

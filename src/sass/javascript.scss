@@ -1,50 +1,9 @@
 @import '_prettyme';
+@import '_base_language';
 
 .prettyme.javascript {
-  color: $c-secondary;
-
-  .comment {
-    color: $c-comment;
-  }
-
-  .name {
-    color: $c-name;
-  }
-
-  .delimiter {
-    color: $c-delimiter;
-  }
-
-  .string {
-    color: $c-text;
-  }
-
-  .number {
-    color: $c-number;
-  }
-
-  .object {
-    color: $c-object;
-  }
-
-  .reserved {
-    color: $c-primary;
-  }
-
-  .function.name:not(.reserved) {
-    color: $c-function;
-  }
-
-  .null {
-    color: $c-null;
-  }
-
-  .boolean {
-    color: $c-boolean;
-  }
-
   .regex {
-    color: $c-tertiary;
+    color: $c-regex;
   }
 
   .string-template {
