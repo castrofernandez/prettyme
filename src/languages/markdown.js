@@ -1,5 +1,5 @@
 if (typeof window !== 'undefined') {
-  require('../sass/markdown.scss');
+  require('../sass/languages/markdown.scss');
 }
 
 const Utils = require('../lib/utils');

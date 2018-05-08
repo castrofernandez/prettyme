@@ -1,5 +1,5 @@
 if (typeof window !== 'undefined') {
-  require('../sass/css.scss');
+  require('../sass/languages/css.scss');
 }
 
 const Language = require('../lexers/language');

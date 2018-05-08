@@ -1,4 +1,4 @@
-@import '_prettyme';
+@import '../base/prettyme';
 
 .prettyme.json {
   @for $i from 0 through 10 {
