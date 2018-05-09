@@ -72,7 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0dca886b0e72020d6148"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e73a2e47613e742e0e9f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -774,6 +774,120 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/cssme/src/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/cssme/src/index.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+class CSSMe {
+  load(rules = {}) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = this.stringify(rules);
+    document.getElementsByTagName('head')[0].appendChild(style);
+  }
+
+  stringify(rules = {}) {
+    const output = [];
+    const stack = this.getEmptyStack(rules);
+
+    let current, rule, value, selector;
+
+    while (stack.length > 0) {
+      current = stack.shift();
+
+      for (rule in current.rules) {
+        value = current.rules[rule];
+
+        if (this.isObject(value)) {
+          rule.split(',').forEach(segment => {
+            stack.push({
+              rules: value,
+              nestedSelectors: this.replaceAmpersand(segment.trim(), current.nestedSelectors)
+            });
+          });
+        } else {
+          selector = this.getSelector(current.nestedSelectors);
+          output[selector] = output[selector] || [];
+          output[selector].push({
+            property: rule,
+            value: value
+          });
+        }
+      }
+    }
+
+    return this.formatOutput(output);
+  }
+
+  replaceAmpersand(rule, nestedSelectors) {
+    if (!rule.includes('&') || nestedSelectors.length === 0) {
+      return nestedSelectors.concat(rule);
+    }
+
+    const last = nestedSelectors[nestedSelectors.length - 1];
+    const selector = rule.replace(/&/g, last);
+
+    return nestedSelectors.slice(0, -1).concat(selector);
+  }
+
+  getEmptyStack(rules) {
+    return [{
+      rules: rules,
+      nestedSelectors: []
+    }];
+  }
+
+  formatOutput(output) {
+    const formatted = [];
+    const that = this;
+
+    Object.keys(output).map(function(selector) {
+      formatted.push(selector);
+      that.formatDeclarations(formatted, output[selector]);
+    });
+
+    return formatted.join('');
+  }
+
+  formatDeclarations(output, declarations) {
+    output.push('{');
+
+    declarations.map(function(declaration) {
+      output.push(
+        declaration.property,
+        ':',
+        declaration.value,
+        ';'
+      );
+    });
+
+    output.push('}');
+  }
+
+  getSelector(nestedSelectors) {
+    return nestedSelectors.join(' ');
+  }
+
+  isObject(obj) {
+    return obj instanceof Object;
+  }
+}
+
+module.exports = new CSSMe();
+
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -817,7 +931,11 @@ module.exports = g;
 
 // https://pegjs.org/documentation
 
+const cssme = __webpack_require__(/*! cssme */ "./node_modules/cssme/src/index.js");
+const globalStyles = __webpack_require__(/*! ./styles/base/prettyme */ "./src/styles/base/prettyme.js");
 const Language = __webpack_require__(/*! ./lexers/language */ "./src/lexers/language.js");
+
+const DefaultTheme = 'default';
 
 const defaultOptions = {
   language: null,
@@ -845,6 +963,10 @@ class Prettyme {
     return this.options.theme || 'default';
   }
 
+  get themeName() {
+    return this.isObject(this.theme) ? this.theme.name : this.theme;
+  }
+
   get showLines() {
     return !!this.options.lines;
   }
@@ -852,10 +974,12 @@ class Prettyme {
   init(customOptions) {
     this.options = null;
     this.setOptions(customOptions);
+    this.loadStyles();
   }
 
   load(customOptions) {
     this.setOptions(customOptions);
+    this.loadStyles();
 
     let previews = document.querySelectorAll(this.options.selector);
     let length = previews.length;
@@ -872,7 +996,7 @@ class Prettyme {
   }
 
   addTheme(container) {
-    const theme = `theme-${this.theme}`;
+    const theme = `theme-${this.themeName}`;
     const classes = new Set(container.className.split(' '));
 
     classes.add(theme);
@@ -898,6 +1022,7 @@ class Prettyme {
 
   highlight(code, customOptions) {
     this.setOptions(customOptions);
+    this.loadStyles();
     this.checkLanguage();
 
     return this.lexer.highlight(code, this.options);
@@ -915,6 +1040,40 @@ class Prettyme {
     if (customOptions && customOptions.language) {
       this.checkLanguage();
     }
+  }
+
+  loadStyles() {
+    const theme = this.getThemeSettings(this.theme);
+
+    cssme.load(globalStyles(theme));
+    this.loadLanguageStyles(theme);
+  }
+
+  loadLanguageStyles(theme) {
+    this.languageConfig.loadStyles(theme);
+  }
+
+  getThemeSettings(theme = DefaultTheme) {
+    return this.isObject(theme) ? this.formatCustomTheme(theme) : __webpack_require__("./src/styles/themes sync recursive ^\\.\\/.*$")(`./${theme}`);
+  }
+
+  getDefaultThemeSettings() {
+    return this.getThemeSettings(DefaultTheme);
+  }
+
+  formatCustomTheme(theme) {
+    const defaultTheme = this.getDefaultThemeSettings();
+    const output = {};
+
+    for (let key in theme) {
+      output[key] = this.isObject(theme[key]) ? Object.assign(defaultTheme[key] || {}, theme[key]) : theme[key];
+    }
+
+    return output;
+  }
+
+  isObject(obj) {
+    return obj instanceof Object;
   }
 
   checkLanguage() {
@@ -937,7 +1096,9 @@ if (true) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {class Language {
+/* WEBPACK VAR INJECTION */(function(global) {const cssme = __webpack_require__(/*! cssme */ "./node_modules/cssme/src/index.js");
+
+class Language {
   constructor(options) {
     this.options = options;
 
@@ -952,12 +1113,26 @@ if (true) {
     return this.options.lexer;
   }
 
+  get styles() {
+    return __webpack_require__("./src/styles/languages sync recursive ^\\.\\/.*$")(`./${this.name}`);
+  }
+
   init() {
     const global = Language.getGlobal();
 
     if (global) {
       global._prettymeLanguages[this.name] = this;
     }
+  }
+
+  loadStyles(theme) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const styles = this.styles(theme);
+
+    cssme.load(styles);
   }
 
   static getGlobal() {
@@ -995,6 +1170,533 @@ if (true) {
   module.exports = Language;
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./src/styles/base/language.js":
+/*!*************************************!*\
+  !*** ./src/styles/base/language.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = settings => {
+  return {
+    '.prettyme': {
+      color: settings.colors.secondary,
+
+      '.comment': {
+        color: settings.colors.comment
+      },
+
+      '.name': {
+        color: settings.colors.name
+      },
+
+      '.delimiter': {
+        color: settings.colors.delimiter
+      },
+
+      '.string': {
+        color: settings.colors.text
+      },
+
+      '.number': {
+        color: settings.colors.number
+      },
+
+      '.object': {
+        color: settings.colors.object
+      },
+
+      '.reserved': {
+        color: settings.colors.reserved
+      },
+
+      '.function.name:not(.reserved)': {
+        color: settings.colors.function
+      },
+
+      '.null': {
+        color: settings.colors.null
+      },
+
+      '.boolean': {
+        color: settings.colors.boolean
+      }
+    }
+  };
+};
+
+/***/ }),
+
+/***/ "./src/styles/base/prettyme.js":
+/*!*************************************!*\
+  !*** ./src/styles/base/prettyme.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = settings => {
+  const output = {};
+
+  output[`.prettyme.theme-${settings.name}`] = {
+    'background-color': settings.colors.background,
+    color: settings.colors['default-dark'],
+    position: 'relative',
+
+    '.token-wrapper': {
+      display: 'inline-block',
+
+      i: {
+        'font-style': 'normal'
+      }
+    },
+
+    '&.numbered': {
+      'counter-reset': 'lines',
+
+      '.line': {
+        position: 'relative',
+
+        '&::before': {
+          'counter-increment': 'lines',
+          content: 'counter(lines)',
+          position: 'absolute',
+          left: '-80px',
+          'text-align': 'right',
+          color: settings.colors['line-number'],
+          'min-width': '40px'
+        }
+      }
+    }
+  };
+
+  return output;
+};
+
+/***/ }),
+
+/***/ "./src/styles/languages sync recursive ^\\.\\/.*$":
+/*!********************************************!*\
+  !*** ./src/styles/languages sync ^\.\/.*$ ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./css": "./src/styles/languages/css.js",
+	"./css.js": "./src/styles/languages/css.js",
+	"./html": "./src/styles/languages/html.js",
+	"./html.js": "./src/styles/languages/html.js",
+	"./javascript": "./src/styles/languages/javascript.js",
+	"./javascript.js": "./src/styles/languages/javascript.js",
+	"./json": "./src/styles/languages/json.js",
+	"./json.js": "./src/styles/languages/json.js",
+	"./markdown": "./src/styles/languages/markdown.js",
+	"./markdown.js": "./src/styles/languages/markdown.js",
+	"./php": "./src/styles/languages/php.js",
+	"./php.js": "./src/styles/languages/php.js"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	var module = __webpack_require__(id);
+	return module;
+}
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) { // check for number or string
+		var e = new Error('Cannot find module "' + req + '".');
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return id;
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./src/styles/languages sync recursive ^\\.\\/.*$";
+
+/***/ }),
+
+/***/ "./src/styles/languages/css.js":
+/*!*************************************!*\
+  !*** ./src/styles/languages/css.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = settings => {
+  return {
+    '.prettyme.css': {
+      color: settings.colors.primary,
+
+      '.comment': {
+        color: settings.colors.default
+      },
+
+      ':not(.comment)': {
+        '&.property, &.word.in-bracket:not(.value)': {
+          color: settings.colors.secondary
+        },
+
+        '&.value, &.in-value, &.word.in-value:not(.property)': {
+          color: settings.colors.tertiary
+        },
+
+        '&.color': {
+          color: settings.colors.color
+        },
+
+        '&.function': {
+          color: settings.colors.function
+        },
+
+        '&.number, &.unit': {
+          color: settings.colors.number
+        },
+
+        '&.text': {
+          color: settings.colors.text
+        },
+
+        '&.delimiter': {
+          color: settings.colors.delimiter
+        },
+
+        '&.selector': {
+          color: settings.colors.tag
+        }
+      }
+    }
+  };
+};
+
+/***/ }),
+
+/***/ "./src/styles/languages/html.js":
+/*!**************************************!*\
+  !*** ./src/styles/languages/html.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = settings => {
+  return {
+    '.prettyme.html': {
+      color: settings.colors['default-dark'],
+
+      '.comment': {
+        color: settings.colors.comment,
+        'font-style': 'italic'
+      },
+
+      '&.delimiter, &.comment': {
+        color: settings.colors.delimiter
+      },
+
+      '.in-angle': {
+        '&.tag': {
+          color: settings.colors.tag
+        },
+
+        '&.attribute': {
+          color: settings.colors.name
+        },
+
+        '&.value': {
+          color: settings.colors.tertiary
+        }
+      }
+    }
+  };
+};
+
+/***/ }),
+
+/***/ "./src/styles/languages/javascript.js":
+/*!********************************************!*\
+  !*** ./src/styles/languages/javascript.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const LanguageCSS = __webpack_require__(/*! ../base/language */ "./src/styles/base/language.js");
+
+const styles = settings => {
+  return {
+    '.prettyme.javascript': {
+      '.regex': {
+        color: settings.colors.regex
+      },
+
+      '.string-template': {
+        '&:not(.string-template-parameter)': {
+          color: settings.colors.text
+        }
+      }
+    }
+  };
+};
+
+module.exports = settings => Object.assign(LanguageCSS(settings), styles(settings));
+
+/***/ }),
+
+/***/ "./src/styles/languages/json.js":
+/*!**************************************!*\
+  !*** ./src/styles/languages/json.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+const styles = {};
+
+for (let i = 0; i < 10; i++) {
+  styles[`.tab.tab${i}x`] = {
+    'padding-left': `${40 * i}px`
+  };
+}
+
+module.exports = settings => {
+  return {
+    '.prettyme.json': Object.assign(styles, {
+      '.property.string': {
+        color: settings.colors.name
+      },
+
+      '.number': {
+        color: settings.colors.number
+      },
+
+      '.string': {
+        color: settings.colors.text
+      },
+
+      '.null': {
+        color: settings.colors.null
+      },
+
+      '.true, .false': {
+        color: settings.colors.boolean
+      }
+    })
+  };
+};
+
+/***/ }),
+
+/***/ "./src/styles/languages/markdown.js":
+/*!******************************************!*\
+  !*** ./src/styles/languages/markdown.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = settings => {
+  return {
+    '.prettyme.markdown': {
+      '.header': {
+        '.a': {
+          color: settings.colors.primary
+        }
+      },
+
+      '.bold': {
+        'font-weight': '700',
+        color: settings.colors.color
+      },
+
+      '.italic': {
+        'font-style': 'italic',
+        color: settings.colors.secondary
+      },
+
+      '.list': {
+        '&.ul-list, &.ol-list': {
+          i: {
+            color: settings.colors.tertiary
+          }
+        }
+      },
+
+      '.link': {
+        i: {
+          color: settings.colors.function,
+
+          '&.b': {
+            color: settings.colors.text
+          },
+
+          '&.p': {
+            color: settings.colors.color
+          }
+        },
+
+        '.u': {
+          color: settings.colors.primary
+        }
+      },
+
+      '.code-inline': {
+        color: settings.colors.function
+      },
+
+      '.code': {
+        color: settings.colors.number,
+
+        i: {
+          color: settings.colors.text
+        }
+      },
+
+      '.quote': {
+        i: {
+          color: settings.colors.number
+        }
+      }
+    }
+  };
+};
+
+/***/ }),
+
+/***/ "./src/styles/languages/php.js":
+/*!*************************************!*\
+  !*** ./src/styles/languages/php.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const LanguageCSS = __webpack_require__(/*! ../base/language */ "./src/styles/base/language.js");
+
+const styles = settings => {
+  return {
+    '.prettyme.php': {
+      '.tag': {
+        color: settings.colors.tag
+      }
+    }
+  };
+};
+
+module.exports = settings => Object.assign(LanguageCSS(settings), styles(settings));
+
+/***/ }),
+
+/***/ "./src/styles/themes sync recursive ^\\.\\/.*$":
+/*!*****************************************!*\
+  !*** ./src/styles/themes sync ^\.\/.*$ ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./dark": "./src/styles/themes/dark.js",
+	"./dark.js": "./src/styles/themes/dark.js",
+	"./default": "./src/styles/themes/default.js",
+	"./default.js": "./src/styles/themes/default.js"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	var module = __webpack_require__(id);
+	return module;
+}
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) { // check for number or string
+		var e = new Error('Cannot find module "' + req + '".');
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return id;
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./src/styles/themes sync recursive ^\\.\\/.*$";
+
+/***/ }),
+
+/***/ "./src/styles/themes/dark.js":
+/*!***********************************!*\
+  !*** ./src/styles/themes/dark.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  name: 'dark',
+  colors: {
+    'background': '#444',
+    'line-number': '#aaa',
+    'default': '#aaa',
+    'default-dark': '#777',
+
+    'primary': '#1a8cff',
+    'secondary': '#06c0f9',
+    'tertiary': '#ffbf00',
+
+    'delimiter': '#999',
+    'name': '#06c0f9',
+    'object': '#ff667d',
+    'tag': '#1a8cff',
+    'color': '#ff66a3',
+    'function': '#9f81f7',
+    'number': '#00cca3',
+    'text': '#ff80d5',
+    'comment': '#aaa',
+    'null': '#06ade0',
+    'boolean': '#ffbf00',
+    'reserved': '#1a8cff',
+    'regex': '#ffbf00'
+  }
+};
+
+/***/ }),
+
+/***/ "./src/styles/themes/default.js":
+/*!**************************************!*\
+  !*** ./src/styles/themes/default.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = {
+  name: 'default',
+  colors: {
+    'background': 'transparent',
+    'line-number': '#aaa',
+    'default': '#aaa',
+    'default-dark': '#777',
+
+    'primary': '#1a8cff',
+    'secondary': '#06c0f9',
+    'tertiary': '#ffbf00',
+
+    'delimiter': '#999',
+    'name': '#06c0f9',
+    'object': '#ff667d',
+    'tag': '#1a8cff',
+    'color': '#ff66a3',
+    'function': '#9f81f7',
+    'number': '#00cca3',
+    'text': '#ff80d5',
+    'comment': '#aaa',
+    'null': '#06ade0',
+    'boolean': '#ffbf00',
+    'reserved': '#1a8cff',
+    'regex': '#ffbf00'
+  }
+};
 
 /***/ }),
 
