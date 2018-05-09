@@ -18,7 +18,7 @@ module.exports = settings => {
       },
 
       '.list': {
-        '&.ul-list &.ol-list': {
+        '&.ul-list, &.ol-list': {
           i: {
             color: settings.colors.tertiary
           }

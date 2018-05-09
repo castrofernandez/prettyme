@@ -2,7 +2,7 @@
 
 const Utils = require('./utils');
 
-const SPACE = '!@NBSP@!';
+const contentRegex = /^([^<]+)<|>([^<]+)<|>([^<]*)$/g;
 
 class Transformer {
   constructor(config) {
@@ -31,15 +31,32 @@ class Transformer {
       }
     });
 
-    code = code.replace(new RegExp(SPACE, 'g'), '<span class="space"> </span>');
+    return Utils.formatLines(this.replaceSpaces(code), options.lineWrapper);
+  }
 
-    return Utils.formatLines(code, options.lineWrapper);
+  replaceSpaces(code) {
+    const output = [];
+    let matches = contentRegex.exec(code);
+    let previousIndex = 0;
+
+    while (matches) {
+      output.push(code.slice(previousIndex, matches.index));
+      output.push(this.convertSpace(matches[0]));
+
+      previousIndex = matches.index + matches[0].length;
+      matches = contentRegex.exec(code);
+    }
+
+    output.push(code.slice(previousIndex));
+
+    return output.join('');
+  }
+
+  convertSpace(code) {
+    return code.replace(/ /g, '<span class="space"> </span>');
   }
 }
 
 if (typeof module !== 'undefined') {
-  module.exports = {
-    Transformer: Transformer,
-    SPACE: SPACE
-  };
+  module.exports = Transformer;
 }

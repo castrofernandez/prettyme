@@ -1,7 +1,7 @@
 'use strict';
 
 const Highlighter = require('./highlighter');
-const {Transformer} = require('../lib/transformer');
+const Transformer = require('../lib/transformer');
 
 class MarkdownHighlighter extends Highlighter {
   constructor(config) {
