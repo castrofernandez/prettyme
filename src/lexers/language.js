@@ -1,3 +1,5 @@
+const cssme = require('cssme');
+
 class Language {
   constructor(options) {
     this.options = options;
@@ -13,12 +15,27 @@ class Language {
     return this.options.lexer;
   }
 
+  get styles() {
+    return require(`../styles/languages/${this.name}`);
+  }
+
   init() {
     const global = Language.getGlobal();
 
     if (global) {
       global._prettymeLanguages[this.name] = this;
     }
+
+    if (typeof window !== 'undefined') {
+      this.loadStyles();
+    }
+  }
+
+  loadStyles() {
+    const theme = require('../styles/themes/default');
+    const styles = this.styles(theme);
+
+    cssme.load(styles);
   }
 
   static getGlobal() {

@@ -28,6 +28,7 @@
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "css-loader": "^0.28.11",
+    "cssme": "^1.0.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-loader": "^2.0.0",

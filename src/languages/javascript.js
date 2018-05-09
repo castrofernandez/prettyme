@@ -1,7 +1,3 @@
-if (typeof window !== 'undefined') {
-  require('../sass/languages/javascript.scss');
-}
-
 const Language = require('../lexers/language');
 const Highlighter = require('../lexers/highlighter');
 const Tokens = require('../lexers/tokens');

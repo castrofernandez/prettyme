@@ -1,5 +1,9 @@
 'use strict';
 
+const cssme = require('cssme');
+const theme = require('./styles/themes/default');
+const styles = require('./styles/base/prettyme');
+
 // https://pegjs.org/documentation
 
 const Language = require('./lexers/language');
@@ -37,10 +41,12 @@ class Prettyme {
   init(customOptions) {
     this.options = null;
     this.setOptions(customOptions);
+    this.loadStyles();
   }
 
   load(customOptions) {
     this.setOptions(customOptions);
+    this.loadStyles();
 
     let previews = document.querySelectorAll(this.options.selector);
     let length = previews.length;
@@ -83,6 +89,7 @@ class Prettyme {
 
   highlight(code, customOptions) {
     this.setOptions(customOptions);
+    this.loadStyles();
     this.checkLanguage();
 
     return this.lexer.highlight(code, this.options);
@@ -100,6 +107,10 @@ class Prettyme {
     if (customOptions && customOptions.language) {
       this.checkLanguage();
     }
+  }
+
+  loadStyles() {
+    cssme.load(styles(theme));
   }
 
   checkLanguage() {
