@@ -1,43 +1,43 @@
-module.exports = colors => {
+module.exports = settings => {
   return {
     '.prettyme.css': {
-      color: colors.primary,
+      color: settings.colors.primary,
 
       '.comment': {
-        color: colors.default
+        color: settings.colors.default
       },
 
       ':not(.comment)': {
         '&.property, &.word.in-bracket:not(.value)': {
-          color: colors.secondary
+          color: settings.colors.secondary
         },
 
         '&.value, &.in-value, &.word.in-value:not(.property)': {
-          color: colors.tertiary
+          color: settings.colors.tertiary
         },
 
         '&.color': {
-          color: colors.color
+          color: settings.colors.color
         },
 
         '&.function': {
-          color: colors.function
+          color: settings.colors.function
         },
 
         '&.number, &.unit': {
-          color: colors.number
+          color: settings.colors.number
         },
 
         '&.text': {
-          color: colors.text
+          color: settings.colors.text
         },
 
         '&.delimiter': {
-          color: colors.delimiter
+          color: settings.colors.delimiter
         },
 
         '&.selector': {
-          color: colors.tag
+          color: settings.colors.tag
         }
       }
     }

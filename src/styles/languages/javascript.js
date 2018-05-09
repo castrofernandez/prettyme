@@ -1,19 +1,19 @@
 const LanguageCSS = require('../base/language');
 
-const styles = colors => {
+const styles = settings => {
   return {
     '.prettyme.javascript': {
       '.regex': {
-        color: colors.regex
+        color: settings.colors.regex
       },
 
       '.string-template': {
         '&:not(.string-template-parameter)': {
-          color: colors.text
+          color: settings.colors.text
         }
       }
     }
   };
 };
 
-module.exports = colors => Object.assign(LanguageCSS(colors), styles(colors));
+module.exports = settings => Object.assign(LanguageCSS(settings), styles(settings));

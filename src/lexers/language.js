@@ -25,14 +25,13 @@ class Language {
     if (global) {
       global._prettymeLanguages[this.name] = this;
     }
-
-    if (typeof window !== 'undefined') {
-      this.loadStyles();
-    }
   }
 
-  loadStyles() {
-    const theme = require('../styles/themes/default');
+  loadStyles(theme) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     const styles = this.styles(theme);
 
     cssme.load(styles);

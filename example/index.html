@@ -88,6 +88,33 @@
         font-size: 30px;
         color: #ffbf00;
       }
+
+      .prettyme.php::after {
+        content: '<?php?>';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 30px;
+        color: #06ade0;
+      }
+
+      .prettyme.javascript::after {
+        content: '[{javascript}]';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 30px;
+        color: #ff3385;
+      }
+
+      .prettyme.markdown::after {
+        content: '#markdown';
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 30px;
+        color: #06ade0;
+      }
     </style>
   </head>
 
@@ -381,7 +408,13 @@ if (isAwesome){
       prettyme.load({
         language: 'css',
         selector: '.prettyme.css',
-        theme: 'dark',
+        theme: {
+          name: 'custom',
+          colors: {
+            'background': '#eee',
+            'line-number': 'red'
+          }
+        },
         lines: true,
         lineWrapper: ['<div class="line">', '</div>']
       });

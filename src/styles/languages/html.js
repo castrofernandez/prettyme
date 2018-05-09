@@ -1,28 +1,28 @@
-module.exports = colors => {
+module.exports = settings => {
   return {
     '.prettyme.html': {
-      color: colors['default-dark'],
+      color: settings.colors['default-dark'],
 
       '.comment': {
-        color: colors.comment,
+        color: settings.colors.comment,
         'font-style': 'italic'
       },
 
       '&.delimiter, &.comment': {
-        color: colors.delimiter
+        color: settings.colors.delimiter
       },
 
       '.in-angle': {
         '&.tag': {
-          color: colors.tag
+          color: settings.colors.tag
         },
 
         '&.attribute': {
-          color: colors.name
+          color: settings.colors.name
         },
 
         '&.value': {
-          color: colors.tertiary
+          color: settings.colors.tertiary
         }
       }
     }

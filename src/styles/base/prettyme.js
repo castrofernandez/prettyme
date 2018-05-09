@@ -1,45 +1,37 @@
-module.exports = colors => {
-  return {
-    '.prettyme': {
-      color: colors['default-dark'],
-      position: 'relative',
+module.exports = settings => {
+  const output = {};
 
-      '.token-wrapper': {
-        display: 'inline-block',
+  output[`.prettyme.theme-${settings.name}`] = {
+    'background-color': settings.colors.background,
+    color: settings.colors['default-dark'],
+    position: 'relative',
 
-        i: {
-          'font-style': 'normal'
-        }
-      },
+    '.token-wrapper': {
+      display: 'inline-block',
 
-      '&.numbered': {
-        'counter-reset': 'lines',
+      i: {
+        'font-style': 'normal'
+      }
+    },
 
-        '.line': {
-          position: 'relative',
+    '&.numbered': {
+      'counter-reset': 'lines',
 
-          '&::before': {
-            'counter-increment': 'lines',
-            content: 'counter(lines)',
-            position: 'absolute',
-            left: '-80px',
-            'text-align': 'right',
-            color: colors.default,
-            'min-width': '40px'
-          }
-        }
-      },
+      '.line': {
+        position: 'relative',
 
-      '&.theme-dark': {
-        'background-color': '#444',
-        color: colors.default,
-
-        '&.numbered': {
-          '.line::before': {
-            color: colors.default
-          }
+        '&::before': {
+          'counter-increment': 'lines',
+          content: 'counter(lines)',
+          position: 'absolute',
+          left: '-80px',
+          'text-align': 'right',
+          color: settings.colors['line-number'],
+          'min-width': '40px'
         }
       }
     }
   };
+
+  return output;
 };

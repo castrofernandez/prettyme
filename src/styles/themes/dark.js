@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'default',
+  name: 'dark',
   colors: {
-    'background': 'transparent',
+    'background': '#444',
     'line-number': '#aaa',
     'default': '#aaa',
     'default-dark': '#777',

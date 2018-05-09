@@ -1,63 +1,63 @@
-module.exports = colors => {
+module.exports = settings => {
   return {
     '.prettyme.markdown': {
       '.header': {
         '.a': {
-          color: colors.primary
+          color: settings.colors.primary
         }
       },
 
       '.bold': {
         'font-weight': '700',
-        color: colors.color
+        color: settings.colors.color
       },
 
       '.italic': {
         'font-style': 'italic',
-        color: colors.secondary
+        color: settings.colors.secondary
       },
 
       '.list': {
         '&.ul-list &.ol-list': {
           i: {
-            color: colors.tertiary
+            color: settings.colors.tertiary
           }
         }
       },
 
       '.link': {
         i: {
-          color: colors.function,
+          color: settings.colors.function,
 
           '&.b': {
-            color: colors.text
+            color: settings.colors.text
           },
 
           '&.p': {
-            color: colors.color
+            color: settings.colors.color
           }
         },
 
         '.u': {
-          color: colors.primary
+          color: settings.colors.primary
         }
       },
 
       '.code-inline': {
-        color: colors.function
+        color: settings.colors.function
       },
 
       '.code': {
-        color: colors.number,
+        color: settings.colors.number,
 
         i: {
-          color: colors.text
+          color: settings.colors.text
         }
       },
 
       '.quote': {
         i: {
-          color: colors.number
+          color: settings.colors.number
         }
       }
     }

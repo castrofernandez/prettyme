@@ -1,46 +1,46 @@
-module.exports = colors => {
+module.exports = settings => {
   return {
     '.prettyme': {
-      color: colors.secondary,
+      color: settings.colors.secondary,
 
       '.comment': {
-        color: colors.comment
+        color: settings.colors.comment
       },
 
       '.name': {
-        color: colors.name
+        color: settings.colors.name
       },
 
       '.delimiter': {
-        color: colors.delimiter
+        color: settings.colors.delimiter
       },
 
       '.string': {
-        color: colors.text
+        color: settings.colors.text
       },
 
       '.number': {
-        color: colors.number
+        color: settings.colors.number
       },
 
       '.object': {
-        color: colors.object
+        color: settings.colors.object
       },
 
       '.reserved': {
-        color: colors.reserved
+        color: settings.colors.reserved
       },
 
       '.function.name:not(.reserved)': {
-        color: colors['function']
+        color: settings.colors.function
       },
 
       '.null': {
-        color: colors.null
+        color: settings.colors.null
       },
 
       '.boolean': {
-        color: colors.boolean
+        color: settings.colors.boolean
       }
     }
   };

@@ -1,12 +1,12 @@
 'use strict';
 
-const cssme = require('cssme');
-const theme = require('./styles/themes/default');
-const styles = require('./styles/base/prettyme');
-
 // https://pegjs.org/documentation
 
+const cssme = require('cssme');
+const globalStyles = require('./styles/base/prettyme');
 const Language = require('./lexers/language');
+
+const DefaultTheme = 'default';
 
 const defaultOptions = {
   language: null,
@@ -32,6 +32,10 @@ class Prettyme {
 
   get theme() {
     return this.options.theme || 'default';
+  }
+
+  get themeName() {
+    return this.isObject(this.theme) ? this.theme.name : this.theme;
   }
 
   get showLines() {
@@ -63,7 +67,7 @@ class Prettyme {
   }
 
   addTheme(container) {
-    const theme = `theme-${this.theme}`;
+    const theme = `theme-${this.themeName}`;
     const classes = new Set(container.className.split(' '));
 
     classes.add(theme);
@@ -110,7 +114,41 @@ class Prettyme {
   }
 
   loadStyles() {
-    cssme.load(styles(theme));
+    const theme = this.getThemeSettings(this.theme);
+
+    cssme.load(globalStyles(theme));
+    this.loadLanguageStyles(theme);
+  }
+
+  loadLanguageStyles(theme) {
+    this.languageConfig.loadStyles(theme);
+  }
+
+  getThemeSettings(theme = DefaultTheme) {
+    return this.isObject(theme)
+      ? this.formatCustomTheme(theme)
+      : require(`./styles/themes/${theme}`);
+  }
+
+  getDefaultThemeSettings() {
+    return this.getThemeSettings(DefaultTheme);
+  }
+
+  formatCustomTheme(theme) {
+    const defaultTheme = this.getDefaultThemeSettings();
+    const output = {};
+
+    for (let key in theme) {
+      output[key] = this.isObject(theme[key])
+        ? Object.assign(defaultTheme[key] || {}, theme[key])
+        : theme[key];
+    }
+
+    return output;
+  }
+
+  isObject(obj) {
+    return obj instanceof Object;
   }
 
   checkLanguage() {

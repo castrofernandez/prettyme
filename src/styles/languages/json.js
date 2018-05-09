@@ -6,27 +6,27 @@ for (let i = 0; i < 10; i++) {
   };
 }
 
-module.exports = colors => {
+module.exports = settings => {
   return {
     '.prettyme.json': Object.assign(styles, {
       '.property.string': {
-        color: colors.name
+        color: settings.colors.name
       },
 
       '.number': {
-        color: colors.number
+        color: settings.colors.number
       },
 
       '.string': {
-        color: colors.text
+        color: settings.colors.text
       },
 
       '.null': {
-        color: colors.null
+        color: settings.colors.null
       },
 
       '.true, .false': {
-        color: colors.boolean
+        color: settings.colors.boolean
       }
     })
   };

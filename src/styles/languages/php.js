@@ -1,13 +1,13 @@
 const LanguageCSS = require('../base/language');
 
-const styles = colors => {
+const styles = settings => {
   return {
     '.prettyme.php': {
       '.tag': {
-        color: colors.tag
+        color: settings.colors.tag
       }
     }
   };
 };
 
-module.exports = colors => Object.assign(LanguageCSS(colors), styles(colors));
+module.exports = settings => Object.assign(LanguageCSS(settings), styles(settings));
