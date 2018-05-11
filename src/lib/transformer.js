@@ -41,7 +41,7 @@ class Transformer {
 
     while (matches) {
       output.push(code.slice(previousIndex, matches.index));
-      output.push(this.convertSpace(matches[0]));
+      output.push(this.wrapperText(matches));
 
       previousIndex = matches.index + matches[0].length;
       matches = contentRegex.exec(code);
@@ -52,8 +52,18 @@ class Transformer {
     return output.join('');
   }
 
-  convertSpace(code) {
-    return code.replace(/ /g, '<span class="space"> </span>');
+  wrapperText(matches) {
+    let code = `<span class="any">${matches[1] || matches[2] || matches[3]}</span>`;
+
+    if (matches[1]) {
+      code = `${code}<`;
+    } else if (matches[2]) {
+      code = `>${code}<`;
+    } else {
+      code = `>${code}`;
+    }
+
+    return code;
   }
 }
 
