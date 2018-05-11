@@ -2,8 +2,6 @@
 
 const Utils = require('./utils');
 
-const contentRegex = /^([^<\n\r]+)<|>([^<\n\r]+)<|>([^<\r\n]*)|\n([^<\r\n]*)/g;
-
 class Transformer {
   constructor(config) {
     this.config = config;
@@ -31,47 +29,7 @@ class Transformer {
       }
     });
 
-    return this.replaceAny(Utils.formatLines(code, options.lineWrapper));
-  }
-
-  replaceAny(code) {
-    const output = [];
-    let matches = contentRegex.exec(code);
-    let previousIndex = 0;
-
-    while (matches) {
-      output.push(code.slice(previousIndex, matches.index));
-      output.push(this.wrapperText(matches));
-
-      previousIndex = matches.index + matches[0].length;
-      matches = contentRegex.exec(code);
-    }
-
-    output.push(code.slice(previousIndex));
-
-    return output.join('');
-  }
-
-  wrapperText(matches) {
-    let group = matches[1] || matches[2] || matches[3] || matches[4];
-
-    if (!group) {
-      return matches[0];
-    }
-
-    let code = `<span class="any">${group}</span>`;
-
-    if (matches[1] !== undefined) {
-      code = `${code}<`;
-    } else if (matches[2] !== undefined) {
-      code = `>${code}<`;
-    } else if (matches[3] !== undefined) {
-      code = `>${code}`;
-    } else {
-      code = `\n${code}`;
-    }
-
-    return code;
+    return Utils.formatLines(code, options.lineWrapper);
   }
 }
 
