@@ -2,7 +2,7 @@
 
 const Utils = require('./utils');
 
-const contentRegex = /^([^<\n\r]+)<|>([^<\n\r]+)<|>([^<\r\n]*)$/g;
+const contentRegex = /^([^<\n\r]+)<|>([^<\n\r]+)<|>([^<\r\n]*)|\n([^<\r\n]*)/g;
 
 class Transformer {
   constructor(config) {
@@ -53,14 +53,22 @@ class Transformer {
   }
 
   wrapperText(matches) {
-    let code = `<span class="any">${matches[1] || matches[2] || matches[3]}</span>`;
+    let group = matches[1] || matches[2] || matches[3] || matches[4];
 
-    if (matches[1]) {
+    if (!group) {
+      return matches[0];
+    }
+
+    let code = `<span class="any">${group}</span>`;
+
+    if (matches[1] !== undefined) {
       code = `${code}<`;
-    } else if (matches[2]) {
+    } else if (matches[2] !== undefined) {
       code = `>${code}<`;
-    } else {
+    } else if (matches[3] !== undefined) {
       code = `>${code}`;
+    } else {
+      code = `\n${code}`;
     }
 
     return code;
