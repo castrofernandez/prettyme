@@ -2,7 +2,7 @@
 
 const Utils = require('./utils');
 
-const contentRegex = /^([^<]+)<|>([^<]+)<|>([^<]*)$/g;
+const contentRegex = /^([^<\n\r]+)<|>([^<\n\r]+)<|>([^<\r\n]*)$/g;
 
 class Transformer {
   constructor(config) {
@@ -31,10 +31,10 @@ class Transformer {
       }
     });
 
-    return Utils.formatLines(this.replaceSpaces(code), options.lineWrapper);
+    return this.replaceAny(Utils.formatLines(code, options.lineWrapper));
   }
 
-  replaceSpaces(code) {
+  replaceAny(code) {
     const output = [];
     let matches = contentRegex.exec(code);
     let previousIndex = 0;
