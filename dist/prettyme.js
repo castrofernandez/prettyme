@@ -72,7 +72,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e73a2e47613e742e0e9f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bd8625f13801cf61fe73"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1518,14 +1518,14 @@ module.exports = settings => {
 
       '.list': {
         '&.ul-list, &.ol-list': {
-          i: {
+          '> i': {
             color: settings.colors.tertiary
           }
         }
       },
 
       '.link': {
-        i: {
+        '> i': {
           color: settings.colors.function,
 
           '&.b': {
@@ -1549,13 +1549,17 @@ module.exports = settings => {
       '.code': {
         color: settings.colors.number,
 
-        i: {
+        '.language': {
+          color: settings.colors.secondary
+        },
+
+        '> i': {
           color: settings.colors.text
         }
       },
 
       '.quote': {
-        i: {
+        '> i': {
           color: settings.colors.number
         }
       }

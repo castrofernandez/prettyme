@@ -19,14 +19,14 @@ module.exports = settings => {
 
       '.list': {
         '&.ul-list, &.ol-list': {
-          i: {
+          '> i': {
             color: settings.colors.tertiary
           }
         }
       },
 
       '.link': {
-        i: {
+        '> i': {
           color: settings.colors.function,
 
           '&.b': {
@@ -50,13 +50,17 @@ module.exports = settings => {
       '.code': {
         color: settings.colors.number,
 
-        i: {
+        '.language': {
+          color: settings.colors.secondary
+        },
+
+        '> i': {
           color: settings.colors.text
         }
       },
 
       '.quote': {
-        i: {
+        '> i': {
           color: settings.colors.number
         }
       }

@@ -84,7 +84,7 @@ const config = {
       repl: (match, $1, $2) => {
         const start = '<div class="code">';
         const end = '</div>';
-        const exp = `<i>&#96&#96&#96</i>${$1}\n${$2}\n<i>&#96&#96&#96</i>`;
+        const exp = `<i>&#96&#96&#96</i><span class="language">${$1}</span>\n${$2}\n<i>&#96&#96&#96</i>`;
         const code = Utils.replaceAll(exp, '\n', `${end}\n${start}`);
 
         return `${start}${code}${end}`;
