@@ -202,8 +202,37 @@
         </script>
 
         <script type="codeme" class="prettyme markdown">
-line 1
-line 2
+# codeme
+Web code editor
+  
+1. Install
+  
+```npm install codeme```
+  
+2. Usage
+
+```
+codeme.load({
+  focus: true,
+  language: 'javascript',
+  code: 'console.log("Hello World!");'
+});
+```
+  
+3. Development
+
+  * Install dependencies with `npm install`
+  * Run server (watch) with `npm run dev`
+  * Try it in http://localhost:8282/test/
+  
+4. Generate build
+  
+```npm run build```
+  
+5. Run tests
+  
+```npm run test```
+
 # This is an <h1> *tag*
 ## This is an __<h2>__ tag
             

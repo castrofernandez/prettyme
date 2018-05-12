@@ -6,7 +6,7 @@ const config = {
   patterns: [
     {
       type: 'header',
-      regex: /^\s{0,3}(#+)\s(.*)/gm,
+      regex: /^\s{0,3}(#+) (.*)/gm,
       class: ['header'],
       wrapper: true,
       formatter: `<i class="a">$1</i> $2`
@@ -37,37 +37,37 @@ const config = {
     },
     {
       type: 'list-asterisk',
-      regex: /^(\*\s(.*))/gm,
+      regex: /^(\* (.*))/gm,
       class: ['list', 'ul-list'],
       formatter: `<i>*</i> $2`
     },
     {
       type: 'list-asterisk-spaces',
-      regex: /^(\s*)(\*\s(.*))/gm,
+      regex: /^( *)(\* (.*))/gm,
       class: ['list', 'ul-list'],
       formatter: `$1<i>*</i> $3`
     },
     {
       type: 'list-dash',
-      regex: /^(-\s(.*))/gm,
+      regex: /^(- (.*))/gm,
       class: ['list', 'ul-list'],
       formatter: `<i>-</i> $2`
     },
     {
       type: 'list-dash-spaces',
-      regex: /^(\s*)(-\s(.*))/gm,
+      regex: /^( *)(- (.*))/gm,
       class: ['list', 'ul-list'],
       formatter: `$1<i>-</i> $3`
     },
     {
       type: 'list-number',
-      regex: /^(\d+\.)\s(.*)/gm,
+      regex: /^(\d+\.) (.*)/gm,
       class: ['list', 'ol-list'],
       formatter: `<i>$1</i> $2`
     },
     {
       type: 'list-number-spaces',
-      regex: /^(\s*)(\d+\.)\s(.*)/gm,
+      regex: /^( *)(\d+\.) (.*)/gm,
       class: ['list', 'ol-list'],
       formatter: `$1<i>$2</i> $3`
     },
@@ -104,7 +104,7 @@ const config = {
     },
     {
       type: 'quote-spaces',
-      regex: /^(\s*)&gt;(.*)/gm,
+      regex: /^( *)&gt;(.*)/gm,
       class: ['quote'],
       formatter: `$1<i>></i>$2`
     }
